@@ -2,7 +2,7 @@
 	<view :style="showPage ? 'opacity: 1;' : 'opacity: 0;' ">
 		<scroll-view scroll-y="true" class="app-container" :style="'height:'+containerHeight+'px'">
 			<view v-if="page =='shop'" :class="page=='shop'?'animation-fade':''">
-				<cu-shop :shopIndex="shopInfo" @changeLike="_changeLike" @changeFullText="_changeFullText"></cu-shop>
+				<cu-shop :shopIndex="shopInfo" @changeLike="_changeLike" @changeFullText="_changeFullText" @switchPostComments="_switchPostComments"></cu-shop>
 			</view>
 			<view v-if="page =='user'" :class="page=='user'?'animation-fade':''">
 				<cu-user @click="handleClick"></cu-user>
@@ -23,8 +23,7 @@
 			</view>
 		</uni-popup>
 		<view id="tabbar" class="cu-bar tabbar">
-			<view class="action tabbar-icon" v-for="(item,index) in tabbar" :key="index"
-			 @tap="changeTab(item)">
+			<view class="action tabbar-icon" v-for="(item,index) in tabbar" :key="index" @tap="changeTab(item)">
 				<view>
 					<image :class="page==item.page?'animation-scale-up':''" v-if="page==item.page" :src="item.selectedIconPath" mode=""></image>
 					<image v-else :src="item.iconPath" mode=""></image>
@@ -44,9 +43,12 @@
 
 <script>
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import {
+		mapMutations
+	} from 'vuex'
 	let _this;
 	export default {
-		components:{
+		components: {
 			uniPopup
 		},
 		data() {
@@ -79,15 +81,20 @@
 			}
 		},
 		onLoad(options) {
-			if (options.page) this.page = options.page; 
-			console.log("options", options)
+			if (options.page) this.page = options.page;
 			this.init_page_size();
 			this.getShopIndex();
 		},
 		methods: {
+			...mapMutations(['shopConfig']),
 			_changeLike(val) {
-				console.log("val", val);
-				const {item, bl, index} = val;
+				if(!this.$db.userMobile()) return;
+				
+				const {
+					item,
+					bl,
+					index
+				} = val;
 				let num = parseInt(this.shopInfo.comments.list[index].like_num);
 				if (bl) {
 					this.shopInfo.comments.list[index].like = bl;
@@ -95,21 +102,29 @@
 					this.$http.postSaveZan({
 						cid: item.id,
 						uid: item.uid
-					},res=>{
-						console.log("res", res)
+					}, res => {
+						// console.log("res", res)
 					})
 				} else {
 					// if (num > 0) {
 					// 	this.shopInfo.comments.list[index].like_num = num - 1;
 					// }
-					this.$refs.pop.open()
+					this.$refs.pop.open();
 				}
 			},
 			_changeFullText(val) {
-				const {e} = val;
+				const {
+					e
+				} = val;
 				const index = e.currentTarget.dataset.index;
 				const str = e.currentTarget.dataset.text;
 				this.shopInfo.comments.list[index].full_text = str == "全文" ? "收起全文" : "全文";
+			},
+			_switchPostComments() {
+				if(!this.$db.userMobile()) return;
+				uni.navigateTo({
+					url: "/pages/index/postComments"
+				})
 			},
 			confirmPop() {
 				this.$refs.pop.close()
@@ -119,46 +134,34 @@
 				this.$http.getShopIndex({
 					// id: null
 				}, res => {
-					// console.log(res)
 					if (res.code == 1) {
-					 // this.shopInfo = Object.assign({},res.data)
-					 this.shopInfo = res.data;
-					 console.log("shopInfo", this.shopInfo)
+						// this.shopInfo = Object.assign({},res.data)
+						this.shopInfo = res.data;
+						this.shopConfig(res.data);
+
 					} else {
-					  this.$common.errorToShow(res.msg);
+						this.$common.errorToShow(res.msg);
 					}
 				})
 			},
 			handleClick(val) {
-				console.log("val", val)
 				this.page = "shop";
-				
 			},
 			changeTab(item) {
-				if (item.page){
+				if (item.page) {
+					if(item.page == 'user' && !this.$db.userMobile()) return;
 					this.page = item.page;
 				} else {
-					// uni.navigateTo({
-					// 	url: "/pages/index/postComments"
-					// })
-					
-					uni.chooseImage({
-						count: 9, //默认9
-						sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-						sourceType: ['album', 'camera'], //从相册或手机选择
-						success: (res) => {
-							const filePath = res.tempFilePaths
-							console.log("filePath", filePath)
-							if(filePath[0]) {
-								uni.navigateTo({
-									url: `/pages/index/postComments?src=${filePath}`
-								})
-							}
+					if(!this.$db.userMobile()) return;
+					this.$http.uploadImage(1, (res, tem) => {
+						if (res.code == 1) {
+							uni.navigateTo({
+								url: `/pages/index/postComments?src=${tem}&tem=${res.data.url}`
+							})
+						} else {
+							this.$common.errorToShow(res.msg);
 						}
-					});
-					
-					
-					
+					})
 				}
 
 				// 可代替onshow去做一些业务逻辑
@@ -171,7 +174,7 @@
 					const query = uni.createSelectorQuery().in(this);
 					const tabbarObj = query.select('#tabbar')
 					let tabbarNodeRes = await this.syncBoundingClientRect(tabbarObj);
-					let pageHeight = sysInfo.windowHeight - 50;
+					let pageHeight = sysInfo.windowHeight - tabbarNodeRes.height;
 					this.containerHeight = pageHeight;
 					this.showPage = true;
 				})
@@ -189,31 +192,36 @@
 
 <style lang="scss" scoped>
 	@import '@/style/mixin.scss';
+
 	.app-container {
 		min-height: 600rpx;
 		background-color: #FFFFFF;
 	}
 
 	.tabbar-icon {
-		
+
 		image {
 			width: 56rpx;
 			height: 56rpx;
 		}
-		&:nth-child(2){
-			image{
+
+		&:nth-child(2) {
+			image {
 				width: 118rpx;
 				height: 78rpx;
 			}
 		}
-		text{
+
+		text {
 			font-size: 20rpx;
 			color: #B3B3B3;
-			&.acitvieColor{
+
+			&.acitvieColor {
 				color: #FF5F52;
 			}
 		}
 	}
+
 	.pop-section {
 		width: 590rpx;
 		height: 480rpx;
@@ -222,13 +230,13 @@
 		@include flexY;
 		@include flexA;
 		justify-content: space-between;
-	
+
 		.title {
 			font-size: 34rpx;
 			color: #666666;
 			line-height: 122rpx;
 		}
-	
+
 		.cont {
 			flex: 1;
 			margin-top: 26rpx;
@@ -237,7 +245,7 @@
 			width: 390rpx;
 			line-height: 44rpx;
 		}
-	
+
 		.btn {
 			width: 440rpx;
 			height: 90rpx;
@@ -247,5 +255,4 @@
 			margin-bottom: 75rpx;
 		}
 	}
-
 </style>

@@ -4839,8 +4839,8 @@ scroll-view.cu-steps .cu-item {
 }
 
 /* @import 'style/app.scss'; */
-page{
-	  background-color: #fff;
+page {
+	background-color: #fff;
 }
 
 @charset "UTF-8";
@@ -4886,7 +4886,7 @@ page{
           justify-content: space-between;
 }
 .content .status_bar.model.data-v-97335ae4 {
-  background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1589776499303&di=4dacdf7a719cd584a13989f27bba2ade&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fback_pic%2Fqk%2Fback_origin_pic%2F00%2F01%2F90%2F7b96b74a0a2b615089859de45551ecc0.jpg");
+  background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/model_bg.png");
   background-size: 100% 100%;
 }
 .content .status_bar .shopName.data-v-97335ae4 {
@@ -5276,8 +5276,8 @@ page{
           flex-wrap: wrap;
 }
 .content .comment-section .comment-list .comment-cont .comment-inner .img-list .img-cont.data-v-97335ae4 {
-  margin-right: 18rpx;
-  margin-bottom: 18rpx;
+  margin-right: 15rpx;
+  margin-bottom: 15rpx;
 }
 .content .comment-section .comment-list .comment-cont .comment-inner .img-list .img-cont.data-v-97335ae4:nth-child(3n) {
   margin-right: 0;

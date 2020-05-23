@@ -53,7 +53,7 @@
 			</button>
 		</view>
 
-		<view v-show="!isClient" class="switch-text">
+		<view v-if="!isClient" class="switch-text">
 			<view @click="switchAuthen">
 				实名入住平台<text class="cuIcon-roundrightfill"></text>
 			</view>
@@ -70,10 +70,11 @@
 </template>
 
 <script>
+	const WxAuth = require('@/config/WxAuth');
 	export default {
 		data() {
 			return {
-				isClient: true,
+				isClient: true, // 是否是用户
 				mobile: {
 					phone: '',
 					code: ''
@@ -120,7 +121,7 @@
 				})
 				setTimeout(() => {
 					uni.hideLoading()
-					if( this.isClient){
+					if (this.isClient) {
 						uni.switchTab({
 							url: "/pages/index/index"
 						})
@@ -136,6 +137,54 @@
 			// 获取用户电话
 			getPhoneNumber(e) {
 				console.log(e)
+				let {
+					errMsg,
+					iv,
+					encryptedData
+				} = e.detail;
+				let confirm_unionid = uni.getStorageSync('confirm_unionid') || '';
+				if (errMsg == "getPhoneNumber:ok") { // 同意授权
+					uni.hideLoading()
+					// 检查登录态是否过期。
+					WxAuth.checkSession().then(code => {
+						//code, iv, encryptedData 传给服务器解析，得到手机号信息
+						const data = {
+							code,
+							iv,
+							encryptedData,
+							confirm_unionid
+						};
+						// token
+						this.$http.getUnionid(data, res => {
+							console.log("getUnionid", res)
+							// uni.showToast({
+							// 	title: "授权成功！"
+							// })
+							// uni.hideLoading();
+						})
+						// api.wxmobile(data)
+						// 	.then(res => {
+						// 		uni.showToast({
+						// 			title: '授权成功！'
+						// 		});
+						// 		this.process.phone = 1;
+						// 		uni.hideLoading();
+						// 		setTimeout(function() {
+						// 			uni.navigateBack({
+						// 				delta: 1 //上一级页面
+						// 			});
+						// 		}, 1000);
+						// 	}).catch(err => {
+						// 		console.log(err)
+						// 	});
+					}).catch(console.log)
+				} else {
+					// 拒绝手机号授权
+					uni.showToast({
+						title: '手机号授权失败！',
+						icon: 'none'
+					});
+				}
 			},
 			// 获取验证码
 			fnGetPhoneCode() {
@@ -182,8 +231,7 @@
 
 	.container {
 		min-height: 100vh;
-		// background-image: url(http://qakj5dvcb.bkt.clouddn.com/static/login_bg.png);
-		background-image: url("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1875414149,3036308490&fm=26&gp=0.jpg");
+		background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/login_bg.png");
 		background-size: 100% 100%;
 		position: relative;
 

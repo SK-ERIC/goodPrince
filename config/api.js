@@ -15,7 +15,6 @@ const post = (method, data, callback) => {
 		data.token = userinfo.token;
 	}
 	
-
 	uni.request({
 		url: http + method,
 		header: {
@@ -185,6 +184,7 @@ const showError = error => {
 // 上传图片
 export const uploadImage = (num, callback) => {
 	let userinfo = db.get("userinfo");
+
 	if (!userinfo) {
 		common.jumpToLogin();
 		return false;
@@ -198,7 +198,7 @@ export const uploadImage = (num, callback) => {
 			let tempFilePaths = res.tempFilePaths
 			for (var i = 0; i < tempFilePaths.length; i++) {
 				uni.uploadFile({
-					url: http + 'addons/qiniu/Index',
+					url: domain + '/addons/qiniu/index/upload',
 					filePath: tempFilePaths[i],
 					fileType: 'image',
 					name: 'file',
@@ -230,9 +230,13 @@ export const uploadImage = (num, callback) => {
 	});
 }
 
+// code
+export const wxLogin = (data, callback) => post('wechat_mp/login', data, callback)
 // 首页
 export const getShopIndex = (data, callback) => get('shops/shopIndex', data, callback)
 // 点赞
 export const postSaveZan = (data, callback) => post('Comment/saveZan', data, callback)
-
-
+// 发表评论
+export const postPushComment = (data, callback) => post("comment/pushComment", data, callback)
+// 手机号
+export const getUnionid = (data, callback) => post("wechat_mp/getUnionid", data, callback)

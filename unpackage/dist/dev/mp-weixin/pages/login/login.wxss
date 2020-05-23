@@ -26,7 +26,7 @@
 /* 文章场景相关 */
 .container.data-v-f242a908 {
   min-height: 100vh;
-  background-image: url("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=1875414149,3036308490&fm=26&gp=0.jpg");
+  background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/login_bg.png");
   background-size: 100% 100%;
   position: relative;
 }

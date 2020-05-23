@@ -10,8 +10,7 @@
 			<!-- 商户图片 -->
 			<scroll-view scroll-x scroll-with-animation>
 				<view class="picList">
-					<view class="pic" v-for="(item, index) in shopImg" :key="index" :data-src="shopImg[index].image_url"
-					 @click="previewImage(shopImg, $event)">
+					<view class="pic" v-for="(item, index) in shopImg" :key="index" :data-src="shopImg[index].image_url" @click="previewImage(shopImg, $event)">
 						<image class="img" :src="item.image_url" mode=""></image>
 						<!-- <view class="tip-section" v-if="index==0">
 							<image class="tip-img" src="http://qakj5dvcb.bkt.clouddn.com/static/icon-t1.png" mode=""></image>
@@ -128,8 +127,10 @@
 								<uni-rate disabled="true" :size="18" :max="5" :value="item.score_show" />
 							</view>
 							<view class="rate-inner-r">
-								<image @click="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/liked.png" mode=""></image>
-								<image @click="_changeLike(item, true, index)" v-else class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/like.png" mode=""></image>
+								<image @click="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/liked.png"
+								 mode=""></image>
+								<image @click="_changeLike(item, true, index)" v-else class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/like.png"
+								 mode=""></image>
 								<text class="text">{{ item.zan }}</text>
 							</view>
 						</view>
@@ -138,7 +139,8 @@
 							{{ item.content }}
 						</view>
 						<!-- 全文 -->
-						<view class="fullText" v-show="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index' @click="_changeFullText">
+						<view class="fullText" v-show="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index'
+						 @click="_changeFullText">
 							{{ item.full_text }}
 						</view>
 						<!-- 图片列表 -->
@@ -166,60 +168,56 @@
 
 		<!-- foot -->
 		<foot></foot>
-	
+
 	</view>
 </template>
 
 <script>
 	import uniRate from '@/components/uni-rate/uni-rate.vue';
 	import foot from '../component/foot'
-	import {
-		mapGetters
-	} from 'vuex'
 	export default {
 		components: {
 			uniRate,
 			foot
 		},
-		props:{
+		props: {
 			shopIndex: {
 				type: Object,
 				default: {}
 			},
 		},
 		computed: {
-			...mapGetters(['shopId']),
 			// 店铺照片
 			shopImg() {
-				if(this.shopIndex.images) {
-					return this.shopIndex.images.filter(v=>{
+				if (this.shopIndex.images) {
+					return this.shopIndex.images.filter(v => {
 						return v.type == 1
 					})
 				}
 			},
 			// 经营执照|食品许可
 			LicenseList() {
-				if(this.shopIndex.images) {
-					return this.shopIndex.images.filter(v=>{
+				if (this.shopIndex.images) {
+					return this.shopIndex.images.filter(v => {
 						return v.type == 2 || v.type == 4
 					})
 				}
 			},
 			// 健康证
 			cardList() {
-				if(this.shopIndex.images) {
-					return this.shopIndex.images.filter(v=>{
+				if (this.shopIndex.images) {
+					return this.shopIndex.images.filter(v => {
 						return v.type == 3
 					})
 				}
 			},
 			commentList() {
-				if(this.shopIndex.comments && this.shopIndex.comments.list) {
-					return this.shopIndex.comments.list.slice(0,2)
+				if (this.shopIndex.comments && this.shopIndex.comments.list) {
+					return this.shopIndex.comments.list
 				}
 			}
-			
-			
+
+
 		},
 		data() {
 			return {
@@ -228,10 +226,10 @@
 			}
 		},
 		onLoad(option) {
-			// let qrId = decodeURIComponent(option.scene)
+
 		},
 		onShow() {
-			console.log("shopId", this.shopId)
+
 		},
 		methods: {
 			isShowFullText(v) {
@@ -240,7 +238,7 @@
 			previewImage(v, e) {
 				let list = [];
 				const current = e.currentTarget.dataset.src;
-				v.map( el => {
+				v.map(el => {
 					list.push(el.image_url)
 				})
 				uni.previewImage({
@@ -249,15 +247,19 @@
 				})
 			},
 			_changeLike(item, bl, index) {
-				this.$emit("changeLike", {item, bl, index})
+				this.$emit("changeLike", {
+					item,
+					bl,
+					index
+				})
 			},
 			_changeFullText(e) {
-				this.$emit("changeFullText", {e})
+				this.$emit("changeFullText", {
+					e
+				})
 			},
 			_switchPostComments() {
-				uni.navigateTo({
-					url: "/pages/index/postComments"
-				})
+				this.$emit("switchPostComments");
 			},
 		}
 	}
@@ -275,8 +277,7 @@
 			justify-content: space-between;
 
 			&.model {
-				// background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/model_bg.png");
-				background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1589776499303&di=4dacdf7a719cd584a13989f27bba2ade&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fback_pic%2Fqk%2Fback_origin_pic%2F00%2F01%2F90%2F7b96b74a0a2b615089859de45551ecc0.jpg");
+				background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/model_bg.png");
 				background-size: 100% 100%;
 			}
 
@@ -623,8 +624,8 @@
 							flex-wrap: wrap;
 
 							.img-cont {
-								margin-right: 18rpx;
-								margin-bottom: 18rpx;
+								margin-right: 15rpx;
+								margin-bottom: 15rpx;
 
 								&:nth-child(3n) {
 									margin-right: 0;

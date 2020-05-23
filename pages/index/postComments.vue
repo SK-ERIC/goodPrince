@@ -29,7 +29,7 @@
 					<text class="cuIcon-roundclosefill"></text>
 				</view>
 			</view>
-			<view class="upload-inner" v-show="imgList.length<=9">
+			<view class="upload-inner" v-if="imgList.length < 9">
 				<image 
 					@tap="chooseImage" 
 					class="add-img" 
@@ -60,71 +60,26 @@
 		data() {
 			return {
 				topLeftText: "粤玲珑广式早茶",
-				rate: 0.5, // 评分
+				rate: 0, // 评分
 				comCont: "", // 评论
-				imgList: [], // 微信小程序本地地址
+				imgList: [], // 预览本地地址
 				allImgTNum: 0, //所有图片数量
 				showImage: false,// 展示图片标识
 				filePath:[], // 线上图片地址
 			};
 		},
 		onLoad(options) {
-			console.log(options)
 			if (options.src) {
 				this.showImage = true;
 				this.imgList.push(options.src);
-				this.filePath.push(options.src);
-				this.uploadImage(this.filePath,0)
+				this.filePath.push(options.tem);
 			}
-			
 		},
 		methods:{
 			chooseImage() {
-				
-				// this.$http.uploadImage(9, res=> {
-				// 	console.log("res", res)
-				// })
-				
-				uni.chooseImage({
-					count: 1, //默认9
-					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
-					sourceType: ['album', 'camera'], //从相册或手机选择
-					success: (res) => {
-						this.showImage = true;
-						console.log("res.tempFilePaths", res.tempFilePaths)
-						this.imgList.push(res.tempFilePaths.shift())
-						this.filePath = res.tempFilePaths
-						for( let i=0;i<this.filePath.length;i++) {
-							this.uploadImage(this.filePath,i)
-						}
-					}
-				});
-			},
-			// 上传图片
-			uploadImage(tempFilePaths, index) {
-				let that =this
-				uni.uploadFile({
-					url: that.$http.domain + '/api/addons/qiniu/Index',
-					filePath: tempFilePaths[index] ,
-					fileType: 'image',
-					name: 'file',
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'multipart/form-data',
-					},
-					formData: {
-						'method': 'images.upload',
-						'upfile': tempFilePaths[index],
-						'token': ""
-					},
-					success: res => {
-					//对于返回数据的处理，根据实际情况调整
-					console.log("res", res)
-						// that.imgList.push(JSON.parse(res.data).data)
-						// console.log(that.imgList)
-						// let data ={img_arr:that.imgList.join('|')}
-						// that.updataCourseInfo(data)
-					}
+				this.$http.uploadImage(1, (res, tem)=> {
+					this.imgList.push(tem);
+					this.filePath.push(res.data.url);
 				})
 			},
 			//预览图片
@@ -133,7 +88,6 @@
 					urls: this.imgList,
 					current: e.currentTarget.dataset.url
 				});
-				console.log("e", e, "this.imgList", this.imgList)
 			},
 			// 删除图片
 			delImage(e) {
@@ -145,9 +99,7 @@
 					success: res => {
 						if (res.confirm) {
 						this.imgList.splice(e.currentTarget.dataset.index, 1);
-							let data = {img_arr:this.imgList.join('|')}
-							this.updataCourseInfo(data)
-							console.log("e",e, "data", data)
+						this.filePath.splice(e.currentTarget.dataset.index, 1);	
 						}
 						if (this.imgList.length === 0) {
 							this.showImage = false;
@@ -155,16 +107,15 @@
 					}
 				})
 			},
-			// 更新信息 
-			updataCourseInfo(data) {
-				//上传接口操作
-				this.updatePageInfo()
-			},
-			// 更新页面
-			updatePageInfo(){	
-				//对获取信息接口进行操作，重新拉取数据渲染页面
-			},
 			confirmBtn() {
+				if(this.rate == 0) {
+					uni.showToast({
+						icon: "none",
+						title: "店铺评分不能为空~",
+						duration: 2000
+					})
+					return;
+				}
 				if(this.comCont == "") {
 					uni.showToast({
 						icon: "none",
@@ -182,18 +133,33 @@
 					return;
 				}
 				
+				const uid = this.$db.get("userinfo").user_id;
 				
 				const params = {
-					uid: 1,
+					uid,
 					sid: 1,
 					content: this.comCont,
-					score: this.rate,
-					files: this.imgList
+					score: Number(this.rate)*2,
+					files: this.filePath.join(',')
 				}
-				console.log("params", params)
-				// uni.navigateTo({
-				// 	url: "/pages/index/success"
-				// })
+			
+				this.$http.postPushComment(params,res=>{
+					if(res.code == 200) {
+						uni.showToast({
+							icon: "success",
+							title: "评论成功",
+							mask: true
+						})
+						setTimeout(()=>{
+							uni.navigateTo({
+								url: "/pages/home/home"
+							})
+							uni.hideToast()
+						}, 1000)
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
 				
 			},
 			cancelBtn() {

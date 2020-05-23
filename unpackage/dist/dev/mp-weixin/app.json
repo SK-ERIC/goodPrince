@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/home/home",
+    "pages/login/base",
     "pages/login/login",
     "pages/login/authentication",
     "pages/login/shopAuth",
@@ -36,5 +37,5 @@
     "cu-shop": "/pages/index/index",
     "cu-user": "/pages/user/user"
   },
-  "sitemapLocation": "sitemap1.json"
+  "sitemapLocation": "sitemap90.json"
 }

@@ -757,7 +757,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -2728,7 +2728,7 @@ if (hadRuntime) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.postSaveZan = exports.getShopIndex = exports.uploadImage = exports.domain = void 0;var common = _interopRequireWildcard(__webpack_require__(/*! ./common.js */ 18));
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.getUnionid = exports.postPushComment = exports.postSaveZan = exports.getShopIndex = exports.wxLogin = exports.uploadImage = exports.domain = void 0;var common = _interopRequireWildcard(__webpack_require__(/*! ./common.js */ 18));
 var db = _interopRequireWildcard(__webpack_require__(/*! ./db.js */ 19));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;} //引入common
 //引入db
 var domain = 'https://wxhyx.aisspc.cn';exports.domain = domain;
@@ -2744,7 +2744,6 @@ var post = function post(method, data, callback) {
   if (userinfo) {
     data.token = userinfo.token;
   }
-
 
   uni.request({
     url: http + method,
@@ -2915,6 +2914,7 @@ var showError = function showError(error) {
 // 上传图片
 var uploadImage = function uploadImage(num, callback) {
   var userinfo = db.get("userinfo");
+
   if (!userinfo) {
     common.jumpToLogin();
     return false;
@@ -2928,7 +2928,7 @@ var uploadImage = function uploadImage(num, callback) {
       var tempFilePaths = res.tempFilePaths;
       for (var i = 0; i < tempFilePaths.length; i++) {
         uni.uploadFile({
-          url: http + 'addons/qiniu/Index',
+          url: domain + '/addons/qiniu/index/upload',
           filePath: tempFilePaths[i],
           fileType: 'image',
           name: 'file',
@@ -2960,10 +2960,16 @@ var uploadImage = function uploadImage(num, callback) {
 
 };
 
+// code
+exports.uploadImage = uploadImage;var wxLogin = function wxLogin(data, callback) {return post('wechat_mp/login', data, callback);};
 // 首页
-exports.uploadImage = uploadImage;var getShopIndex = function getShopIndex(data, callback) {return get('shops/shopIndex', data, callback);};
+exports.wxLogin = wxLogin;var getShopIndex = function getShopIndex(data, callback) {return get('shops/shopIndex', data, callback);};
 // 点赞
-exports.getShopIndex = getShopIndex;var postSaveZan = function postSaveZan(data, callback) {return post('Comment/saveZan', data, callback);};exports.postSaveZan = postSaveZan;
+exports.getShopIndex = getShopIndex;var postSaveZan = function postSaveZan(data, callback) {return post('Comment/saveZan', data, callback);};
+// 发表评论
+exports.postSaveZan = postSaveZan;var postPushComment = function postPushComment(data, callback) {return post("comment/pushComment", data, callback);};
+// 手机号
+exports.postPushComment = postPushComment;var getUnionid = function getUnionid(data, callback) {return post("wechat_mp/getUnionid", data, callback);};exports.getUnionid = getUnionid;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
@@ -3254,7 +3260,7 @@ function moneySub(value1, value2) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.get = get;exports.set = set;exports.del = del;exports.clear = clear;exports.userToken = userToken;var common = _interopRequireWildcard(__webpack_require__(/*! ./common.js */ 18));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;} //引入common
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.get = get;exports.set = set;exports.del = del;exports.clear = clear;exports.userToken = userToken;exports.userMobile = userMobile;var common = _interopRequireWildcard(__webpack_require__(/*! ./common.js */ 18));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;} //引入common
 
 //取值
 function get(key) {var sync = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
@@ -3328,6 +3334,15 @@ function userToken(callback) {
   } else {
     //如果没有登陆，就去登陆
     common.jumpToLogin();
+  }
+}
+
+// 获取用户mobile
+function userMobile() {
+  var userinfo = get("userinfo");
+  if (!userinfo.mobile) {
+    common.jumpToLogin();
+    return false;
   }
 }
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
@@ -8866,7 +8881,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -8887,14 +8902,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -8970,7 +8985,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));
@@ -9397,7 +9412,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.PH = void 
 
 /***/ }),
 
-/***/ 251:
+/***/ 260:
 /*!*******************************************************!*\
   !*** D:/UNI/goodPrince/components/uni-icons/icons.js ***!
   \*******************************************************/
@@ -9581,6 +9596,63 @@ module.exports = g;
 
 /***/ }),
 
+/***/ 49:
+/*!******************************************!*\
+  !*** D:/UNI/goodPrince/config/WxAuth.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(uni) {var _regeneratorRuntime = __webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 14);function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};} /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  * 检查登录态是否过期
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  */
+function checkSession() {
+  return new Promise(function (resolve, reject) {
+    wx.checkSession({
+      success: function success(res) {
+        //session_key 未过期，并且在本生命周期一直有效
+        var code = uni.getStorageSync('code') || '';
+        // TODO:code==‘’
+        resolve(code);
+      },
+      fail: function () {var _fail = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(err) {var code;return _regeneratorRuntime.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:_context.next = 2;return (
+
+                    onLogin());case 2:code = _context.sent;
+                  reject(code);case 4:case "end":return _context.stop();}}}, _callee);}));function fail(_x) {return _fail.apply(this, arguments);}return fail;}() });
+
+
+  });
+}
+
+/**
+   * 调用接口获取登录凭证（code）
+   */
+function onLogin() {
+  return new Promise(function (resolve, reject) {
+    uni.login({
+      provider: 'weixin',
+      success: function success(res) {
+        if (res.errMsg == "login:ok") {
+          uni.setStorageSync('code', res.code);
+          resolve(res.code);
+        } else {
+          reject(res);
+        }
+      },
+      fail: function fail(err) {
+        reject(res);
+      } });
+
+  });
+}
+
+module.exports = {
+  checkSession: checkSession,
+  onLogin: onLogin };
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
+
+/***/ }),
+
 /***/ 5:
 /*!****************************************!*\
   !*** D:/UNI/goodPrince/store/index.js ***!
@@ -9596,7 +9668,7 @@ _vue.default.use(_vuex.default);
 
 var store = new _vuex.default.Store({
   state: {
-    shopId: "哈哈",
+    shopConfig: {},
     config: {},
     redirectPage: '',
     uuid: '', //当前客户端
@@ -9612,8 +9684,8 @@ var store = new _vuex.default.Store({
     building_id: function building_id(state, payload) {
       state.building_id = payload;
     },
-    shopId: function shopId(state, payload) {
-      state.shopId = payload;
+    shopConfig: function shopConfig(state, payload) {
+      state.shopConfig = payload;
     } },
 
   actions: {},
@@ -9621,8 +9693,7 @@ var store = new _vuex.default.Store({
 
   getters: {
     shopConfig: function shopConfig(state) {return state.config;},
-    uuid: function uuid(state) {return state.uuid;},
-    shopId: function shopId(state) {return state.shopId;} } });var _default =
+    uuid: function uuid(state) {return state.uuid;} } });var _default =
 
 
 

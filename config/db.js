@@ -75,10 +75,21 @@ function userToken(callback) {
     }
 }
 
+// 获取用户mobile
+function userMobile(){
+	const userinfo = get("userinfo");
+	if(!userinfo.mobile){
+		common.jumpToLogin();
+		return false;
+	}
+}
+
+
 export {
     get,
     set,
     del,
     clear,
-    userToken
+    userToken,
+	 userMobile
 }

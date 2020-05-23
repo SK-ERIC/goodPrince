@@ -4,7 +4,7 @@
 		<!-- head -->
 		<view class="head-section">
 			<view class="navBack">
-				<text class="cuIcon-back"></text>
+				<!-- <text class="cuIcon-back"></text> -->
 				<text class="title">{{ topLeftText }}</text>
 			</view>
 			<image class="img-bg" src="http://qakj5dvcb.bkt.clouddn.com/static/user_head_bg.png" mode=""></image>

@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		shopId: "哈哈",
+		shopConfig: {},
 		config: {}, 
 		redirectPage: '',
 		uuid:'',//当前客户端
@@ -21,8 +21,8 @@ const store = new Vuex.Store({
 		building_id(state, payload){
 			state.building_id = payload
 		},
-		shopId(state, payload) {
-			state.shopId = payload
+		shopConfig(state, payload) {
+			state.shopConfig = payload
 		}
 	},
 	actions: {
@@ -31,7 +31,6 @@ const store = new Vuex.Store({
 	getters: {
 		shopConfig: state => state.config,
 		uuid: state	=>	state.uuid,
-		shopId: state => state.shopId
 	}
 })
 

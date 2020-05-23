@@ -1,6 +1,6 @@
 (global["webpackJsonp"] = global["webpackJsonp"] || []).push([["pages/index/index"],{
 
-/***/ 147:
+/***/ 156:
 /*!******************************************************************!*\
   !*** D:/UNI/goodPrince/main.js?{"page":"pages%2Findex%2Findex"} ***!
   \******************************************************************/
@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "uni-rate": function() {
-    return __webpack_require__.e(/*! import() | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 211))
+    return __webpack_require__.e(/*! import() | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 220))
   }
 }
 var render = function() {
@@ -150,7 +150,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {__webpack_require__.e(/*! require.ensure | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 220));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 227));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -325,7 +325,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _vuex = __webpack_require__(/*! vuex */ 6);function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniRate = function uniRate() {__webpack_require__.e(/*! require.ensure | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 211));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 218));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 {
@@ -339,8 +338,7 @@ var _vuex = __webpack_require__(/*! vuex */ 6);function ownKeys(object, enumerab
       default: {} } },
 
 
-  computed: _objectSpread({},
-  (0, _vuex.mapGetters)(['shopId']), {
+  computed: {
     // 店铺照片
     shopImg: function shopImg() {
       if (this.shopIndex.images) {
@@ -367,9 +365,9 @@ var _vuex = __webpack_require__(/*! vuex */ 6);function ownKeys(object, enumerab
     },
     commentList: function commentList() {
       if (this.shopIndex.comments && this.shopIndex.comments.list) {
-        return this.shopIndex.comments.list.slice(0, 2);
+        return this.shopIndex.comments.list;
       }
-    } }),
+    } },
 
 
 
@@ -380,10 +378,10 @@ var _vuex = __webpack_require__(/*! vuex */ 6);function ownKeys(object, enumerab
 
   },
   onLoad: function onLoad(option) {
-    // let qrId = decodeURIComponent(option.scene)
+
   },
   onShow: function onShow() {
-    console.log("shopId", this.shopId);
+
   },
   methods: {
     isShowFullText: function isShowFullText(v) {
@@ -401,15 +399,19 @@ var _vuex = __webpack_require__(/*! vuex */ 6);function ownKeys(object, enumerab
 
     },
     _changeLike: function _changeLike(item, bl, index) {
-      this.$emit("changeLike", { item: item, bl: bl, index: index });
+      this.$emit("changeLike", {
+        item: item,
+        bl: bl,
+        index: index });
+
     },
     _changeFullText: function _changeFullText(e) {
-      this.$emit("changeFullText", { e: e });
+      this.$emit("changeFullText", {
+        e: e });
+
     },
     _switchPostComments: function _switchPostComments() {
-      uni.navigateTo({
-        url: "/pages/index/postComments" });
-
+      this.$emit("switchPostComments");
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
@@ -444,5 +446,5 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ })
 
-},[[147,"common/runtime","common/vendor"]]]);
+},[[156,"common/runtime","common/vendor"]]]);
 //# sourceMappingURL=../../../.sourcemap/mp-weixin/pages/index/index.js.map
