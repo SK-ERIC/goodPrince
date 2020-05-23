@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/login/login",
+    "pages/login/authentication",
+    "pages/login/shopAuth",
+    "pages/login/status",
+    "pages/shop/shopCenter",
+    "pages/shop/shopInfo",
+    "pages/shop/check",
+    "pages/shop/contactUs",
+    "pages/shop/set",
+    "pages/shop/accountChange",
+    "pages/shop/changeSuccess",
+    "pages/shop/leaveWord",
+    "pages/shop/QRCode",
+    "pages/index/index",
+    "pages/index/postComments",
+    "pages/index/success",
+    "pages/user/user",
+    "pages/user/info",
+    "pages/user/msg",
+    "pages/user/msgDetail",
+    "pages/user/latelyShop",
+    "pages/user/latelyPhoto",
+    "pages/user/cropper"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "无锡好印象",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {
+    "cu-shop": "/pages/index/index",
+    "cu-user": "/pages/user/user"
+  },
+  "sitemapLocation": "sitemap1.json"
+}

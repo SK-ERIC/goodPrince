@@ -1,0 +1,6 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "foot": "/pages/component/foot"
+  }
+}

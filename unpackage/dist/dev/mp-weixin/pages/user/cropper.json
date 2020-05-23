@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "tui-image-cropper": "/components/tui-image-cropper/tui-image-cropper"
+  }
+}

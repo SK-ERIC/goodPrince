@@ -1,0 +1,73 @@
+<template>
+	<view class="container">
+		<tui-image-cropper 
+			:lockRatio="true" 
+			:loadding="false"
+			:limitMove="true"
+			:imageUrl="imageUrl" 
+			@ready="ready" 
+			@cropper="cropper"
+		></tui-image-cropper>
+	</view>
+</template>
+
+<script>
+	import tuiImageCropper from '@/components/tui-image-cropper/tui-image-cropper.vue'
+	export default {
+		components: {
+			tuiImageCropper
+		},
+		data() {
+			return {
+				src: '',
+				imageUrl: '' //要裁剪的图片
+			};
+		},
+		onLoad(options) {
+			this.src = options.src || '';
+			//如果从上个页面传值时可显示loading
+			this.src &&
+				uni.showLoading({
+					title: '请稍候...',
+					mask: true
+				});
+		},
+		methods: {
+			ready() {
+				this.imageUrl = this.src;
+			},
+			cropper(e) {
+				//裁剪完成后处理逻辑
+				uni.previewImage({
+					current: '', // 当前显示图片的http链接
+					urls: [e.url] // 需要预览的图片http链接列表
+				});
+				
+				// uni.uploadFile({
+				// 	url: '后端地址上传图片接口地址',
+				// 	filePath: e.url,
+				// 	name: 'file',
+				// 	fileType: 'image',
+				// 	//formData:{},传递参数
+				// 	success: (uploadFileRes) => {
+				// 		var backstr = uploadFileRes.data;
+				// 		//自定义操作
+				// 	},
+				// 	complete() {
+				// 		//console.log("this is headimg"+this.headimg)   
+				// 	},
+				// 	fail(e) {
+				// 		console.log("this is errormes " + e.message)
+				// 	}
+				
+				// });
+				
+				
+			}
+		}
+	};
+</script>
+
+<style>
+	
+</style>
