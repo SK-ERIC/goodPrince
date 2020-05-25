@@ -96,6 +96,8 @@ function userMobile() {
 			}
 		})
 		return false;
+	} else {
+		return true;
 	}
 }
 

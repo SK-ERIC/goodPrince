@@ -74,7 +74,7 @@
 	export default {
 		data() {
 			return {
-				isClient: true, // 是否是用户
+				isClient: true, // 是否是客户端
 				mobile: {
 					phone: '',
 					code: ''
@@ -114,29 +114,35 @@
 		methods: {
 			// 登录按钮点击执行
 			fnLogin() {
-				console.log(JSON.stringify(this.mobile));
 				uni.showLoading({
 					title: "登陆中...",
 					mask: true
 				})
-				setTimeout(() => {
-					uni.hideLoading()
-					if (this.isClient) {
-						uni.switchTab({
-							url: "/pages/index/index"
+				this.$http.postMobilelogin({
+					mobile: this.mobile.phone,
+					captcha: this.mobile.code
+				}, res => {
+					if (res.code == 1) {
+						uni.hideLoading()
+						uni.showToast({
+							icon: "success",
+							title: "登录成功"
 						})
+						this.$db.set("userinfo", res.data.userinfo);
+						
+						setTimeout(() => {
+							if (this.isClient) {
+								uni.navigateTo({
+									url: "/pages/home/home"
+								})
+							}
+						}, 500)
 					}
-				}, 2000)
-
-
-			},
-			// 获取用户信息
-			getUserInfo() {
-
+				})
 			},
 			// 获取用户电话
 			getPhoneNumber(e) {
-				console.log(e)
+				console.log("getPhoneNumber", e)
 				let {
 					errMsg,
 					iv,
@@ -154,29 +160,19 @@
 							encryptedData,
 							confirm_unionid
 						};
-						// token
-						this.$http.getUnionid(data, res => {
-							console.log("getUnionid", res)
-							// uni.showToast({
-							// 	title: "授权成功！"
-							// })
-							// uni.hideLoading();
+						this.$http.getMobile(data, res => {
+							console.log("getMobile", res)
+							if (res.code == 1) {
+								uni.showToast({
+									title: "授权成功！"
+								})
+								this.mobile.phone = res.data.mobile;
+								uni.hideLoading();
+							}
+						}).catch(err => {
+							console.log(err)
 						})
-						// api.wxmobile(data)
-						// 	.then(res => {
-						// 		uni.showToast({
-						// 			title: '授权成功！'
-						// 		});
-						// 		this.process.phone = 1;
-						// 		uni.hideLoading();
-						// 		setTimeout(function() {
-						// 			uni.navigateBack({
-						// 				delta: 1 //上一级页面
-						// 			});
-						// 		}, 1000);
-						// 	}).catch(err => {
-						// 		console.log(err)
-						// 	});
+
 					}).catch(console.log)
 				} else {
 					// 拒绝手机号授权

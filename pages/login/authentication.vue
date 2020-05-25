@@ -286,7 +286,7 @@
 		.nav-section {
 			padding-top: 60rpx;
 			height: 460rpx;
-			background-image: url("https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3743690184,2535555305&fm=26&gp=0.jpg");
+			background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/auth_bg.png");
 			background-size: 100% 100%;
 
 			.navBack {

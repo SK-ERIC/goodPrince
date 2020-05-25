@@ -139,8 +139,7 @@
 							{{ item.content }}
 						</view>
 						<!-- 全文 -->
-						<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index'
-						 @click="_changeFullText">
+						<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index' @click="_changeFullText">
 							{{ item.full_text }}
 						</view>
 						<!-- 图片列表 -->
@@ -174,7 +173,7 @@
 
 <script>
 	import uniRate from '@/components/uni-rate/uni-rate.vue';
-	import foot from '../component/foot'
+	import foot from '../component/foot';
 	export default {
 		components: {
 			uniRate,
@@ -185,6 +184,10 @@
 				type: Object,
 				default: {}
 			},
+			commentList: {
+				type: Array,
+				default: []
+			}
 		},
 		computed: {
 			// 店铺照片
@@ -211,24 +214,8 @@
 					})
 				}
 			},
-			commentList() {
-				if (this.shopIndex.comments && this.shopIndex.comments.list) {
-					return this.shopIndex.comments.list
-				}
-			}
-
-
-		},
-		data() {
-			return {
-				score: 0,
-				total_score: 0,
-			}
 		},
 		onLoad(option) {
-
-		},
-		onShow() {
 
 		},
 		methods: {
@@ -692,38 +679,6 @@
 
 		}
 
-		.pop-section {
-			width: 590rpx;
-			height: 480rpx;
-			background-color: #FFFFFF;
-			border-radius: 10rpx;
-			@include flexY;
-			@include flexA;
-			justify-content: space-between;
 
-			.title {
-				font-size: 34rpx;
-				color: #666666;
-				line-height: 122rpx;
-			}
-
-			.cont {
-				flex: 1;
-				margin-top: 26rpx;
-				font-size: 30rpx;
-				color: #666666;
-				width: 390rpx;
-				line-height: 44rpx;
-			}
-
-			.btn {
-				width: 440rpx;
-				height: 90rpx;
-				background-color: #FF544C;
-				color: #FFFFFF;
-				border-radius: 45rpx;
-				margin-bottom: 75rpx;
-			}
-		}
 	}
 </style>

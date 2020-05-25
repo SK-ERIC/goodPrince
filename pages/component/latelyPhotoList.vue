@@ -50,17 +50,13 @@
 
 <script>
 	export default {
+		name: "latelyPhotoList",
 		props: {
 			photoList: { // 数据列表
 				type: Array,
 				default () {
 					return []
 				}
-			}
-		},
-		data() {
-			return {
-
 			}
 		},
 		methods: {

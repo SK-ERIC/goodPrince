@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "uni-rate": function() {
-    return __webpack_require__.e(/*! import() | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 227))
+    return __webpack_require__.e(/*! import() | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 237))
   }
 }
 var render = function() {
@@ -150,8 +150,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {__webpack_require__.e(/*! require.ensure | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 227));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 234));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {__webpack_require__.e(/*! require.ensure | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 237));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 244));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -335,7 +334,11 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     shopIndex: {
       type: Object,
-      default: {} } },
+      default: {} },
+
+    commentList: {
+      type: Array,
+      default: [] } },
 
 
   computed: {
@@ -362,25 +365,9 @@ __webpack_require__.r(__webpack_exports__);
           return v.type == 3;
         });
       }
-    },
-    commentList: function commentList() {
-      if (this.shopIndex.comments && this.shopIndex.comments.list) {
-        return this.shopIndex.comments.list;
-      }
     } },
 
-
-
-  data: function data() {
-    return {
-      score: 0,
-      total_score: 0 };
-
-  },
   onLoad: function onLoad(option) {
-
-  },
-  onShow: function onShow() {
 
   },
   methods: {

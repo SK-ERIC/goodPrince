@@ -180,9 +180,9 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
                 title: "授权成功！" });
 
               uni.hideLoading();
-              // uni.navigateTo({
-              // 	url: "/pages/login/login"
-              // })
+              uni.navigateTo({
+                url: "/pages/login/login" });
+
             }
 
           });

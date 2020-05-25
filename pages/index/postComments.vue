@@ -78,7 +78,8 @@
 		methods:{
 			chooseImage() {
 				this.$http.uploadImage(1, (res, tem)=> {
-					this.imgList.push(tem);
+					this.showImage = true;
+					this.imgList.push(...tem);
 					this.filePath.push(res.data.url);
 				})
 			},

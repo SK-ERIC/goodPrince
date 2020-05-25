@@ -240,3 +240,12 @@ export const postSaveZan = (data, callback) => post('Comment/saveZan', data, cal
 export const postPushComment = (data, callback) => post("comment/pushComment", data, callback)
 // 修改个人信息
 export const postProfile = (data, callback) => post("user/profile", data, callback)
+// 获取手机号
+export const getMobile = (data, callback) => post("wechat_mp/getMobile", data, callback)
+// 手机验证码登录
+export const postMobilelogin = (data, callback) => post("user/changemobile", data, callback)
+// 个人中心
+export const getUserInfo = (data, callback) => get("user/getUserInfo", data, callback)
+
+
+

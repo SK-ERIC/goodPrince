@@ -4,7 +4,7 @@
 			<canvas canvas-id="myCanvas" :style="{ width: canvasW + 'px', height: canvasH + 'px' }" @click.top="previewImage"></canvas>
 		</view>
 
-		<view class="btn-section">
+		<view class="btn-section" v-if="finished">
 			<button v-if="openSettingBtnHidden" type="default" class="cu-btn download-btn" @click="saveImage">下载到本地</button>
 			<button v-else type="default" class="cu-btn download-btn" open-type="openSetting" @opensetting="handleSetting">下载到本地</button>
 		</view>
@@ -20,7 +20,6 @@
 				canvasW: 0,
 				canvasH: 0,
 				imgSrc: "http://qakj5dvcb.bkt.clouddn.com/static/qr_bg.png", // 背景图
-				// imgSrc: "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1561799702,4184189341&fm=26&gp=0.jpg", // 背景图
 				Title: "月玲珑广式早茶", // 店铺名
 				QrSrc: "http://img0.imgtn.bdimg.com/it/u=1891218604,1144850372&fm=26&gp=0.jpg", //太阳码
 				LineType: true, //标题显示行数		（注超出2行显示会导致画布布局絮乱）
@@ -55,7 +54,6 @@
 				//获取相册授权
 				uni.getSetting({
 					success(res) {
-						console.log(res)
 						if (!res.authSetting['scope.writePhotosAlbum']) {
 							uni.authorize({
 								scope: 'scope.writePhotosAlbum',
@@ -110,7 +108,6 @@
 
 			},
 			previewImage() {
-				console.log("adsfsdf")
 				uni.previewImage({
 					urls: this.tempFilePath,
 					current: "",
@@ -186,7 +183,7 @@
 				setTimeout(function() {
 					_this.ctx.draw(true, (ret) => {
 						_this.getNewImage();
-						_this.finished = true
+						_this.finished = true;
 					});
 				}, 600);
 

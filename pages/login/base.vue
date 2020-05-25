@@ -48,9 +48,9 @@
 									title: "授权成功！"
 								})
 								uni.hideLoading();
-								// uni.navigateTo({
-								// 	url: "/pages/login/login"
-								// })
+								uni.navigateTo({
+									url: "/pages/login/login"
+								})
 							}
 
 						})

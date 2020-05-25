@@ -1,7 +1,7 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
-    "uni-rate": "/components/uni-rate/uni-rate",
-    "foot": "/pages/component/foot"
+    "foot": "/pages/component/foot",
+    "lately-shop-list": "/pages/component/latelyShopList"
   }
 }

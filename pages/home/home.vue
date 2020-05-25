@@ -2,26 +2,16 @@
 	<view :style="showPage ? 'opacity: 1;' : 'opacity: 0;' ">
 		<scroll-view scroll-y="true" class="app-container" :style="'height:'+containerHeight+'px'">
 			<view v-if="page =='shop'" :class="page=='shop'?'animation-fade':''">
-				<cu-shop :shopIndex="shopInfo" @changeLike="_changeLike" @changeFullText="_changeFullText" @switchPostComments="_switchPostComments"></cu-shop>
+				<cu-shop :shopIndex="shopInfo" :commentList="commentList" @changeLike="_changeLike" @changeFullText="_changeFullText"
+				 @switchPostComments="_switchPostComments"></cu-shop>
 			</view>
 			<view v-if="page =='user'" :class="page=='user'?'animation-fade':''">
-				<cu-user @click="handleClick"></cu-user>
+				<cu-user :userInfo="userInfo" @click="handleClick"></cu-user>
 			</view>
 		</scroll-view>
 		<!-- pop -->
-		<uni-popup ref="pop">
-			<view class="pop-section">
-				<view class="title text-center">
-					温馨提示
-				</view>
-				<view class="cont text-center">
-					{{ popCont }}
-				</view>
-				<view class="cu-btn btn" @click="confirmPop">
-					知道了
-				</view>
-			</view>
-		</uni-popup>
+		<pop ref="popup" :popCont="popCont"></pop>
+		<!-- tabbar -->
 		<view id="tabbar" class="cu-bar tabbar">
 			<view class="action tabbar-icon" v-for="(item,index) in tabbar" :key="index" @tap="changeTab(item)">
 				<view>
@@ -42,14 +32,14 @@
 </template>
 
 <script>
-	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import pop from '../component/pop'
 	import {
 		mapMutations
 	} from 'vuex'
 	let _this;
 	export default {
 		components: {
-			uniPopup
+			pop
 		},
 		data() {
 			return {
@@ -77,6 +67,8 @@
 				],
 				showLoading: false,
 				shopInfo: {},
+				userInfo: {},
+				commentList: [], // 评论列表
 				popCont: "您今天对此条留言的点赞次数已达上限"
 			}
 		},
@@ -84,32 +76,46 @@
 			if (options.page) this.page = options.page;
 			this.init_page_size();
 			this.getShopIndex();
+			this.getUserInfo();
 		},
 		methods: {
 			...mapMutations(['shopConfig']),
+			getUserInfo() {
+				this.$http.getUserInfo({}, res=>{
+					if (res.code == 1) {
+						this.userInfo  = res.data.userinfo;
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+			},
 			_changeLike(val) {
-				if(!this.$db.userMobile()) return;
-				
+				if (!this.$db.userMobile()) return;
+
 				const {
 					item,
 					bl,
 					index
 				} = val;
-				let num = parseInt(this.shopInfo.comments.list[index].like_num);
+				let num = parseInt(this.commentList[index].like_num);
 				if (bl) {
-					this.shopInfo.comments.list[index].like = bl;
-					this.shopInfo.comments.list[index].like_num = num + 1;
 					this.$http.postSaveZan({
 						cid: item.id,
 						uid: item.uid
 					}, res => {
-						// console.log("res", res)
+						if (res.code == 1) {
+							this.commentList[index].like = bl;
+							this.commentList[index].like_num = num + 1;
+							this.getShopIndex();
+						} else {
+							this.$common.errorToShow(res.msg);
+						}
 					})
 				} else {
 					// if (num > 0) {
-					// 	this.shopInfo.comments.list[index].like_num = num - 1;
+					// 	this.commentList[index].like_num = num - 1;
 					// }
-					this.$refs.pop.open();
+					this.$refs.popup.$refs.pop.open();
 				}
 			},
 			_changeFullText(val) {
@@ -118,16 +124,13 @@
 				} = val;
 				const index = e.currentTarget.dataset.index;
 				const str = e.currentTarget.dataset.text;
-				this.shopInfo.comments.list[index].full_text = str == "全文" ? "收起全文" : "全文";
+				this.commentList[index].full_text = str == "全文" ? "收起全文" : "全文";
 			},
 			_switchPostComments() {
-				if(!this.$db.userMobile()) return;
+				if (!this.$db.userMobile()) return;
 				uni.navigateTo({
 					url: "/pages/index/postComments"
 				})
-			},
-			confirmPop() {
-				this.$refs.pop.close()
 			},
 			// 店铺信息
 			getShopIndex() {
@@ -137,8 +140,8 @@
 					if (res.code == 1) {
 						// this.shopInfo = Object.assign({},res.data)
 						this.shopInfo = res.data;
+						this.commentList = res.data.comments.list.slice(0, 2);
 						this.shopConfig(res.data);
-
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -149,10 +152,10 @@
 			},
 			changeTab(item) {
 				if (item.page) {
-					// if(item.page == 'user' && !this.$db.userMobile()) return;
+					if (item.page == 'user' && !this.$db.userMobile()) return;
 					this.page = item.page;
 				} else {
-					if(!this.$db.userMobile()) return;
+					if (!this.$db.userMobile()) return;
 					this.$http.uploadImage(1, (res, tem) => {
 						if (res.code == 1) {
 							uni.navigateTo({
@@ -219,40 +222,6 @@
 			&.acitvieColor {
 				color: #FF5F52;
 			}
-		}
-	}
-
-	.pop-section {
-		width: 590rpx;
-		height: 480rpx;
-		background-color: #FFFFFF;
-		border-radius: 10rpx;
-		@include flexY;
-		@include flexA;
-		justify-content: space-between;
-
-		.title {
-			font-size: 34rpx;
-			color: #666666;
-			line-height: 122rpx;
-		}
-
-		.cont {
-			flex: 1;
-			margin-top: 26rpx;
-			font-size: 30rpx;
-			color: #666666;
-			width: 390rpx;
-			line-height: 44rpx;
-		}
-
-		.btn {
-			width: 440rpx;
-			height: 90rpx;
-			background-color: #FF544C;
-			color: #FFFFFF;
-			border-radius: 45rpx;
-			margin-bottom: 75rpx;
 		}
 	}
 </style>

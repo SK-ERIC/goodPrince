@@ -5,36 +5,32 @@
 			<text>我拍过的店 ({{ photoList.length }})</text>
 		</view>
 
-		<!-- list -->
-		<lately-photo-list :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
+		<!-- <mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback"> -->
+		<!-- <mescroll-body ref="mescrollRef" @init="mescrollInit"> -->
+
+			<!-- list -->
+			<lately-photo-list :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
+
+		<!-- </mescroll-body> -->
 
 		<!-- foot -->
 		<foot></foot>
 		<!-- pop -->
-		<uni-popup ref="pop">
-			<view class="pop-section">
-				<view class="title text-center">
-					温馨提示
-				</view>
-				<view class="cont text-center">
-					{{ popCont }}
-				</view>
-				<view class="cu-btn btn" @click="confirmPop">
-					知道了
-				</view>
-			</view>
-		</uni-popup>
+		<pop ref="popup" :popCont="popCont"></pop>
+
 	</view>
 </template>
 
 <script>
+	import MescrollMixin from "@/components/mescroll-uni/mescroll-mixins.js";
 	import foot from '../component/foot'
-	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import pop from '../component/pop'
 	import latelyPhotoList from '../component/latelyPhotoList'
 	export default {
+		mixins: [MescrollMixin], // 使用mixin (在main.js注册全局组件)
 		components: {
 			foot,
-			uniPopup,
+			pop,
 			latelyPhotoList
 		},
 		data() {
@@ -75,10 +71,64 @@
 						reply: ""
 					},
 				],
-				popCont: "您今天对此条留言的点赞次数已达上限"
+				popCont: "您今天对此条留言的点赞次数已达上限",
+				downOption: {
+					auto: false //是否在初始化后,自动执行downCallback; 默认true
+				},
+				upOption: {
+					empty: {
+						use: true, // 是否显示空布局
+						icon: "http://qakj5dvcb.bkt.clouddn.com/static/nthing.png", // 图标路径
+						tip: '~ 暂无相关数据 ~', // 提示
+						btnText: '我来说个话', // 按钮
+						// fixed: false, // 是否使用fixed定位,默认false; 配置fixed为true,以下的top和zIndex才生效 (transform会使fixed失效,最终会降级为absolute)
+						// top: "100rpx", // fixed定位的top值 (完整的单位值,如 "10%"; "100rpx")
+						// zIndex: 99 // fixed定位z-index值
+					},
+				}
 			}
 		},
 		methods: {
+			/*下拉刷新的回调 */
+			downCallback() {
+				//联网加载数据
+				apiNewList().then(data => {
+					//联网成功的回调,隐藏下拉刷新的状态
+					this.mescroll.endSuccess();
+					//设置列表数据
+					this.dataList.unshift(data[0]);
+				}).catch(() => {
+					//联网失败的回调,隐藏下拉刷新的状态
+					this.mescroll.endErr();
+				})
+			},
+			/*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */
+			upCallback(page) {
+				//联网加载数据
+				apiGoods(page.num, page.size, this.isGoodsEdit).then(curPageData => {
+					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
+					//mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
+
+					//方法一(推荐): 后台接口有返回列表的总页数 totalPage
+					//this.mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
+
+					//方法二(推荐): 后台接口有返回列表的总数据量 totalSize
+					//this.mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
+
+					//方法三(推荐): 您有其他方式知道是否有下一页 hasNext
+					//this.mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
+
+					//方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据
+					this.mescroll.endSuccess(curPageData.length);
+
+					//设置列表数据
+					if (page.num == 1) this.goods = []; //如果是第一页需手动制空列表
+					this.goods = this.goods.concat(curPageData); //追加新数据
+				}).catch(() => {
+					//联网失败, 结束加载
+					this.mescroll.endErr();
+				})
+			},
 			previewImage(v, e) {
 				const current = e.currentTarget.dataset.src;
 				uni.previewImage({
@@ -101,11 +151,8 @@
 					// if (num > 0) {
 					// 	this.photoList[index].like_num = num - 1;
 					// }
-					this.$refs.pop.open();
+					this.$refs.popup.$refs.pop.open();
 				}
-			},
-			confirmPop() {
-				this.$refs.pop.close()
 			},
 			_changeFullText(val) {
 				const {
@@ -145,167 +192,5 @@
 			}
 		}
 
-		.photo-section {
-
-			.photo-list {
-				padding: 0 32rpx;
-
-				.photo-cont {
-					padding: 40rpx 0 52rpx;
-					border-bottom: 2rpx solid #EFEFEF;
-
-					&:last-child {
-						border-bottom: none;
-					}
-
-					.rate-wrap {
-						@include flexY;
-
-						.title {
-							font-size: 36rpx;
-							color: #282828;
-							font-weight: bold;
-						}
-					}
-
-					.date-wrap {
-						@include flexSB;
-						margin: 32rpx 0 40rpx;
-
-						.item-l {
-							@include flexY;
-
-							.date {
-								font-size: 24rpx;
-								color: #B1B1B1;
-								font-weight: 400;
-								margin-bottom: 18rpx;
-							}
-
-							.rate {
-								display: flex;
-								align-items: baseline;
-
-								text {
-									font-size: 24rpx;
-									color: #282828;
-									font-weight: bold;
-									margin-right: 11rpx;
-								}
-							}
-						}
-
-						.item-r {
-							@include flexX;
-
-							.like-icon {
-								width: 34rpx;
-								height: 34rpx;
-							}
-
-							.text {
-								font-size: 30rpx;
-								color: #B1B1B1;
-								font-weight: 400;
-							}
-						}
-					}
-
-					.art {
-						font-size: 30rpx;
-						font-weight: 500;
-						color: #333333;
-
-						&.cut {
-							text-overflow: ellipsis;
-							display: -webkit-box;
-							-webkit-line-clamp: 3;
-							-webkit-box-orient: vertical;
-							word-break: break-all;
-							overflow: hidden;
-							white-space: normal;
-						}
-					}
-
-					.fullText {
-						font-size: 30rpx;
-						color: #FF903A;
-						margin: 26rpx 0 14rpx;
-					}
-
-					.img-list {
-						padding: 30rpx 0;
-						@include flexX;
-						flex-wrap: wrap;
-
-						.img-cont {
-							margin-right: 18rpx;
-							margin-bottom: 18rpx;
-
-							&:nth-child(3n) {
-								margin-right: 0;
-							}
-
-							image {
-								width: 174rpx;
-								height: 174rpx;
-								border-radius: 14rpx;
-							}
-						}
-					}
-
-					.reply-warp {
-						min-height: 70rpx;
-						padding: 20rpx;
-						font-size: 24rpx;
-						color: #989897;
-						background-color: #F3F3F4;
-						border-radius: 6rpx;
-
-						.reply {
-							color: #333333;
-							font-weight: 500;
-							word-break: keep-all;
-							display: inline;
-						}
-					}
-				}
-			}
-
-		}
-
-		.pop-section {
-			width: 590rpx;
-			height: 480rpx;
-			background-color: #FFFFFF;
-			border-radius: 10rpx;
-			@include flexY;
-			@include flexA;
-			justify-content: space-between;
-
-			.title {
-				font-size: 34rpx;
-				color: #666666;
-				line-height: 122rpx;
-			}
-
-			.cont {
-				flex: 1;
-				margin-top: 26rpx;
-				font-size: 30rpx;
-				color: #666666;
-				width: 390rpx;
-				line-height: 44rpx;
-			}
-
-			.btn {
-				width: 440rpx;
-				height: 90rpx;
-				background-color: #FF544C;
-				color: #FFFFFF;
-				border-radius: 45rpx;
-				margin-bottom: 75rpx;
-			}
-		}
 	}
 </style>

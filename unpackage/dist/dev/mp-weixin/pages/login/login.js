@@ -215,7 +215,7 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
 {
   data: function data() {
     return {
-      isClient: true, // 是否是用户
+      isClient: true, // 是否是客户端
       mobile: {
         phone: '',
         code: '' },
@@ -255,29 +255,35 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
   methods: {
     // 登录按钮点击执行
     fnLogin: function fnLogin() {var _this = this;
-      console.log(JSON.stringify(this.mobile));
       uni.showLoading({
         title: "登陆中...",
         mask: true });
 
-      setTimeout(function () {
-        uni.hideLoading();
-        if (_this.isClient) {
-          uni.switchTab({
-            url: "/pages/index/index" });
+      this.$http.postMobilelogin({
+        mobile: this.mobile.phone,
+        captcha: this.mobile.code },
+      function (res) {
+        if (res.code == 1) {
+          uni.hideLoading();
+          uni.showToast({
+            icon: "success",
+            title: "登录成功" });
 
+          _this.$db.set("userinfo", res.data.userinfo);
+
+          setTimeout(function () {
+            if (_this.isClient) {
+              uni.navigateTo({
+                url: "/pages/home/home" });
+
+            }
+          }, 500);
         }
-      }, 2000);
-
-
-    },
-    // 获取用户信息
-    getUserInfo: function getUserInfo() {
-
+      });
     },
     // 获取用户电话
     getPhoneNumber: function getPhoneNumber(e) {var _this2 = this;
-      console.log(e);var _e$detail =
+      console.log("getPhoneNumber", e);var _e$detail =
 
 
 
@@ -295,29 +301,19 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
             encryptedData: encryptedData,
             confirm_unionid: confirm_unionid };
 
-          // token
-          _this2.$http.getUnionid(data, function (res) {
-            console.log("getUnionid", res);
-            // uni.showToast({
-            // 	title: "授权成功！"
-            // })
-            // uni.hideLoading();
+          _this2.$http.getMobile(data, function (res) {
+            console.log("getMobile", res);
+            if (res.code == 1) {
+              uni.showToast({
+                title: "授权成功！" });
+
+              _this2.mobile.phone = res.data.mobile;
+              uni.hideLoading();
+            }
+          }).catch(function (err) {
+            console.log(err);
           });
-          // api.wxmobile(data)
-          // 	.then(res => {
-          // 		uni.showToast({
-          // 			title: '授权成功！'
-          // 		});
-          // 		this.process.phone = 1;
-          // 		uni.hideLoading();
-          // 		setTimeout(function() {
-          // 			uni.navigateBack({
-          // 				delta: 1 //上一级页面
-          // 			});
-          // 		}, 1000);
-          // 	}).catch(err => {
-          // 		console.log(err)
-          // 	});
+
         }).catch(console.log);
       } else {
         // 拒绝手机号授权

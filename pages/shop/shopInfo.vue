@@ -207,12 +207,14 @@
 		}
 
 		.form-section {
-			background-color: #FFFFFF;
+			// background-color: #FFFFFF;
 			position: relative;
 			margin-top: -200rpx;
-			border-radius: 100rpx 100rpx 0 0;
+			// border-radius: 100rpx 100rpx 0 0;
 			width: 100%;
 			height: 960rpx;
+			background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/shopInfo_bg.png");
+			background-size: 100% 100%;
 
 			.form-inner {
 				// margin:  0 55rpx;
