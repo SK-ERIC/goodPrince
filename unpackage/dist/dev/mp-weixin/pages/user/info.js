@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "tui-actionsheet": function() {
-    return __webpack_require__.e(/*! import() | components/tui-actionsheet/tui-actionsheet */ "components/tui-actionsheet/tui-actionsheet").then(__webpack_require__.bind(null, /*! @/components/tui-actionsheet/tui-actionsheet.vue */ 241))
+    return __webpack_require__.e(/*! import() | components/tui-actionsheet/tui-actionsheet */ "components/tui-actionsheet/tui-actionsheet").then(__webpack_require__.bind(null, /*! @/components/tui-actionsheet/tui-actionsheet.vue */ 248))
   }
 }
 var render = function() {
@@ -134,13 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tuiActionsheet = function tuiActionsheet() {__webpack_require__.e(/*! require.ensure | components/tui-actionsheet/tui-actionsheet */ "components/tui-actionsheet/tui-actionsheet").then((function () {return resolve(__webpack_require__(/*! @/components/tui-actionsheet/tui-actionsheet.vue */ 241));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
-
-
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tuiActionsheet = function tuiActionsheet() {__webpack_require__.e(/*! require.ensure | components/tui-actionsheet/tui-actionsheet */ "components/tui-actionsheet/tui-actionsheet").then((function () {return resolve(__webpack_require__(/*! @/components/tui-actionsheet/tui-actionsheet.vue */ 248));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -232,8 +226,7 @@ __webpack_require__.r(__webpack_exports__);
       value: [],
       showActionSheet: false,
       tips: "选择您的性别",
-      itemList: [
-      {
+      itemList: [{
         text: "男",
         color: "#2B2B2B" },
       {
@@ -241,26 +234,42 @@ __webpack_require__.r(__webpack_exports__);
         color: "#2B2B2B" },
       {
         text: "不公开",
-        color: "#2B2B2B" }] };
+        color: "#2B2B2B" }],
 
-
-
+      uploadImg: "" // 上传的头像地址
+    };
+  },
+  onLoad: function onLoad(options) {
+    if (options.src) this.userInfo.uPic = options.src;
+    if (options.tem) this.uploadImg = options.tem;
   },
   methods: {
     addressPickerChange: function addressPickerChange(e) {
       this.userInfo.city = e.detail.value.join("-");
     },
-    chooseImage: function chooseImage() {
-      uni.chooseImage({
-        count: 1,
-        sizeType: ['original', 'compressed'],
-        sourceType: ['album', 'camera'],
-        success: function success(res) {
-          var tempFilePaths = res.tempFilePaths[0];
-          uni.navigateTo({
-            url: "./cropper?src=".concat(tempFilePaths) });
+    chooseImage: function chooseImage() {var _this = this;
+      // uni.chooseImage({
+      // 	count: 1,
+      // 	sizeType: ['original', 'compressed'],
+      // 	sourceType: ['album', 'camera'],
+      // 	success: res => {
+      // 		const tempFilePaths = res.tempFilePaths[0];
+      // 		uni.navigateTo({
+      // 			url: `./cropper?src=${tempFilePaths}`
+      // 		})
+      // 	}
+      // });
 
-        } });
+      this.$http.uploadImage(1, function (res, tem) {
+        if (res.code == 1) {
+          uni.navigateTo({
+            url: "./cropper?src=".concat(tem) });
+
+        } else {
+          _this.$common.errorToShow(res.msg);
+        }
+      });
+
 
     },
     itemClick: function itemClick(e) {

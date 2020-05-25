@@ -149,7 +149,7 @@
 			},
 			changeTab(item) {
 				if (item.page) {
-					if(item.page == 'user' && !this.$db.userMobile()) return;
+					// if(item.page == 'user' && !this.$db.userMobile()) return;
 					this.page = item.page;
 				} else {
 					if(!this.$db.userMobile()) return;

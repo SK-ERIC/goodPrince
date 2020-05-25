@@ -22,23 +22,15 @@ function _jumpToLogin(method) {
       icon: 'none',
       duration: 1000,
       success: function(res) {
-        // #ifdef H5 || APP-PLUS
+        // #ifdef MP-WEIXIN
         setTimeout(() => {
 			uni.hideToast();
 			uni.navigateTo({
-				url: '/pages/login/login'
-			})
-        }, 1000)
-        // #endif
-        // #ifdef MP-WEIXIN || MP-ALIPAY
-        setTimeout(() => {
-			uni.hideToast();
-			uni.navigateTo({
-				url: '/pages/login/choose',
+				url: '/pages/login/base',
 				animationType: 'pop-in',
 				animationDuration: 200
 			})
-        }, 500)
+        }, 1000)
         // #endif
       }
     })  
@@ -268,6 +260,7 @@ function moneySub(value1,value2){
 export {
   deepCopy,
   jumpToLogin,
+  _jumpToLogin,
   timeToDate,
   successToShow,
   errorToShow,

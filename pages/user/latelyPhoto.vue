@@ -4,49 +4,9 @@
 			<text class="cuIcon-back"></text>
 			<text>我拍过的店 ({{ photoList.length }})</text>
 		</view>
-		<view class="photo-section">
-			<view class="photo-list">
-				<view class="photo-cont" v-for="(item, index) in photoList" :key="index">
-					<view class="rate-wrap">
-						<text class="title">{{ item.shopName }}</text>
-						<view class="date-wrap">
-							<view class="item-l">
-								<text class="date">{{ item.date }}</text>
-								<view class="rate">
-									<text>综合评分</text>
-									<uni-rate disabled="true" :size="18" :max="5" :value="item.rate" />
-								</view>
-							</view>
-							<view class="item-r">
-								<image @click="_changeLike(false, index)" v-if="item.like" class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/liked.png" mode=""></image>
-								<image @click="_changeLike(true, index)" v-else class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/like.png" mode=""></image>
-								<text class="text">{{ item.like_num }}</text>
-							</view>
-						</view>
-					</view>
-					<!-- 评论内容 -->
-					<view class="art" :class="{cut: item.fullText=='全文'}">
-						{{ item.content }}
-					</view>
-					<!-- 全文 -->
-					<view class="fullText" :data-text="item.fullText" :data-index='index' @click="_changeFullText">
-						{{ item.fullText }}
-					</view>
-					<!-- 图片列表 -->
-					<view class="img-list">
-						<view class="img-cont" v-for="(img, ind) in item.picList" :key="ind" :data-src="item.picList[ind]" @click="previewImage(item.picList, $event)">
-							<image :src="img" mode=""></image>
-						</view>
-					</view>
-					<!-- 回复 -->
-					<view class="reply-warp" v-if="item.reply">
-						<text class="reply">店家回复: </text>
-						{{ item.reply }}
-					</view>
-				</view>
-			</view>
-		</view>
 
+		<!-- list -->
+		<lately-photo-list :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
 
 		<!-- foot -->
 		<foot></foot>
@@ -70,10 +30,12 @@
 <script>
 	import foot from '../component/foot'
 	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	import latelyPhotoList from '../component/latelyPhotoList'
 	export default {
 		components: {
 			foot,
-			uniPopup
+			uniPopup,
+			latelyPhotoList
 		},
 		data() {
 			return {
@@ -125,7 +87,12 @@
 				})
 				console.log(v, e)
 			},
-			_changeLike(bl, index) {
+			_changeLike(val) {
+				const {
+					item,
+					bl,
+					index
+				} = val;
 				let num = parseInt(this.photoList[index].like_num);
 				if (bl) {
 					this.photoList[index].like = bl;
@@ -140,7 +107,10 @@
 			confirmPop() {
 				this.$refs.pop.close()
 			},
-			_changeFullText(e) {
+			_changeFullText(val) {
+				const {
+					e
+				} = val;
 				const index = e.currentTarget.dataset.index;
 				const str = e.currentTarget.dataset.text;
 				for (let i = 0; i < this.photoList.length; i++) {

@@ -238,5 +238,5 @@ export const getShopIndex = (data, callback) => get('shops/shopIndex', data, cal
 export const postSaveZan = (data, callback) => post('Comment/saveZan', data, callback)
 // 发表评论
 export const postPushComment = (data, callback) => post("comment/pushComment", data, callback)
-// 手机号
-export const getUnionid = (data, callback) => post("wechat_mp/getUnionid", data, callback)
+// 修改个人信息
+export const postProfile = (data, callback) => post("user/profile", data, callback)

@@ -139,7 +139,7 @@
 							{{ item.content }}
 						</view>
 						<!-- 全文 -->
-						<view class="fullText" v-show="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index'
+						<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index'
 						 @click="_changeFullText">
 							{{ item.full_text }}
 						</view>

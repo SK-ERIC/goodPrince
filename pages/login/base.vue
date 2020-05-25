@@ -29,64 +29,33 @@
 					iv,
 					encryptedData
 				} = e.detail;
+				let userData = e.detail.userInfo;
 				if (errMsg == 'getUserInfo:ok') { // 同意授权
 					uni.hideLoading()
 					// 检查登录态是否过期。
 					WxAuth.checkSession().then(code => {
 						//code, iv, encryptedData 传给服务器解析，得到用户信息
-						let data = {
-							code,
-							iv,
-							encryptedData,
-							confirm_unionid,
-							loginType: 'WXMA'
-						}
+						
+						return this.$http.postProfile({
+							nickname: userData.nickName,
+							avatar: userData.avatarUrl,
+							province: userData.province,
+							city: userData.city,
+							gender: userData.gender
+						}, res => {
+							if (res.code == 1) {
+								uni.showToast({
+									title: "授权成功！"
+								})
+								uni.hideLoading();
+								// uni.navigateTo({
+								// 	url: "/pages/login/login"
+								// })
+							}
 
-						return this.$http.getUnionid(data, res => {
-							uni.showToast({
-								title: "授权成功！"
-							})
-							uni.hideLoading();
 						})
 
 					})
-					.then(result => {
-						//result： userInfo、token
-						if (result.data.statusCode == 200) {
-							// if (result.data.code == 200) {
-							// 	//临时登录凭证 code 只能使用一次,故刷新code;
-							// 	WxAuth.onLogin();
-							// 	//更新用户信息
-							// 	// let token = result.data.data.token;
-							// 	// let userInfo = result.data.data;
-							// 	// let userInfoNew = { ...userInfo.user,
-							// 	// 	is_vip
-							// 	// };
-							// 	// uni.setStorageSync('token', token);
-							// 	// uni.setStorageSync('userInfo', userInfoNew);
-							// 	uni.showToast({
-							// 		title: '授权成功！'
-							// 	});
-
-							// 	if (userInfo.user.mobile) {
-
-							// 		uni.hideLoading()
-							// 		// setTimeout(function() {
-							// 		// 	uni.navigateBack({
-							// 		// 		delta: 1
-							// 		// 	});
-							// 		// }, 1000);
-							// 	} else {
-							// 		uni.hideLoading()
-							// 	}
-							// } else {
-							// 	console.log("获取用户信息: 老用户")
-							// }
-
-						} else {
-							console.log("获取用户信息失败")
-						}
-					}).catch(console.log)
 				} else {
 					// 拒绝授权
 					uni.showToast({

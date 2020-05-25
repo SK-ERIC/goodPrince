@@ -5,7 +5,9 @@
 	},
 	"setting": {
 		"urlCheck": false,
-		"minified": true
+		"minified": false,
+		"es6": false,
+		"postcss": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.9.2",
@@ -22,13 +24,28 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
+			"current": -1,
+			"list": []
+		},
+		"gamePlugin": {
 			"current": -1,
 			"list": []
 		},
 		"miniprogram": {
 			"current": -1,
-			"list": []
+			"list": [
+				{
+					"id": -1,
+					"name": "pages/login/base",
+					"pathName": "pages/login/base",
+					"scene": null
+				}
+			]
 		}
 	}
 }

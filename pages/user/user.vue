@@ -230,6 +230,9 @@
 		onLoad() {
 			
 		},
+		mounted() {
+			
+		},
 		methods: {
 			...mapMutations(['shopId']),
 			previewImage(v, e) {
