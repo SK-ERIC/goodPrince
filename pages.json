@@ -18,80 +18,6 @@
 				"navigationStyle": "custom"
 			}
 		},
-		//认证 
-		{
-			"path": "pages/login/authentication",
-			"style": {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/login/shopAuth",
-			"style": {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/login/status",
-			"style": {
-				"navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/shop/shopCenter",
-			"style": {
-				"navigationBarTitleText": "商家中心"
-				// "navigationStyle": "custom"
-			}
-		},
-		{
-			"path": "pages/shop/shopInfo",
-			"style": {
-				"navigationBarTitleText": "商家资料"
-			}
-		},
-		{
-			"path": "pages/shop/check",
-			"style": {
-				"navigationBarTitleText": "实名认证"
-			}
-		},
-		{
-			"path": "pages/shop/contactUs",
-			"style": {
-				"navigationBarTitleText": "联系我们"
-			}
-		},
-		{
-			"path": "pages/shop/set",
-			"style": {
-				"navigationBarTitleText": "设置"
-			}
-		},
-		{
-			"path": "pages/shop/accountChange",
-			"style": {
-				"navigationBarTitleText": "账号更换"
-			}
-		},
-		{
-			"path": "pages/shop/changeSuccess",
-			"style": {
-				"navigationBarTitleText": "账号更换成功"
-			}
-		},
-		{
-			"path": "pages/shop/leaveWord",
-			"style": {
-				"navigationBarTitleText": "顾客留言"
-			}
-		},
-		{
-			"path": "pages/shop/QRCode",
-			"style": {
-				"navigationBarTitleText": "生成二维码"
-			}
-		},
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -151,18 +77,6 @@
 		}
 
 	],
-	// "tabBar": {
-	// 	"color": "#7a7e83",
-	// 	"selectedColor": "#0faeff",
-	// 	"backgroundColor": "#ffffff",
-	// 	"list": [{
-	// 		"pagePath": "pages/index/index",
-	// 		"text": "首页"
-	// 	}, {
-	// 		"pagePath": "pages/user/user",
-	// 		"text": "我的"
-	// 	}]
-	// },
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "无锡好印象",

@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="navBack" @click.stop="navBack">
 			<text class="cuIcon-back"></text>
-			<text>我拍过的店 ({{ photoList.length }})</text>
+			<text>我拍过的店 ({{ total }})</text>
 		</view>
 
 		<!-- <mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback"> -->
@@ -35,43 +35,8 @@
 		},
 		data() {
 			return {
-				photoList: [{
-						id: 0,
-						shopName: "布达佩斯大饭店（东大门店）",
-						date: "5月6日",
-						like: false,
-						like_num: 3,
-						rate: 3,
-						content: `茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸庞在夕阳余晖的映照下沧桑无限。茫茫茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸
-							庞在夕阳余晖的映照下沧桑无限。茫茫茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸庞在夕阳余晖的映照下沧桑无限。茫茫...`,
-						fullText: "全文",
-						picList: [
-							"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-							"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-							"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-							"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-							"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-						],
-						reply: "欢迎亲的任可，欢迎下次再来哦 欢迎亲的任可，欢迎下次再来哦 欢迎亲的任可，欢迎下次再来哦"
-					},
-					{
-						id: 1,
-						shopName: "麦当劳快餐厅",
-						date: "3月6日",
-						like: true,
-						like_num: 3,
-						rate: 4,
-						content: `茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸庞在夕阳余晖的映照下沧桑无限。茫茫茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸
-							庞在夕阳余晖的映照下沧桑无限。茫茫茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸庞在夕阳余晖的映照下沧桑无限。茫茫...`,
-						fullText: "全文",
-						picList: [
-							"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-							"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-						],
-						reply: ""
-					},
-				],
-				popCont: "您今天对此条留言的点赞次数已达上限",
+				total: "",
+				photoList: [],
 				downOption: {
 					auto: false //是否在初始化后,自动执行downCallback; 默认true
 				},
@@ -88,7 +53,25 @@
 				}
 			}
 		},
+		onLoad(options) {
+			this.total = options.total || "";
+		},
+		created() {
+			this.postCommentShop()
+		},
 		methods: {
+			postCommentShop() {
+				let user_id = this.$db.get("userinfo").user_id
+				this.$http.postCommentShop({
+					user_id,
+				}, res=>{
+					if(res.code == 1) {
+						this.photoList = res.data;
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+			},
 			/*下拉刷新的回调 */
 			downCallback() {
 				//联网加载数据
@@ -138,21 +121,7 @@
 				console.log(v, e)
 			},
 			_changeLike(val) {
-				const {
-					item,
-					bl,
-					index
-				} = val;
-				let num = parseInt(this.photoList[index].like_num);
-				if (bl) {
-					this.photoList[index].like = bl;
-					this.photoList[index].like_num = num + 1;
-				} else {
-					// if (num > 0) {
-					// 	this.photoList[index].like_num = num - 1;
-					// }
-					this.$refs.popup.$refs.pop.open();
-				}
+				this.$emit('changeLike', val)
 			},
 			_changeFullText(val) {
 				const {

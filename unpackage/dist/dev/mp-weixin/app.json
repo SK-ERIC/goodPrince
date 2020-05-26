@@ -3,18 +3,6 @@
     "pages/home/home",
     "pages/login/base",
     "pages/login/login",
-    "pages/login/authentication",
-    "pages/login/shopAuth",
-    "pages/login/status",
-    "pages/shop/shopCenter",
-    "pages/shop/shopInfo",
-    "pages/shop/check",
-    "pages/shop/contactUs",
-    "pages/shop/set",
-    "pages/shop/accountChange",
-    "pages/shop/changeSuccess",
-    "pages/shop/leaveWord",
-    "pages/shop/QRCode",
     "pages/index/index",
     "pages/index/postComments",
     "pages/index/success",
@@ -39,5 +27,5 @@
     "mescroll-body": "/components/mescroll-uni/mescroll-body",
     "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
   },
-  "sitemapLocation": "sitemap87.json"
+  "sitemapLocation": "sitemap84.json"
 }

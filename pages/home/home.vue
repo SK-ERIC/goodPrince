@@ -33,9 +33,6 @@
 
 <script>
 	import pop from '../component/pop'
-	import {
-		mapMutations
-	} from 'vuex'
 	let _this;
 	export default {
 		components: {
@@ -69,8 +66,12 @@
 				shopInfo: {},
 				userInfo: {},
 				commentList: [], // 评论列表
-				popCont: "您今天对此条留言的点赞次数已达上限"
+				popCont: "您今天对此条留言的点赞次数已达上限",
+				scrollTopNum: 0
 			}
+		},
+		onPageScroll(res){
+			this.scrollTopNum = res.scrollTop//距离页面顶部距离
 		},
 		onLoad(options) {
 			if (options.page) this.page = options.page;
@@ -79,7 +80,6 @@
 			this.getUserInfo();
 		},
 		methods: {
-			...mapMutations(['shopConfig']),
 			getUserInfo() {
 				this.$http.getUserInfo({}, res=>{
 					if (res.code == 1) {
@@ -135,13 +135,12 @@
 			// 店铺信息
 			getShopIndex() {
 				this.$http.getShopIndex({
-					// id: null
+					// shop_id: null
 				}, res => {
 					if (res.code == 1) {
 						// this.shopInfo = Object.assign({},res.data)
 						this.shopInfo = res.data;
 						this.commentList = res.data.comments.list.slice(0, 2);
-						this.shopConfig(res.data);
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -149,6 +148,15 @@
 			},
 			handleClick(val) {
 				this.page = "shop";
+				const num = 0;
+				const timer = setTimeout(()=>{
+					uni.pageScrollTo({
+					    scrollTop: 0,  //距离页面顶部的距离
+					    duration: 300
+					});
+					clearTimeout(timer)
+				}, 100)
+				console.log("scroll", this.scrollTopNum)
 			},
 			changeTab(item) {
 				if (item.page) {

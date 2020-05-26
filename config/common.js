@@ -20,7 +20,7 @@ function _jumpToLogin(method) {
     uni.showToast({
       title: '请先登录!',
       icon: 'none',
-      duration: 1000,
+      duration: 500,
       success: function(res) {
         // #ifdef MP-WEIXIN
         setTimeout(() => {
@@ -41,7 +41,7 @@ function jumpToLogin(method) {
     uni.showToast({
       title: '请先登录!',
       icon: 'none',
-      duration: 1000,
+      duration: 500,
       success: function(res) {
         setTimeout(() => {
 			uni.hideToast();
@@ -153,6 +153,21 @@ function isPhoneNumber(str) {
   } else {
     return true
   }
+}
+
+/**
+* @name 检测终端 判断市场常见的几种刘海屏机型
+* @param {number} numbers 数值
+* */
+function checkPlatFromFunc(){
+	let modelmes = uni.getSystemInfoSync().model
+	let tempMoble = Boolean;
+	if(modelmes.indexOf('iPhone X')>=0||modelmes.indexOf('iPhone XR')>=0||modelmes.indexOf('iPhone XS')>=0||modelmes.indexOf('iPhone 12')>=0||modelmes.indexOf('iPhone 11')>=0||modelmes.indexOf('iPhone11')>=0||modelmes.indexOf('iPhone12')>=0||modelmes.indexOf('iPhoneXR')>=0||modelmes.indexOf('iPhoneX')>=0){
+		tempMoble = true
+	}else{
+		tempMoble = false
+	}
+	return tempMoble
 }
 
 /**
@@ -275,5 +290,6 @@ export {
   isWeiXinBrowser,
   getQueryString,
   moneySum,
-  moneySub
+  moneySub,
+  checkPlatFromFunc
 }

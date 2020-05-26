@@ -48,7 +48,7 @@ var _path = __webpack_require__(/*! ./config/path.js */ 20);
 var _index = _interopRequireDefault(__webpack_require__(/*! @/pages/index/index.vue */ 21));
 var _user = _interopRequireDefault(__webpack_require__(/*! @/pages/user/user.vue */ 28));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;}function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var baseURL = 'https://wxhyx.aisspc.cn';_vue.default.prototype.$http = Api;_vue.default.prototype.$common = Common;_vue.default.prototype.$db = Db;_vue.default.prototype.$ph = _path.PH;_vue.default.prototype.$store = _store.default;_vue.default.prototype.$service = _service.default;var msg = function msg(title) {var duration = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;var mask = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;var icon = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'none'; //统一提示方便全局修改
   if (Boolean(title) === false) {return;}uni.showToast({ title: title, duration: duration, mask: mask, icon: icon });};var prePage = function prePage() {var pages = getCurrentPages();var prePage = pages[pages.length - 2];return prePage.$vm;}; /*           注册全局自定义组件            */_vue.default.component('cu-shop', _index.default);
-_vue.default.component('cu-user', _user.default);var MescrollBody = function MescrollBody() {Promise.all(/*! require.ensure | components/mescroll-uni/mescroll-body */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/mescroll-uni/mescroll-body")]).then((function () {return resolve(__webpack_require__(/*! @/components/mescroll-uni/mescroll-body.vue */ 221));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var MescrollUni = function MescrollUni() {Promise.all(/*! require.ensure | components/mescroll-uni/mescroll-uni */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/mescroll-uni/mescroll-uni")]).then((function () {return resolve(__webpack_require__(/*! @/components/mescroll-uni/mescroll-uni.vue */ 230));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
+_vue.default.component('cu-user', _user.default);var MescrollBody = function MescrollBody() {Promise.all(/*! require.ensure | components/mescroll-uni/mescroll-body */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/mescroll-uni/mescroll-body")]).then((function () {return resolve(__webpack_require__(/*! @/components/mescroll-uni/mescroll-body.vue */ 125));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var MescrollUni = function MescrollUni() {Promise.all(/*! require.ensure | components/mescroll-uni/mescroll-uni */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/mescroll-uni/mescroll-uni")]).then((function () {return resolve(__webpack_require__(/*! @/components/mescroll-uni/mescroll-uni.vue */ 134));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
@@ -144,11 +144,7 @@ __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
 {
 
-  onLaunch: function onLaunch() {
-    console.log('App Launch');
-  },
-  onShow: function onShow() {var _this = this;
-
+  onLaunch: function onLaunch() {var _this = this;
 
     uni.getProvider({
       service: 'oauth',
@@ -188,6 +184,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+  },
+  onShow: function onShow() {
+    console.log('App Show');
   },
   onHide: function onHide() {
     console.log('App Hide');
@@ -307,7 +306,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "uni-rate": function() {
-    return __webpack_require__.e(/*! import() | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 237))
+    return __webpack_require__.e(/*! import() | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 141))
   }
 }
 var render = function() {
@@ -361,7 +360,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {__webpack_require__.e(/*! require.ensure | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 237));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 244));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {__webpack_require__.e(/*! require.ensure | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 141));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -578,8 +577,19 @@ __webpack_require__.r(__webpack_exports__);
       }
     } },
 
-  onLoad: function onLoad(option) {
+  mounted: function mounted() {var _this = this;
+    var user_id = this.$db.get("userinfo").user_id || '';
+    var shop_id = this.shopIndex.id;
+    this.$http.postAddBeenShop({
+      user_id: user_id,
+      shop_id: shop_id },
+    function (res) {
+      if (res.code == 1) {
 
+      } else {
+        _this.$common.errorToShow(res.msg);
+      }
+    });
   },
   methods: {
     isShowFullText: function isShowFullText(v) {
@@ -839,10 +849,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-
-var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function latelyShopList() {__webpack_require__.e(/*! require.ensure | pages/component/latelyShopList */ "pages/component/latelyShopList").then((function () {return resolve(__webpack_require__(/*! ../component/latelyShopList */ 251));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var latelyPhotoList = function latelyPhotoList() {__webpack_require__.e(/*! require.ensure | pages/component/latelyPhotoList */ "pages/component/latelyPhotoList").then((function () {return resolve(__webpack_require__(/*! ../component/latelyPhotoList */ 258));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 244));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var pop = function pop() {__webpack_require__.e(/*! require.ensure | pages/component/pop */ "pages/component/pop").then((function () {return resolve(__webpack_require__(/*! ../component/pop */ 265));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function latelyShopList() {__webpack_require__.e(/*! require.ensure | pages/component/latelyShopList */ "pages/component/latelyShopList").then((function () {return resolve(__webpack_require__(/*! ../component/latelyShopList */ 155));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var latelyPhotoList = function latelyPhotoList() {__webpack_require__.e(/*! require.ensure | pages/component/latelyPhotoList */ "pages/component/latelyPhotoList").then((function () {return resolve(__webpack_require__(/*! ../component/latelyPhotoList */ 162));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var pop = function pop() {__webpack_require__.e(/*! require.ensure | pages/component/pop */ "pages/component/pop").then((function () {return resolve(__webpack_require__(/*! ../component/pop */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 {
@@ -861,64 +868,42 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
   data: function data() {
     return {
       topLeftText: "我的个人中心",
-      // userInfo: {
-      // 	uPic: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-      // 	name: "王晓璐",
-      // 	address: "江苏 无锡",
-      // 	visit: 64,
-      // 	photo: 93,
-      // 	praise: 23,
-      // },
-      latelyList: [{
-        id: 0,
-        logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-        browse: 99,
-        title: "布达拉宫布达佩斯大饭店布达拉宫布达佩斯大饭店...",
-        address: "无锡市梁溪区火车站北广场34无锡市梁溪区火车站北广场34",
-        mainCont: "火锅 牛肉火锅  闽菜",
-        rate: 4,
-        date: "5月6日" },
-
-      {
-        id: 1,
-        logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-        browse: 69,
-        title: "牛品福潮汕牛肉火锅牛品福潮汕牛肉火锅牛品福潮汕牛肉火锅",
-        address: "无锡市梁溪区火车站北广场34无锡市梁溪区火车站北广场34",
-        mainCont: "火锅 牛肉火锅  闽菜",
-        rate: 5,
-        date: "1月32日" }],
-
-
-      photoList: [{
-        id: 0,
-        shopName: "布达佩斯大饭店（东大门店）",
-        date: "5月6日",
-        like: false,
-        like_num: 3,
-        rate: 3,
-        content: "\u832B\u832B\u897F\u90E8\u6208\u58C1\u6EE9\uFF0C\u4ED6\u5934\u6234\u725B\u4ED4\u5E3D\uFF0C\u5634\u89D2\u53FC\u7740\u70DF\uFF0C\u5DE6\u8F6E\u624B\u67AA\u63D2\u5728\u8170\u95F4\uFF0C\u53F3\u624B\u62C9\u7740\u7F30\u7EF3\uFF0C\u8138\u5E9E\u5728\u5915\u9633\u4F59\u6656\u7684\u6620\u7167\u4E0B\u6CA7\u6851\u65E0\u9650\u3002\u832B\u832B\u832B\u832B\u897F\u90E8\u6208\u58C1\u6EE9\uFF0C\u4ED6\u5934\u6234\u725B\u4ED4\u5E3D\uFF0C\u5634\u89D2\u53FC\u7740\u70DF\uFF0C\u5DE6\u8F6E\u624B\u67AA\u63D2\u5728\u8170\u95F4\uFF0C\u53F3\u624B\u62C9\u7740\u7F30\u7EF3\uFF0C\u8138\n\t\t\t\t\t\t\u5E9E\u5728\u5915\u9633\u4F59\u6656\u7684\u6620\u7167\u4E0B\u6CA7\u6851\u65E0\u9650\u3002\u832B\u832B\u832B\u832B\u897F\u90E8\u6208\u58C1\u6EE9\uFF0C\u4ED6\u5934\u6234\u725B\u4ED4\u5E3D\uFF0C\u5634\u89D2\u53FC\u7740\u70DF\uFF0C\u5DE6\u8F6E\u624B\u67AA\u63D2\u5728\u8170\u95F4\uFF0C\u53F3\u624B\u62C9\u7740\u7F30\u7EF3\uFF0C\u8138\u5E9E\u5728\u5915\u9633\u4F59\u6656\u7684\u6620\u7167\u4E0B\u6CA7\u6851\u65E0\u9650\u3002\u832B\u832B...",
-
-        fullText: "全文",
-        picList: [
-        "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-        "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-        "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-        "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-        "http://qakj5dvcb.bkt.clouddn.com/static/logo.png"],
-
-        reply: "欢迎亲的任可，欢迎下次再来哦 欢迎亲的任可，欢迎下次再来哦 欢迎亲的任可，欢迎下次再来哦" }],
-
-      popCont: "您今天对此条留言的点赞次数已达上限" };
+      latelyList: [],
+      photoList: [],
+      popCont: "您今天对此条留言的点赞次数已达上限",
+      isShowSafearea: false };
 
   },
-  onLoad: function onLoad() {
-
+  created: function created() {
+    this.postCommentShop();
+    this.postBeenShop();
   },
   mounted: function mounted() {
-
+    this.isShowSafearea = this.$common.checkPlatFromFunc();
   },
   methods: {
+    postCommentShop: function postCommentShop() {var _this = this;
+      this.$http.postCommentShop({
+        user_id: this.userInfo.user_id },
+      function (res) {
+        if (res.code == 1) {
+          _this.photoList = res.data;
+        } else {
+          _this.$common.errorToShow(res.msg);
+        }
+      });
+    },
+    postBeenShop: function postBeenShop() {var _this2 = this;
+      this.$http.postBeenShop({
+        user_id: this.userInfo.user_id },
+      function (res) {
+        if (res.code == 1) {
+          _this2.latelyList = res.data;
+        } else {
+          _this2.$common.errorToShow(res.msg);
+        }
+      });
+    },
     previewImage: function previewImage(v, e) {
       var current = e.currentTarget.dataset.src;
       uni.previewImage({
@@ -926,7 +911,8 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
         current: current });
 
     },
-    _changeLike: function _changeLike(val) {var
+    _changeLike: function _changeLike(val) {
+      console.log("user--val", val);var
 
       item =
 
@@ -965,25 +951,21 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
     },
     _switchlatelyPhoto: function _switchlatelyPhoto() {
       uni.navigateTo({
-        url: "/pages/user/latelyPhoto" });
+        url: "/pages/user/latelyPhoto?total=".concat(this.userInfo.commentCount) });
 
     },
     _switchlatelyShop: function _switchlatelyShop() {
       uni.navigateTo({
-        url: "/pages/user/latelyShop" });
+        url: "/pages/user/latelyShop?total=".concat(this.userInfo.beenCount) });
 
     },
 
-    _switchShopHome: function _switchShopHome(item) {
-      this.$emit("click", item);
+    _switchShopHome: function _switchShopHome(val) {
+      this.$emit("click", val);
       // const id = item.id
-      // this.shopId(id)
-      // // uni.switchTab({
-      // // 	url: "/pages/index/index"
-      // // })
+
       // uni.navigateTo({
       // 	url: "/pages/home/home?page=shop",
-      // 	// url: "/pages/index/index"
       // })
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

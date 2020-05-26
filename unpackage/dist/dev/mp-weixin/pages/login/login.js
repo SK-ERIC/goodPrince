@@ -101,10 +101,6 @@ var render = function() {
     _vm.e0 = function($event) {
       !_vm.safety.state ? _vm.fnGetPhoneCode() : ""
     }
-
-    _vm.e1 = function($event) {
-      !_vm.safety.state ? _vm.fnGetPhoneCode() : ""
-    }
   }
 }
 var recyclableRender = false
@@ -176,46 +172,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
 {
   data: function data() {
     return {
-      isClient: true, // 是否是客户端
       mobile: {
         phone: '',
         code: '' },
@@ -245,13 +206,6 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
       deep: true } },
 
 
-  onLoad: function onLoad(options) {
-    if (options.login && options.login == "shop") {
-      this.isClient = false;
-    }
-    console.log("option", options);
-    console.log("this.isClient", this.isClient);
-  },
   methods: {
     // 登录按钮点击执行
     fnLogin: function fnLogin() {var _this = this;
@@ -264,26 +218,24 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
         captcha: this.mobile.code },
       function (res) {
         if (res.code == 1) {
+          _this.$db.set("userinfo", res.data.userinfo);
           uni.hideLoading();
           uni.showToast({
             icon: "success",
             title: "登录成功" });
 
-          _this.$db.set("userinfo", res.data.userinfo);
-
           setTimeout(function () {
-            if (_this.isClient) {
-              uni.navigateTo({
-                url: "/pages/home/home" });
+            uni.navigateTo({
+              url: "/pages/home/home" });
 
-            }
           }, 500);
+        } else {
+          _this.$common.errorToShow(res.msg);
         }
       });
     },
     // 获取用户电话
-    getPhoneNumber: function getPhoneNumber(e) {var _this2 = this;
-      console.log("getPhoneNumber", e);var _e$detail =
+    getPhoneNumber: function getPhoneNumber(e) {var _this2 = this;var _e$detail =
 
 
 
@@ -302,7 +254,6 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
             confirm_unionid: confirm_unionid };
 
           _this2.$http.getMobile(data, function (res) {
-            console.log("getMobile", res);
             if (res.code == 1) {
               uni.showToast({
                 title: "授权成功！" });
@@ -313,7 +264,6 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
           }).catch(function (err) {
             console.log(err);
           });
-
         }).catch(console.log);
       } else {
         // 拒绝手机号授权
@@ -340,10 +290,19 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
                 clearInterval(_this3.safety.interval);
               }
             }, 1000);
-            uni.showToast({
-              title: "发送成功",
-              icon: "success" });
+            // 发送验证码
+            _this3.$http.postSendCode({
+              mobile: _this3.mobile.phone },
+            function (res) {
+              if (res.code == 1) {
+                uni.showToast({
+                  title: "发送成功",
+                  icon: "success" });
 
+              } else {
+                _this3.$common.errorToShow(res.msg);
+              }
+            });
           } });
 
       } else {
@@ -352,12 +311,6 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
           icon: "none" });
 
       }
-    },
-    // 实名认证
-    switchAuthen: function switchAuthen() {
-      uni.navigateTo({
-        url: "/pages/login/authentication" });
-
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

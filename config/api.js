@@ -244,8 +244,17 @@ export const postProfile = (data, callback) => post("user/profile", data, callba
 export const getMobile = (data, callback) => post("wechat_mp/getMobile", data, callback)
 // 手机验证码登录
 export const postMobilelogin = (data, callback) => post("user/changemobile", data, callback)
+// 发送验证码
+export const postSendCode = (data, callback) => post("user/sendCode", data, callback)
 // 个人中心
 export const getUserInfo = (data, callback) => get("user/getUserInfo", data, callback)
-
-
-
+// 页面底部信息1
+export const getFootInfo = (data, callback) => get('foot_Info/index', data, callback)
+// 底部网站信息
+export const getFootConfig = (data, callback) => get('Config/index', data, callback)
+// 记录去过的店
+export const postAddBeenShop = (data, callback) => post('shops/addBeenShop', data, callback)
+// 拍过的店
+export const postCommentShop = (data, callback) => post('shops/commentShop', data, callback)
+// 去过的店
+export const postBeenShop = (data, callback) => post('shops/beenShop', data, callback)

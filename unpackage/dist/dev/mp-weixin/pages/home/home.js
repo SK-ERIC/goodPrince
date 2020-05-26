@@ -130,7 +130,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 14));
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _regenerator = _interopRequireDefault(__webpack_require__(/*! ./node_modules/@vue/babel-preset-app/node_modules/@babel/runtime/regenerator */ 14));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var pop = function pop() {__webpack_require__.e(/*! require.ensure | pages/component/pop */ "pages/component/pop").then((function () {return resolve(__webpack_require__(/*! ../component/pop */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 
@@ -163,9 +163,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-
-var _vuex = __webpack_require__(/*! vuex */ 6);function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}function ownKeys(object, enumerableOnly) {var keys = Object.keys(object);if (Object.getOwnPropertySymbols) {var symbols = Object.getOwnPropertySymbols(object);if (enumerableOnly) symbols = symbols.filter(function (sym) {return Object.getOwnPropertyDescriptor(object, sym).enumerable;});keys.push.apply(keys, symbols);}return keys;}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};if (i % 2) {ownKeys(Object(source), true).forEach(function (key) {_defineProperty(target, key, source[key]);});} else if (Object.getOwnPropertyDescriptors) {Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));} else {ownKeys(Object(source)).forEach(function (key) {Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));});}}return target;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var pop = function pop() {__webpack_require__.e(/*! require.ensure | pages/component/pop */ "pages/component/pop").then((function () {return resolve(__webpack_require__(/*! ../component/pop */ 265));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};
 
 
 var _this;var _default =
@@ -201,8 +198,12 @@ var _this;var _default =
       shopInfo: {},
       userInfo: {},
       commentList: [], // 评论列表
-      popCont: "您今天对此条留言的点赞次数已达上限" };
+      popCont: "您今天对此条留言的点赞次数已达上限",
+      scrollTopNum: 0 };
 
+  },
+  onPageScroll: function onPageScroll(res) {
+    this.scrollTopNum = res.scrollTop; //距离页面顶部距离
   },
   onLoad: function onLoad(options) {
     if (options.page) this.page = options.page;
@@ -210,8 +211,7 @@ var _this;var _default =
     this.getShopIndex();
     this.getUserInfo();
   },
-  methods: _objectSpread({},
-  (0, _vuex.mapMutations)(['shopConfig']), {
+  methods: {
     getUserInfo: function getUserInfo() {var _this2 = this;
       this.$http.getUserInfo({}, function (res) {
         if (res.code == 1) {
@@ -267,13 +267,12 @@ var _this;var _default =
     // 店铺信息
     getShopIndex: function getShopIndex() {var _this4 = this;
       this.$http.getShopIndex({
-        // id: null
+        // shop_id: null
       }, function (res) {
         if (res.code == 1) {
           // this.shopInfo = Object.assign({},res.data)
           _this4.shopInfo = res.data;
           _this4.commentList = res.data.comments.list.slice(0, 2);
-          _this4.shopConfig(res.data);
         } else {
           _this4.$common.errorToShow(res.msg);
         }
@@ -281,6 +280,15 @@ var _this;var _default =
     },
     handleClick: function handleClick(val) {
       this.page = "shop";
+      var num = 0;
+      var timer = setTimeout(function () {
+        uni.pageScrollTo({
+          scrollTop: 0, //距离页面顶部的距离
+          duration: 300 });
+
+        clearTimeout(timer);
+      }, 100);
+      console.log("scroll", this.scrollTopNum);
     },
     changeTab: function changeTab(item) {var _this5 = this;
       if (item.page) {
@@ -320,7 +328,7 @@ var _this;var _default =
           resolve(data);
         }).exec();
       });
-    } }) };exports.default = _default;
+    } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

@@ -81,9 +81,7 @@ function userMobile() {
 	if (!userinfo.mobile) {
 		uni.getSetting({
 			success(res) {
-				console.log("res", res)
 				if (res.authSetting['scope.userInfo']) {
-					console.log("用户信息已授权")
 					// 如果已授权,直接获取对应参数
 					common.jumpToLogin();
 				} else if (!res.authSetting['scope.userInfo']) {

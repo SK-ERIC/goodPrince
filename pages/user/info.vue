@@ -7,7 +7,7 @@
 			</view>
 			<view class="info-item-r">
 				<view class="img-inner" @tap="chooseImage">
-					<image class="img" :src="userInfo.uPic" mode=""></image>
+					<image class="img" :src="info.avatar" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -16,7 +16,7 @@
 				昵称
 			</view>
 			<view class="info-item-r">
-				{{ userInfo.name }}
+				{{ info.nickname}}
 			</view>
 		</view>
 		<view class="info-section">
@@ -24,16 +24,17 @@
 				年龄
 			</view>
 			<view class="info-item-r">
-				{{ userInfo.age }}
+				{{ info.age }}
 			</view>
 		</view>
 		<view class="info-section">
 			<view class="info-item-l">
 				性别
 			</view>
-			<view class="info-item-r type-picker" @click="openActionSheet">
-				{{ userInfo.gender }}
-				<text class="cuIcon-unfold"></text>
+			<!-- <view class="info-item-r type-picker" @click="openActionSheet"> -->
+			<view class="info-item-r">
+				{{ gender }}
+				<!-- <text class="cuIcon-unfold"></text> -->
 			</view>
 		</view>
 		<view class="info-section">
@@ -41,7 +42,7 @@
 				手机号码
 			</view>
 			<view class="info-item-r">
-				{{ userInfo.tel }}
+				{{ info.mobile }}
 			</view>
 		</view>
 		<!-- #ifdef MP-WEIXIN -->
@@ -51,7 +52,7 @@
 			</view>
 			<view class="info-item-r type-picker">
 				<picker class="addressPicker" mode="region" @change="addressPickerChange" :value="value">
-					{{ userInfo.city }}
+					{{ info.province }} - {{ info.city }}
 				</picker>
 				<text class="cuIcon-unfold"></text>
 			</view>
@@ -79,14 +80,8 @@
 		},
 		data() {
 			return {
-				userInfo: {
-					uPic: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-					name: "Still walking",
-					age: 24,
-					gender: "女",
-					tel: "187****1906",
-					city: "北京市-北京市-东城区"
-				},
+				
+				info: {},
 				value: [],
 				showActionSheet: false,
 				tips: "选择您的性别",
@@ -103,27 +98,34 @@
 				uploadImg: "", // 上传的头像地址
 			}
 		},
+		computed:{
+			gender() {
+				let a = this.info.gender;
+				switch(a) {
+					case 0:
+					return "不公开";
+					case 1:
+					return "男";
+					case 2:
+					return "女"
+				}
+			}
+		},
 		onLoad(options) {
-			if (options.src) this.userInfo.uPic = options.src;
-			if (options.tem) this.uploadImg = options.tem;
+			console.log("options", options)
+			this.info.avatar = options.src || "";
+			this.uploadImg = options.tem || "";
+			this.info = this.$db.get("userinfo") || ""
+		},
+		mounted() {
+			console.log("mounted", this.uploadImg)
 		},
 		methods: {
 			addressPickerChange(e) {
-				this.userInfo.city = e.detail.value.join("-");
+				this.info.province = e.detail.value[0]
+				this.info.city = e.detail.value[1]
 			},
 			chooseImage() {
-				// uni.chooseImage({
-				// 	count: 1,
-				// 	sizeType: ['original', 'compressed'],
-				// 	sourceType: ['album', 'camera'],
-				// 	success: res => {
-				// 		const tempFilePaths = res.tempFilePaths[0];
-				// 		uni.navigateTo({
-				// 			url: `./cropper?src=${tempFilePaths}`
-				// 		})
-				// 	}
-				// });
-
 				this.$http.uploadImage(1, (res, tem) => {
 					if (res.code == 1) {
 						uni.navigateTo({
@@ -133,12 +135,10 @@
 						this.$common.errorToShow(res.msg);
 					}
 				})
-
-
 			},
 			itemClick(e) {
 				const index = e.index;
-				this.userInfo.gender = this.itemList[index].text;
+				this.info.gender = this.itemList[index].text;
 				this.closeActionSheet();
 			},
 			openActionSheet() {

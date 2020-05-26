@@ -108,11 +108,11 @@
 				<view v-if="shopIndex.comments.counts>0" class="comment-cont" v-for="(item, index) in commentList" :key="index">
 					<view class="info-wrap">
 						<view class="info-inner-l">
-							<image :src="item.uname.uavatar" mode=""></image>
+							<image :src="item.uname.avatar" mode=""></image>
 						</view>
 						<view class="info-inner-r">
 							<view class="user">
-								{{ item.uname.username }}
+								{{ item.uname.nickname }}
 							</view>
 							<view class="date">
 								{{ item.add_date }}
@@ -215,8 +215,19 @@
 				}
 			},
 		},
-		onLoad(option) {
-
+		mounted() {
+			const user_id = this.$db.get("userinfo").user_id || '';
+			const shop_id = this.shopIndex.id;
+			this.$http.postAddBeenShop({
+				user_id,
+				shop_id
+			}, res => {
+				if(res.code == 1){
+					
+				} else {
+					this.$common.errorToShow(res.msg);
+				}
+			})
 		},
 		methods: {
 			isShowFullText(v) {

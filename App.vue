@@ -2,14 +2,10 @@
 	export default {
 
 		onLaunch: function() {
-			console.log('App Launch')
-		},
-		onShow: function() {
-
 			// #ifdef MP-WEIXIN
 			uni.getProvider({
 				service: 'oauth',
-				success: (res) => {
+				success: res => {
 					if (~res.provider.indexOf('weixin')) {
 						uni.login({
 							provider: 'weixin',
@@ -27,7 +23,7 @@
 									// reject(res);
 								}
 							},
-							fail: function(err) {
+							fail: err => {
 								uni.showToast({
 									icon: none,
 									title: "授权失败！"
@@ -45,6 +41,9 @@
 
 			})
 			// #endif
+		},
+		onShow: function() {
+			console.log('App Show')
 		},
 		onHide: function() {
 			console.log('App Hide')

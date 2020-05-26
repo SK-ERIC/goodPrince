@@ -1,32 +1,17 @@
 <template>
-	<view class="container" :class="{'type-server': !isClient}">
+	<view class="container">
 
-		<view class="logo" :class="{'server': !isClient}">
+		<view class="logo">
 			<image src="http://qakj5dvcb.bkt.clouddn.com/static/logo.png" mode=""></image>
 		</view>
 
-		<view v-if="!isClient" class="platform">
-			<text>无锡好印象-经营评价平台</text>
-			<text>商家管理中心</text>
-		</view>
-
-		<view v-if="isClient" class="form-section">
-			<!-- <input disabled type="number" v-model="mobile.phone" focus maxlength="11" placeholder="点击获取您的手机号" @getphonenumber="getPhoneNumber" /> -->
+		<view class="form-section">
 			<button class="btn" :class="{btnColor :mobile.phone}" type="default" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
 				{{ mobile.phone || "点击获取您的手机号" }}
 			</button>
 		</view>
 
-		<view v-else class="server-section">
-			<view class="item-l">
-				账号
-			</view>
-			<view class="item-r">
-				<input type="number" v-model="mobile.phone" maxlength="11" placeholder="请输入手机号码..." placeholder-class="holder" />
-			</view>
-		</view>
-
-		<view v-if="isClient" class="form-section">
+		<view class="form-section">
 			<view class="form-item-l">
 				<input type="number" v-model="mobile.code" maxlength="6" placeholder="请输入验证码" />
 			</view>
@@ -35,28 +20,10 @@
 			</view>
 		</view>
 
-		<view v-else class="server-section">
-			<view class="item-l">
-				验证码
-			</view>
-			<view class="item-r">
-				<input type="number" maxlength="6" v-model="mobile.code" placeholder="请输入验证码..." />
-				<text class="phoneCode" @tap="!safety.state ? fnGetPhoneCode() : ''">
-					{{!safety.state&&'获取验证码'||(safety.time+' s')}}
-				</text>
-			</view>
-		</view>
-
-		<view class="btn-section" :class="{'type-server': !isClient}">
+		<view class="btn-section">
 			<button type="default" class="cu-btn loginBtn" :disabled="!loginMobile" @tap="fnLogin">
 				登录
 			</button>
-		</view>
-
-		<view v-if="!isClient" class="switch-text">
-			<view @click="switchAuthen">
-				实名入住平台<text class="cuIcon-roundrightfill"></text>
-			</view>
 		</view>
 
 		<!-- btm -->
@@ -64,7 +31,6 @@
 			<text>主办单位</text>
 			<text>无锡市梁溪区市场监督局 无锡市梁溪区通江街道</text>
 		</view>
-
 
 	</view>
 </template>
@@ -74,7 +40,6 @@
 	export default {
 		data() {
 			return {
-				isClient: true, // 是否是客户端
 				mobile: {
 					phone: '',
 					code: ''
@@ -104,13 +69,6 @@
 				deep: true
 			},
 		},
-		onLoad(options) {
-			if (options.login && options.login == "shop") {
-				this.isClient = false
-			}
-			console.log("option", options)
-			console.log("this.isClient", this.isClient)
-		},
 		methods: {
 			// 登录按钮点击执行
 			fnLogin() {
@@ -123,26 +81,24 @@
 					captcha: this.mobile.code
 				}, res => {
 					if (res.code == 1) {
+						this.$db.set("userinfo", res.data.userinfo);
 						uni.hideLoading()
 						uni.showToast({
 							icon: "success",
 							title: "登录成功"
 						})
-						this.$db.set("userinfo", res.data.userinfo);
-						
 						setTimeout(() => {
-							if (this.isClient) {
-								uni.navigateTo({
-									url: "/pages/home/home"
-								})
-							}
+							uni.navigateTo({
+								url: "/pages/home/home"
+							})
 						}, 500)
+					} else {
+						this.$common.errorToShow(res.msg);
 					}
 				})
 			},
 			// 获取用户电话
 			getPhoneNumber(e) {
-				console.log("getPhoneNumber", e)
 				let {
 					errMsg,
 					iv,
@@ -161,7 +117,6 @@
 							confirm_unionid
 						};
 						this.$http.getMobile(data, res => {
-							console.log("getMobile", res)
 							if (res.code == 1) {
 								uni.showToast({
 									title: "授权成功！"
@@ -172,7 +127,6 @@
 						}).catch(err => {
 							console.log(err)
 						})
-
 					}).catch(console.log)
 				} else {
 					// 拒绝手机号授权
@@ -199,9 +153,18 @@
 									clearInterval(this.safety.interval);
 								}
 							}, 1000);
-							uni.showToast({
-								title: "发送成功",
-								icon: "success"
+							// 发送验证码
+							this.$http.postSendCode({
+								mobile: this.mobile.phone
+							}, res => {
+								if (res.code == 1) {
+									uni.showToast({
+										title: "发送成功",
+										icon: "success"
+									})
+								} else {
+									this.$common.errorToShow(res.msg);
+								}
 							})
 						}
 					})
@@ -211,12 +174,6 @@
 						icon: "none"
 					})
 				}
-			},
-			// 实名认证
-			switchAuthen() {
-				uni.navigateTo({
-					url: "/pages/login/authentication"
-				})
 			},
 		}
 	}

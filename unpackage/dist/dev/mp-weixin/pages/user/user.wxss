@@ -32,6 +32,9 @@
   height: 344rpx;
   position: relative;
 }
+.container .head-section.safearea.data-v-3c1cc008 {
+  height: 380rpx;
+}
 .container .head-section .navBack.data-v-3c1cc008 {
   position: absolute;
   left: 27rpx;
@@ -59,7 +62,7 @@
 .container .head-section .set-inner.data-v-3c1cc008 {
   position: absolute;
   right: 47rpx;
-  bottom: 158rpx;
+  bottom: 150rpx;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

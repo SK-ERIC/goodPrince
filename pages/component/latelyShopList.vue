@@ -1,31 +1,31 @@
 <template>
 	<view class="container">
 		<view class="shop-section">
-			<view class="lately-cont" v-for="(item, index) in latelyList" :key="index">
+			<view class="lately-cont" v-for="(item, index) in latelyList" :key="index" @click="_switchShopHome(item)">
 				<view class="item-l">
-					<image class="img" :src="item.logo" mode=""></image>
-					<text class="browse">浏览: {{ item.browse }}</text>
+					<image class="img" :src="item.shop_img.image_url" mode=""></image>
+					<text class="browse">浏览: {{ item.shop[0].looks }}</text>
 				</view>
 				<view class="item-r">
 					<view class="item-cont-t">
-						<text class="title">{{ item.title }}</text>
+						<text class="title">{{ item.shop[0].shop_title }}</text>
 						<text class="address">
 							<text>地址·</text>
-							{{ item.address }}
+							{{ item.shop[0].shop_address }}
 						</text>
 					</view>
 					<view class="item-cont-b">
 						<text class="mainCont">
 							<text>内容·</text>
-							{{ item.mainCont }}
+							{{ item.shop[0].shop_content }}
 						</text>
 						<view class="rate-wrap">
 							<view class="rate">
 								<text>综合评分</text>
-								<uni-rate disabled="true" :size="16" :max="5" :value="item.rate" />
+								<uni-rate disabled="true" :size="16" :max="5" :value="item.shop[0].total_score" />
 							</view>
 							<view class="date">
-								{{ item.date }}
+								{{ item.shop[0].add_time }}
 							</view>
 						</view>
 					</view>
@@ -51,8 +51,11 @@
 				}
 			}
 		},
+		
 		methods: {
-
+			_switchShopHome(item) {
+				this.$emit("switchShopHome", item)
+			},
 		}
 	}
 </script>

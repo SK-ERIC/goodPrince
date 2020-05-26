@@ -36,7 +36,7 @@
 				// 	urls: [e.url] // 需要预览的图片http链接列表
 				// });
 				let userinfo = this.$db.get("userinfo") || "";
-
+				console.log("e.url", e)
 				uni.uploadFile({
 					url: 'https://wxhyx.aisspc.cn/addons/qiniu/index/upload',
 					filePath: e.url,
@@ -53,7 +53,8 @@
 					},
 					//formData:{},传递参数
 					success: (uploadFileRes) => {
-						var backUpload = JSON.parse(uploadFileRes.data);
+						console.log("uploadFileRes:", uploadFileRes.data, "backUpload:", backUpload)
+						const backUpload = JSON.parse(uploadFileRes.data);
 						uni.navigateTo({
 							url: `./info?src=${e.url}&tem=${backUpload}`
 						})

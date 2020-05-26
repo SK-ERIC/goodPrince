@@ -2,44 +2,44 @@
 	<view class="container">
 		<view class="photo-section">
 			<view class="photo-list">
-				<view class="photo-cont" v-for="(item, index) in photoList" :key="index">
+				<view class="photo-cont" v-for="(item, index) in photoList" :key="index" @click="_switchShopHome(item)">
 					<view class="rate-wrap">
-						<text class="title">{{ item.shopName }}</text>
+						<text class="title">{{ item.shop[0].shop_title }}</text>
 						<view class="date-wrap">
 							<view class="item-l">
-								<text class="date">{{ item.date }}</text>
+								<text class="date">{{ item.add_date }}</text>
 								<view class="rate">
 									<text>综合评分</text>
-									<uni-rate disabled="true" :size="18" :max="5" :value="item.rate" />
+									<uni-rate disabled="true" :size="18" :max="5" :value="item.score_show" />
 								</view>
 							</view>
 							<view class="item-r">
-								<image @click="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/liked.png"
+								<image @click.stop="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/liked.png"
 								 mode=""></image>
-								<image @click="_changeLike(item, true, index)" v-else class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/like.png"
+								<image @click.stop="_changeLike(item, true, index)" v-else class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/like.png"
 								 mode=""></image>
-								<text class="text">{{ item.like_num }}</text>
+								<text class="text">{{ item.zan }}</text>
 							</view>
 						</view>
 					</view>
 					<!-- 评论内容 -->
-					<view class="art" :class="{cut: item.fullText=='全文'}">
+					<view class="art" :class="{cut: item.full_text=='全文'}">
 						{{ item.content }}
 					</view>
 					<!-- 全文 -->
-					<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.fullText" :data-index='index' @click="_changeFullText">
-						{{ item.fullText }}
+					<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index' @click.stop="_changeFullText">
+						{{ item.full_text }}
 					</view>
 					<!-- 图片列表 -->
 					<view class="img-list">
-						<view class="img-cont" v-for="(img, ind) in item.picList" :key="ind" :data-src="item.picList[ind]" @click="previewImage(item.picList, $event)">
-							<image :src="img" mode=""></image>
+						<view class="img-cont" v-for="(img, ind) in item.image" :key="ind" :data-src="item.image[ind].image_url" @click.stop="previewImage(item.image, $event)">
+							<image :src="img.image_url" mode=""></image>
 						</view>
 					</view>
 					<!-- 回复 -->
-					<view class="reply-warp" v-if="item.reply">
+					<view class="reply-warp" v-if="item.shopkeeper">
 						<text class="reply">店家回复: </text>
-						{{ item.reply }}
+						{{ item.shopkeeper.content }}
 					</view>
 				</view>
 			</view>
@@ -60,6 +60,9 @@
 			}
 		},
 		methods: {
+			_switchShopHome(item) {
+				this.$emit("switchShopHome", item)
+			},
 			isShowFullText(v) {
 				return v.split("").length >= 56
 			},
@@ -71,23 +74,15 @@
 				})
 			},
 			previewImage(v, e) {
-				// let list = [];
-				// const current = e.currentTarget.dataset.src;
-				// v.map(el => {
-				// 	list.push(el.image_url)
-				// })
-				// uni.previewImage({
-				// 	urls: list,
-				// 	current: current,
-				// })
-				
+				let list = [];
 				const current = e.currentTarget.dataset.src;
+				v.map(el => {
+					list.push(el.image_url)
+				})
 				uni.previewImage({
-					urls: v,
+					urls: list,
 					current: current,
 				})
-				console.log(v, e)
-				
 			},
 			_changeFullText(e) {
 				this.$emit("changeFullText", {

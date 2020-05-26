@@ -2,7 +2,7 @@
 	<view class="container">
 
 		<!-- head -->
-		<view class="head-section">
+		<view class="head-section" :class="{safearea: isShowSafearea}">
 			<view class="navBack">
 				<!-- <text class="cuIcon-back"></text> -->
 				<text class="title">{{ topLeftText }}</text>
@@ -31,15 +31,15 @@
 			</view>
 			<view class="user-inner-b grid col-3">
 				<view class="info-cont" @click="_switchlatelyShop">
-					<text class="info-num">99</text>
+					<text class="info-num">{{ userInfo.beenCount }}</text>
 					<text class="info-text">去过的店</text>
 				</view>
 				<view class="info-cont" @click="_switchlatelyPhoto">
-					<text class="info-num">99</text>
+					<text class="info-num">{{ userInfo.commentCount }}</text>
 					<text class="info-text">拍过的店</text>
 				</view>
 				<view class="info-cont">
-					<text class="info-num">99</text>
+					<text class="info-num">{{ userInfo.commentZan }}</text>
 					<text class="info-text">获赞</text>
 				</view>
 			</view>
@@ -56,8 +56,7 @@
 				</view>
 			</view>
 			<!-- 列表 -->
-			<lately-shop-list :latelyList="latelyList">
-			</lately-shop-list>
+			<lately-shop-list @switchShopHome="_switchShopHome" :latelyList="latelyList"></lately-shop-list>
 		</view>
 		<!-- 最近拍过的店 -->
 		<view class="photo-section">
@@ -70,9 +69,8 @@
 					<text class="cuIcon-right"></text>
 				</view>
 			</view>
-
-			<lately-photo-list :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
-
+			<!-- 列表 -->
+			<lately-photo-list @switchShopHome="_switchShopHome" :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
 		</view>
 
 		<!-- foot -->
@@ -80,13 +78,12 @@
 		<!-- pop -->
 		<pop ref="popup" :popCont="popCont"></pop>
 
-
 	</view>
 </template>
 
 <script>
-	import latelyShopList from '../component/latelyShopList'
-	import latelyPhotoList from '../component/latelyPhotoList'
+	import latelyShopList from '../component/latelyShopList';
+	import latelyPhotoList from '../component/latelyPhotoList';
 	import foot from '../component/foot';
 	import pop from '../component/pop';
 	import {
@@ -108,64 +105,42 @@
 		data() {
 			return {
 				topLeftText: "我的个人中心",
-				// userInfo: {
-				// 	uPic: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-				// 	name: "王晓璐",
-				// 	address: "江苏 无锡",
-				// 	visit: 64,
-				// 	photo: 93,
-				// 	praise: 23,
-				// },
-				latelyList: [{
-						id: 0,
-						logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-						browse: 99,
-						title: "布达拉宫布达佩斯大饭店布达拉宫布达佩斯大饭店...",
-						address: "无锡市梁溪区火车站北广场34无锡市梁溪区火车站北广场34",
-						mainCont: "火锅 牛肉火锅  闽菜",
-						rate: 4,
-						date: "5月6日"
-					},
-					{
-						id: 1,
-						logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-						browse: 69,
-						title: "牛品福潮汕牛肉火锅牛品福潮汕牛肉火锅牛品福潮汕牛肉火锅",
-						address: "无锡市梁溪区火车站北广场34无锡市梁溪区火车站北广场34",
-						mainCont: "火锅 牛肉火锅  闽菜",
-						rate: 5,
-						date: "1月32日"
-					}
-				],
-				photoList: [{
-					id: 0,
-					shopName: "布达佩斯大饭店（东大门店）",
-					date: "5月6日",
-					like: false,
-					like_num: 3,
-					rate: 3,
-					content: `茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸庞在夕阳余晖的映照下沧桑无限。茫茫茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸
-							庞在夕阳余晖的映照下沧桑无限。茫茫茫茫西部戈壁滩，他头戴牛仔帽，嘴角叼着烟，左轮手枪插在腰间，右手拉着缰绳，脸庞在夕阳余晖的映照下沧桑无限。茫茫...`,
-					fullText: "全文",
-					picList: [
-						"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-						"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-						"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-						"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-						"http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
-					],
-					reply: "欢迎亲的任可，欢迎下次再来哦 欢迎亲的任可，欢迎下次再来哦 欢迎亲的任可，欢迎下次再来哦"
-				}],
-				popCont: "您今天对此条留言的点赞次数已达上限"
+				latelyList: [],
+				photoList: [],
+				popCont: "您今天对此条留言的点赞次数已达上限",
+				isShowSafearea: false 
 			}
 		},
-		onLoad() {
-			
+		created() {
+			this.postCommentShop();
+			this.postBeenShop();
 		},
 		mounted() {
-
+			this.isShowSafearea = this.$common.checkPlatFromFunc();
 		},
 		methods: {
+			postCommentShop() {
+				this.$http.postCommentShop({
+					user_id: this.userInfo.user_id
+				}, res=>{
+					if(res.code == 1) {
+						this.photoList = res.data;
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+			},
+			postBeenShop() {
+				this.$http.postBeenShop({
+					user_id: this.userInfo.user_id
+				}, res=>{
+					if(res.code == 1) {
+						this.latelyList = res.data;
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+			},
 			previewImage(v, e) {
 				const current = e.currentTarget.dataset.src;
 				uni.previewImage({
@@ -174,6 +149,7 @@
 				})
 			},
 			_changeLike(val) {
+				console.log("user--val", val)
 				const {
 					item,
 					bl,
@@ -212,25 +188,21 @@
 			},
 			_switchlatelyPhoto() {
 				uni.navigateTo({
-					url: "/pages/user/latelyPhoto"
+					url: `/pages/user/latelyPhoto?total=${this.userInfo.commentCount}`
 				})
 			},
 			_switchlatelyShop() {
 				uni.navigateTo({
-					url: "/pages/user/latelyShop"
+					url: `/pages/user/latelyShop?total=${this.userInfo.beenCount}`
 				})
 			},
 
-			_switchShopHome(item) {
-				this.$emit("click", item)
+			_switchShopHome(val) {
+				this.$emit("click", val)
 				// const id = item.id
-				// this.shopId(id)
-				// // uni.switchTab({
-				// // 	url: "/pages/index/index"
-				// // })
+		
 				// uni.navigateTo({
 				// 	url: "/pages/home/home?page=shop",
-				// 	// url: "/pages/index/index"
 				// })
 			}
 		}
@@ -239,15 +211,20 @@
 
 <style lang="scss" scoped>
 	@import '@/style/mixin.scss';
-
 	.container {
 		background-color: #F8F8FA;
+		
 
 		// head
 		.head-section {
 			width: 100%;
 			height: 344rpx;
+			// height: calc(344rpx + var(--status-bar-height));
+			// height: 370rpx;
 			position: relative;
+			&.safearea{
+				height: 380rpx;
+			}
 
 			.navBack {
 				position: absolute;
@@ -273,7 +250,7 @@
 			.set-inner {
 				position: absolute;
 				right: 47rpx;
-				bottom: 158rpx;
+				bottom: 150rpx;
 				@include flexSB;
 
 				.set-item-l {

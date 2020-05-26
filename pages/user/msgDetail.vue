@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import foot from '../component/foot'
+	import foot from '../component/foot';
 	export default {
 		components: {
 			foot
