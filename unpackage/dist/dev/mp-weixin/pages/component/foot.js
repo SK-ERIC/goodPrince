@@ -152,19 +152,51 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var _default =
 {
   name: "foot",
   props: {
+    // 是否展示tip提示(啊欧，快到底了哦)
     "btm": {
       type: Boolean,
       default: true },
 
+    // 顶部tip提示（啊欧，快到底了哦）背景是否展示white 
     "color": {
       type: Boolean,
       default: false },
 
+    // 是否使用定位布局
     "position": {
+      type: Boolean,
+      default: false },
+
+    // 页面
+    "show": {
+      type: Boolean,
+      default: false },
+
+    // 隐藏
+    "hide": {
+      type: Boolean,
+      default: false },
+
+    // 隐藏二维码等等
+    "tip": {
+      type: Boolean,
+      default: false },
+
+    // lately
+    "lately": {
       type: Boolean,
       default: false } },
 
@@ -183,7 +215,7 @@ var _default =
     getFootInfo: function getFootInfo() {var _this = this;
       this.$http.getFootInfo({}, function (res) {
         if (res.code == 1) {
-          _this.codeList = res.data;
+          _this.codeList = res.data.reverse();
         } else {
           _this.$common.errorToShow(res.msg);
         }

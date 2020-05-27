@@ -24,8 +24,9 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.container.data-v-73d08c58 {
-  padding-top: 60rpx;
+.container .status_bar.data-v-73d08c58 {
+  height: 25px;
+  width: 100%;
 }
 .container .navBack.data-v-73d08c58 {
   display: -webkit-inline-box;

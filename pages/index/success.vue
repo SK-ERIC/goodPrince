@@ -1,20 +1,19 @@
 <template>
 	<view class="container">
-		<view class="navBack" @click.stop="navBack">
+		
+		<!-- <view class="navBack" @click.stop="navBack">
 			<text class="cuIcon-back"></text>
 			<text>返回</text>
-		</view>
+		</view> -->
 		<view class="success text-center">
-			<image src="http://qakj5dvcb.bkt.clouddn.com/static/success.png" mode=""></image>
+			<image src="https://wxhyx-cdn.aisspc.cn/static/success.png" mode=""></image>
 			<text>发布成功</text>
 		</view>
 
 
 
 		<!-- foot -->
-		<foot :btm="false" position></foot>
-
-
+		<foot :btm="false" position hide></foot>
 
 	</view>
 </template>
@@ -33,7 +32,7 @@
 		methods: {
 			navBack() {
 				uni.switchTab({
-					url: "/pages/index/index"
+					url: "/pages/home/home"
 				})
 			}
 		}
@@ -46,9 +45,13 @@
 	.container {
 		position: relative;
 		min-height: 100vh;
-		padding-top: 60rpx;
-		
-		.navBack{
+
+		.status_bar {
+			height: var(--status-bar-height);
+			width: 100%;
+		}
+
+		.navBack {
 			display: inline-flex;
 			justify-content: flex-start;
 			align-items: center;

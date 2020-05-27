@@ -1,9 +1,9 @@
 <template>
 	<view class="container">
-		<view class="navBack" @click.stop="navBack">
+		<!-- <view class="navBack" @click.stop="navBack">
 			<text class="cuIcon-back"></text>
 			<text>{{ topLeftText }}</text>
-		</view>
+		</view> -->
 		<!-- 评分 -->
 		<view class="rate-section">
 			<text class="text">综合评分</text>
@@ -33,7 +33,7 @@
 				<image 
 					@tap="chooseImage" 
 					class="add-img" 
-					src="http://qakj5dvcb.bkt.clouddn.com/static/add-img.png" 
+					src="https://wxhyx-cdn.aisspc.cn/static/add-img.png" 
 					mode=""
 				></image>
 			</view>
@@ -74,6 +74,9 @@
 				this.imgList.push(options.src);
 				this.filePath.push(options.tem);
 			}
+			uni.setNavigationBarTitle({
+				title: this.topLeftText
+			})
 		},
 		methods:{
 			chooseImage() {
@@ -146,17 +149,10 @@
 			
 				this.$http.postPushComment(params,res=>{
 					if(res.code == 200) {
-						uni.showToast({
-							icon: "success",
-							title: "评论成功",
-							mask: true
+						
+						uni.navigateTo({
+							url: "/pages/index/success"
 						})
-						setTimeout(()=>{
-							uni.navigateTo({
-								url: "/pages/home/home"
-							})
-							uni.hideToast()
-						}, 1000)
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -185,7 +181,7 @@
 
 .container{
 	// min-height: 100vh;
-	padding: 60rpx 48rpx 0;
+	padding: 0 48rpx 0;
 	.navBack{
 		display: inline-flex;
 		justify-content: flex-start;

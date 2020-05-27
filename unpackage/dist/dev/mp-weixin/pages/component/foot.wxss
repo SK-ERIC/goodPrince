@@ -104,15 +104,16 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  width: 260rpx;
+  width: 300rpx;
 }
 .bottom-section .code-wrap .code-inner:first-child {
-  margin-right: 60rpx;
+  margin-right: 30rpx;
 }
 .bottom-section .code-wrap .code-inner .text {
   font-size: 24rpx;
   color: #333E49;
   font-weight: 400;
+  white-space: nowrap;
 }
 .bottom-section .code-wrap .code-inner .code-img {
   width: 200rpx;
@@ -158,11 +159,27 @@
   padding: 0 32rpx;
 }
 .bottom-section .recordNo {
-  font-size: 16rpx;
+  font-size: 20rpx;
   color: #8B8B8B;
   font-weight: 400;
   margin-top: 15rpx;
   padding: 0 32rpx;
+}
+.bottom-section .com_btm {
+  background-image: url("https://wxhyx-cdn.aisspc.cn/static/cm_btm_bg.png");
+  background-size: 100% 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  padding-top: 40rpx;
+  font-size: 20rpx;
+  color: #BEBEBE;
+  line-height: 30rpx;
+  font-weight: 400;
 }
 .bottom-section .government {
   display: -webkit-box;

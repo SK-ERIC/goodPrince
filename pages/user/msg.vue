@@ -1,9 +1,6 @@
 <template>
 	<view class="container">
-		<view class="navBack" @click.stop="navBack">
-			<text class="cuIcon-back"></text>
-			<text>我的消息 ({{ msgList.length }})</text>
-		</view>
+		
 		<view class="msg-wrap">
 			<view class="msg-section" v-for="(item, index) in msgList" :key="index" @click="_switchToDetail(item)">
 				<view class="msg-item-l">
@@ -31,7 +28,7 @@
 			return {
 				msgList: [{
 						id: 0,
-						logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
+						logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
 						title: "系统消息",
 						desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
 						date: "刚刚",
@@ -39,7 +36,7 @@
 					},
 					{
 						id: 1,
-						logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
+						logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
 						title: "活动奖励",
 						desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
 						date: "5月6日",
@@ -47,7 +44,7 @@
 					},
 					{
 						id: 2,
-						logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
+						logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
 						title: "热门活动",
 						desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
 						date: "5月6日",
@@ -77,8 +74,10 @@
 
 	.container {
 
-		padding-top: 60rpx;
-
+.status_bar {
+			height: var(--status-bar-height);
+			width: 100%;
+		}
 		.navBack {
 			display: inline-flex;
 			justify-content: flex-start;

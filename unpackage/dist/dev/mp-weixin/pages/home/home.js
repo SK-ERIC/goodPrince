@@ -174,78 +174,75 @@ var _this;var _default =
     return {
       page: "shop",
       showPage: false,
-      containerHeight: 400,
+      containerHeight: 800,
       tabbar: [{
-        "iconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_shop.png",
-        "selectedIconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_shop_sel.png",
+        "iconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_shop.png",
+        "selectedIconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_shop_sel.png",
         "title": "首页",
         "page": "shop" },
 
       {
-        "iconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_photo.png",
-        "selectedIconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_photo.png",
+        "iconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_photo.png",
+        "selectedIconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_photo.png",
         "title": "",
         "page": "" },
 
       {
-        "iconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_user.png",
-        "selectedIconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_user_sel.png",
+        "iconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_user.png",
+        "selectedIconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_user_sel.png",
         "title": "我的",
         "page": "user" }],
 
 
       showLoading: false,
       shopInfo: {},
-      userInfo: {},
+      topNum: 0,
       commentList: [], // 评论列表
-      popCont: "您今天对此条留言的点赞次数已达上限",
-      scrollTopNum: 0 };
+      popCont: "您今天对此条留言的点赞次数已达上限" };
 
   },
-  onPageScroll: function onPageScroll(res) {
-    this.scrollTopNum = res.scrollTop; //距离页面顶部距离
-  },
+  watch: {
+    commentList: {
+      handler: function handler(newVal, oldVal) {
+        for (var i = 0; i < newVal.length; i++) {
+          if (oldVal[i] != newVal[i]) {
+            this.commentList = newVal;
+          }
+        }
+      },
+      deep: true } },
+
+
   onLoad: function onLoad(options) {
     if (options.page) this.page = options.page;
     this.init_page_size();
     this.getShopIndex();
-    this.getUserInfo();
   },
   methods: {
-    getUserInfo: function getUserInfo() {var _this2 = this;
-      this.$http.getUserInfo({}, function (res) {
-        if (res.code == 1) {
-          _this2.userInfo = res.data.userinfo;
-        } else {
-          _this2.$common.errorToShow(res.msg);
-        }
-      });
-    },
-    _changeLike: function _changeLike(val) {var _this3 = this;
-      if (!this.$db.userMobile()) return;var
 
+    _changeLike: function _changeLike(val) {var _this2 = this;
+      if (!this.$db.userMobile()) return;var
 
       item =
 
 
       val.item,bl = val.bl,index = val.index;
-      var num = parseInt(this.commentList[index].like_num);
+      var num = +this.commentList[index].zan;
       if (bl) {
         this.$http.postSaveZan({
           cid: item.id,
           uid: item.uid },
         function (res) {
           if (res.code == 1) {
-            _this3.commentList[index].like = bl;
-            _this3.commentList[index].like_num = num + 1;
-            _this3.getShopIndex();
+            _this2.$set(_this2.commentList[index], "like", bl);
+            _this2.$set(_this2.commentList[index], "zan", ++num);
           } else {
-            _this3.$common.errorToShow(res.msg);
+            _this2.$common.errorToShow(res.msg);
           }
         });
       } else {
         // if (num > 0) {
-        // 	this.commentList[index].like_num = num - 1;
+        // 	this.commentList[index].zan = num - 1;
         // }
         this.$refs.popup.$refs.pop.open();
       }
@@ -265,35 +262,32 @@ var _this;var _default =
 
     },
     // 店铺信息
-    getShopIndex: function getShopIndex() {var _this4 = this;
+    getShopIndex: function getShopIndex() {var _this3 = this;
       this.$http.getShopIndex({
         // shop_id: null
       }, function (res) {
         if (res.code == 1) {
           // this.shopInfo = Object.assign({},res.data)
-          _this4.shopInfo = res.data;
-          _this4.commentList = res.data.comments.list.slice(0, 2);
+          _this3.shopInfo = res.data;
+          _this3.commentList = res.data.comments.list.slice(0, 2);
         } else {
-          _this4.$common.errorToShow(res.msg);
+          _this3.$common.errorToShow(res.msg);
         }
       });
     },
-    handleClick: function handleClick(val) {
+    _handleClick: function _handleClick(val) {
+      console.log("店铺信息：", val);
       this.page = "shop";
-      var num = 0;
-      var timer = setTimeout(function () {
-        uni.pageScrollTo({
-          scrollTop: 0, //距离页面顶部的距离
-          duration: 300 });
-
-        clearTimeout(timer);
-      }, 100);
-      console.log("scroll", this.scrollTopNum);
+      this.topNum = this.topNum + 0.001;
     },
-    changeTab: function changeTab(item) {var _this5 = this;
+    changeTab: function changeTab(item) {var _this4 = this;
       if (item.page) {
         if (item.page == 'user' && !this.$db.userMobile()) return;
         this.page = item.page;
+        uni.setNavigationBarTitle({
+          title: item.title });
+
+
       } else {
         if (!this.$db.userMobile()) return;
         this.$http.uploadImage(1, function (res, tem) {
@@ -302,7 +296,7 @@ var _this;var _default =
               url: "/pages/index/postComments?src=".concat(tem, "&tem=").concat(res.data.url) });
 
           } else {
-            _this5.$common.errorToShow(res.msg);
+            _this4.$common.errorToShow(res.msg);
           }
         });
       }
@@ -311,15 +305,15 @@ var _this;var _default =
       // 因为数据全都在vuex 动态管理
     },
     // 初始化内容区域的高度
-    init_page_size: function init_page_size() {var _this6 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-                _this6.$nextTick( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var sysInfo, query, tabbarObj, tabbarNodeRes, pageHeight;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+    init_page_size: function init_page_size() {var _this5 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                _this5.$nextTick( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var sysInfo, query, tabbarObj, tabbarNodeRes, pageHeight;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                           sysInfo = uni.getSystemInfoSync();
-                          query = uni.createSelectorQuery().in(_this6);
+                          query = uni.createSelectorQuery().in(_this5);
                           tabbarObj = query.select('#tabbar');_context.next = 5;return (
-                            _this6.syncBoundingClientRect(tabbarObj));case 5:tabbarNodeRes = _context.sent;
+                            _this5.syncBoundingClientRect(tabbarObj));case 5:tabbarNodeRes = _context.sent;
                           pageHeight = sysInfo.windowHeight - tabbarNodeRes.height;
-                          _this6.containerHeight = pageHeight;
-                          _this6.showPage = true;case 9:case "end":return _context.stop();}}}, _callee);})));case 1:case "end":return _context2.stop();}}}, _callee2);}))();
+                          _this5.containerHeight = pageHeight;
+                          _this5.showPage = true;case 9:case "end":return _context.stop();}}}, _callee);})));case 1:case "end":return _context2.stop();}}}, _callee2);}))();
 
     },
     syncBoundingClientRect: function syncBoundingClientRect(nodeobj) {

@@ -1,12 +1,12 @@
 <template>
 	<view :style="showPage ? 'opacity: 1;' : 'opacity: 0;' ">
-		<scroll-view scroll-y="true" class="app-container" :style="'height:'+containerHeight+'px'">
+		<scroll-view scroll-y="true" :scroll-top="topNum" class="app-container" :style="'height:'+containerHeight+'px'">
 			<view v-if="page =='shop'" :class="page=='shop'?'animation-fade':''">
 				<cu-shop :shopIndex="shopInfo" :commentList="commentList" @changeLike="_changeLike" @changeFullText="_changeFullText"
 				 @switchPostComments="_switchPostComments"></cu-shop>
 			</view>
 			<view v-if="page =='user'" :class="page=='user'?'animation-fade':''">
-				<cu-user :userInfo="userInfo" @click="handleClick"></cu-user>
+				<cu-user :userInfo="userInfo" @handleClick="_handleClick"></cu-user>
 			</view>
 		</scroll-view>
 		<!-- pop -->
@@ -42,78 +42,75 @@
 			return {
 				page: "shop",
 				showPage: false,
-				containerHeight: 400,
+				containerHeight: 800,
 				tabbar: [{
-						"iconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_shop.png",
-						"selectedIconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_shop_sel.png",
+						"iconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_shop.png",
+						"selectedIconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_shop_sel.png",
 						"title": "首页",
 						"page": "shop"
 					},
 					{
-						"iconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_photo.png",
-						"selectedIconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_photo.png",
+						"iconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_photo.png",
+						"selectedIconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_photo.png",
 						"title": "",
 						"page": "",
 					},
 					{
-						"iconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_user.png",
-						"selectedIconPath": "http://qakj5dvcb.bkt.clouddn.com/static/tabIcon_user_sel.png",
+						"iconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_user.png",
+						"selectedIconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_user_sel.png",
 						"title": "我的",
 						"page": "user"
 					}
 				],
 				showLoading: false,
 				shopInfo: {},
-				userInfo: {},
+				topNum: 0,
 				commentList: [], // 评论列表
 				popCont: "您今天对此条留言的点赞次数已达上限",
-				scrollTopNum: 0
 			}
 		},
-		onPageScroll(res){
-			this.scrollTopNum = res.scrollTop//距离页面顶部距离
+		watch: {
+			commentList: {
+				handler(newVal, oldVal) {
+					for (let i = 0; i < newVal.length; i++) {
+						if (oldVal[i] != newVal[i]) {
+							this.commentList = newVal;
+						}
+					}
+				},
+				deep: true
+			}
 		},
 		onLoad(options) {
 			if (options.page) this.page = options.page;
 			this.init_page_size();
 			this.getShopIndex();
-			this.getUserInfo();
 		},
 		methods: {
-			getUserInfo() {
-				this.$http.getUserInfo({}, res=>{
-					if (res.code == 1) {
-						this.userInfo  = res.data.userinfo;
-					} else {
-						this.$common.errorToShow(res.msg);
-					}
-				})
-			},
+
 			_changeLike(val) {
 				if (!this.$db.userMobile()) return;
-
 				const {
 					item,
 					bl,
 					index
 				} = val;
-				let num = parseInt(this.commentList[index].like_num);
+				let num = +this.commentList[index].zan;
 				if (bl) {
 					this.$http.postSaveZan({
 						cid: item.id,
 						uid: item.uid
 					}, res => {
 						if (res.code == 1) {
-							this.commentList[index].like = bl;
-							this.commentList[index].like_num = num + 1;
-							this.getShopIndex();
+							this.$set(this.commentList[index], `like`, bl);
+							this.$set(this.commentList[index], `zan`, ++num);
 						} else {
 							this.$common.errorToShow(res.msg);
 						}
 					})
 				} else {
 					// if (num > 0) {
-					// 	this.commentList[index].like_num = num - 1;
+					// 	this.commentList[index].zan = num - 1;
 					// }
 					this.$refs.popup.$refs.pop.open();
 				}
@@ -146,22 +143,19 @@
 					}
 				})
 			},
-			handleClick(val) {
+			_handleClick(val) {
+				console.log("店铺信息：", val)
 				this.page = "shop";
-				const num = 0;
-				const timer = setTimeout(()=>{
-					uni.pageScrollTo({
-					    scrollTop: 0,  //距离页面顶部的距离
-					    duration: 300
-					});
-					clearTimeout(timer)
-				}, 100)
-				console.log("scroll", this.scrollTopNum)
+				this.topNum = this.topNum + 0.001;
 			},
 			changeTab(item) {
 				if (item.page) {
 					if (item.page == 'user' && !this.$db.userMobile()) return;
 					this.page = item.page;
+					uni.setNavigationBarTitle({
+						title:item.title
+					})
+					
 				} else {
 					if (!this.$db.userMobile()) return;
 					this.$http.uploadImage(1, (res, tem) => {

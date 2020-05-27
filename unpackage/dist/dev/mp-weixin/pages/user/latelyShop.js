@@ -149,6 +149,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 {
   components: {
     foot: foot,
@@ -162,11 +163,19 @@ __webpack_require__.r(__webpack_exports__);
   },
   onLoad: function onLoad(options) {
     this.total = options.total || "";
+    uni.setNavigationBarTitle({
+      title: "\u6211\u53BB\u8FC7\u7684\u5E97(".concat(this.total, ")") });
+
   },
   created: function created() {
     this.postBeenShop();
   },
   methods: {
+    _switchShopHome: function _switchShopHome() {
+      uni.navigateTo({
+        url: "/pages/home/home" });
+
+    },
     navBack: function navBack() {
       uni.navigateBack({
         delta: 1 });

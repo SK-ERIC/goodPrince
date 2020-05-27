@@ -14,9 +14,9 @@
 								</view>
 							</view>
 							<view class="item-r">
-								<image @click.stop="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/liked.png"
+								<image @click.stop="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
 								 mode=""></image>
-								<image @click.stop="_changeLike(item, true, index)" v-else class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/like.png"
+								<image @click.stop="_changeLike(item, true, index)" v-else class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/like.png"
 								 mode=""></image>
 								<text class="text">{{ item.zan }}</text>
 							</view>
@@ -57,6 +57,18 @@
 				default () {
 					return []
 				}
+			}
+		},
+		watch: {
+			photoList: {
+				handler(newVal, oldVal) {
+					for (let i = 0; i < newVal.length; i++) {
+						if (oldVal[i] != newVal[i]) {
+							this.photoList = newVal;
+						}
+					}
+				},
+				deep: true
 			}
 		},
 		methods: {

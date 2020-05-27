@@ -210,6 +210,9 @@ __webpack_require__.r(__webpack_exports__);
       this.imgList.push(options.src);
       this.filePath.push(options.tem);
     }
+    uni.setNavigationBarTitle({
+      title: this.topLeftText });
+
   },
   methods: {
     chooseImage: function chooseImage() {var _this = this;
@@ -282,17 +285,10 @@ __webpack_require__.r(__webpack_exports__);
 
       this.$http.postPushComment(params, function (res) {
         if (res.code == 200) {
-          uni.showToast({
-            icon: "success",
-            title: "评论成功",
-            mask: true });
 
-          setTimeout(function () {
-            uni.navigateTo({
-              url: "/pages/home/home" });
+          uni.navigateTo({
+            url: "/pages/index/success" });
 
-            uni.hideToast();
-          }, 1000);
         } else {
           _this3.$common.errorToShow(res.msg);
         }

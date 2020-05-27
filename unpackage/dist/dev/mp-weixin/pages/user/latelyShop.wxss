@@ -25,8 +25,15 @@
 /* 透明度 */
 /* 文章场景相关 */
 .container.data-v-94d7fc74 {
+  padding-top: 10rpx;
   background-color: #F4F4F6;
-  padding-top: 60rpx;
+  padding-bottom: 144rpx;
+  min-height: 100vh;
+  position: relative;
+}
+.container .status_bar.data-v-94d7fc74 {
+  height: 25px;
+  width: 100%;
 }
 .container .navBack.data-v-94d7fc74 {
   display: -webkit-inline-box;

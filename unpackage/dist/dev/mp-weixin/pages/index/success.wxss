@@ -27,7 +27,10 @@
 .container.data-v-51381f82 {
   position: relative;
   min-height: 100vh;
-  padding-top: 60rpx;
+}
+.container .status_bar.data-v-51381f82 {
+  height: 25px;
+  width: 100%;
 }
 .container .navBack.data-v-51381f82 {
   display: -webkit-inline-box;

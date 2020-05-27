@@ -26,7 +26,7 @@
 /* 文章场景相关 */
 .container.data-v-f242a908 {
   min-height: 100vh;
-  background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/login_bg.png");
+  background-image: url("https://wxhyx-cdn.aisspc.cn/static/login_bg.png");
   background-size: 100% 100%;
   position: relative;
 }
@@ -206,6 +206,8 @@
   margin: 0 auto;
 }
 .container .btm-section.data-v-f242a908 {
+  background-image: url("https://wxhyx-cdn.aisspc.cn/static/cm_btm_bg.png");
+  background-size: 100% 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -213,18 +215,13 @@
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  border-top: 1rpx solid #414449;
-  width: 680rpx;
   position: absolute;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
-  bottom: 80rpx;
-  padding-top: 45rpx;
-  font-size: 26rpx;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding-top: 40rpx;
+  height: 188rpx;
+  font-size: 22rpx;
   color: #6F7984;
   line-height: 40rpx;
   font-family: Source Han Sans CN;

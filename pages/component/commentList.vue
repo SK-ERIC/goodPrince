@@ -23,9 +23,9 @@
 							<uni-rate disabled="true" :size="18" :max="5" :value="item.rate" />
 						</view>
 						<view class="rate-inner-r">
-							<image @click="_changeLike(false, index)" v-if="item.like" class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/liked.png"
+							<image @click="_changeLike(false, index)" v-if="item.like" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
 							 mode=""></image>
-							<image @click="_changeLike(true, index)" v-else class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/like.png"
+							<image @click="_changeLike(true, index)" v-else class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/like.png"
 							 mode=""></image>
 							<text class="text">{{ item.like_num }}</text>
 						</view>
@@ -52,7 +52,7 @@
 				</view>
 			</view>
 			<view v-if="list.length==0" class="nthing-section">
-				<image class="nthing-img" src="http://qakj5dvcb.bkt.clouddn.com/static/nthing.png" mode=""></image>
+				<image class="nthing-img" src="https://wxhyx-cdn.aisspc.cn/static/nthing.png" mode=""></image>
 				<text class="nthing-text">还没有顾客评论哦～</text>
 				<!-- <view class="cu-btn nthing-btn" @click="_switchPostComments">
 					我来说个话

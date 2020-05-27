@@ -195,6 +195,18 @@ var _default2 =
       } } },
 
 
+  watch: {
+    photoList: {
+      handler: function handler(newVal, oldVal) {
+        for (var i = 0; i < newVal.length; i++) {
+          if (oldVal[i] != newVal[i]) {
+            this.photoList = newVal;
+          }
+        }
+      },
+      deep: true } },
+
+
   methods: {
     _switchShopHome: function _switchShopHome(item) {
       this.$emit("switchShopHome", item);

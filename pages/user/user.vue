@@ -1,20 +1,20 @@
 <template>
 	<view class="container">
-
+	
 		<!-- head -->
 		<view class="head-section" :class="{safearea: isShowSafearea}">
 			<view class="navBack">
 				<!-- <text class="cuIcon-back"></text> -->
-				<text class="title">{{ topLeftText }}</text>
+				<!-- <text class="title">{{ topLeftText }}</text> -->
 			</view>
-			<image class="img-bg" src="http://qakj5dvcb.bkt.clouddn.com/static/user_head_bg.png" mode=""></image>
+			<image class="img-bg" src="https://wxhyx-cdn.aisspc.cn/static/user_head_bg.png" mode=""></image>
 			<view class="set-inner">
 				<view class="set-item-l" @click="_switchToMsg">
-					<image src="http://qakj5dvcb.bkt.clouddn.com/static/user_msg.png" mode=""></image>
+					<image src="https://wxhyx-cdn.aisspc.cn/static/user_msg.png" mode=""></image>
 					<text>99+</text>
 				</view>
 				<view class="set-item-r" @click="_switchEditInfo">
-					<image src="http://qakj5dvcb.bkt.clouddn.com/static/user_set.png" mode=""></image>
+					<image src="https://wxhyx-cdn.aisspc.cn/static/user_set.png" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -70,7 +70,8 @@
 				</view>
 			</view>
 			<!-- 列表 -->
-			<lately-photo-list @switchShopHome="_switchShopHome" :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
+			<lately-photo-list @switchShopHome="_switchShopHome" :photoList="photoList" @changeLike="_changeLike"
+			 @changeFullText="_changeFullText"></lately-photo-list>
 		</view>
 
 		<!-- foot -->
@@ -94,37 +95,55 @@
 			latelyShopList,
 			latelyPhotoList,
 			foot,
-			pop
-		},
-		props: {
-			userInfo: {
-				type: Object,
-				default: {}
-			}
+			pop,
 		},
 		data() {
 			return {
 				topLeftText: "我的个人中心",
 				latelyList: [],
 				photoList: [],
+				userInfo: {},
 				popCont: "您今天对此条留言的点赞次数已达上限",
-				isShowSafearea: false 
+				isShowSafearea: false,
+				
+			}
+		},
+		watch: {
+			photoList: {
+				handler(newVal, oldVal) {
+					for (let i = 0; i < newVal.length; i++) {
+						if (oldVal[i] != newVal[i]) {
+							this.photoList = newVal;
+						}
+					}
+				},
+				deep: true
 			}
 		},
 		created() {
-			this.postCommentShop();
-			this.postBeenShop();
+			this.getUserInfo();
 		},
 		mounted() {
-			this.isShowSafearea = this.$common.checkPlatFromFunc();
+			// this.isShowSafearea = this.$common.checkPlatFromFunc();
 		},
 		methods: {
+			getUserInfo() {
+				this.$http.getUserInfo({}, res => {
+					if (res.code == 1) {
+						this.userInfo = res.data.userinfo;
+						this.postCommentShop();
+						this.postBeenShop();
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+			},
 			postCommentShop() {
 				this.$http.postCommentShop({
 					user_id: this.userInfo.user_id
-				}, res=>{
-					if(res.code == 1) {
-						this.photoList = res.data;
+				}, res => {
+					if (res.code == 1) {
+						this.photoList = res.data.slice(0,1);
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -133,8 +152,8 @@
 			postBeenShop() {
 				this.$http.postBeenShop({
 					user_id: this.userInfo.user_id
-				}, res=>{
-					if(res.code == 1) {
+				}, res => {
+					if (res.code == 1) {
 						this.latelyList = res.data;
 					} else {
 						this.$common.errorToShow(res.msg);
@@ -149,19 +168,28 @@
 				})
 			},
 			_changeLike(val) {
-				console.log("user--val", val)
 				const {
 					item,
 					bl,
 					index
 				} = val;
-				let num = parseInt(this.photoList[index].like_num);
+				let num = +this.photoList[index].zan;
+
 				if (bl) {
-					this.photoList[index].like = bl;
-					this.photoList[index].like_num = num + 1;
+					this.$http.postSaveZan({
+						cid: item.id,
+						uid: item.uid
+					}, res => {
+						if (res.code == 1) {
+							this.$set(this.photoList[index], `like`, bl);
+							this.$set(this.photoList[index], `zan`, ++num);
+						} else {
+							this.$common.errorToShow(res.msg);
+						}
+					})
 				} else {
 					// if (num > 0) {
-					// 	this.photoList[index].like_num = num - 1;
+					// 	this.photoList[index].zan = num - 1;
 					// }
 					this.$refs.popup.$refs.pop.open();
 				}
@@ -172,9 +200,8 @@
 				} = val;
 				const index = e.currentTarget.dataset.index;
 				const str = e.currentTarget.dataset.text;
-				for (let i = 0; i < this.photoList.length; i++) {
-					this.photoList[index].fullText = str == "全文" ? "收起全文" : "全文";
-				}
+				this.photoList[index].full_text = str == "全文" ? "收起全文" : "全文";
+				
 			},
 			_switchToMsg() {
 				uni.navigateTo({
@@ -198,9 +225,10 @@
 			},
 
 			_switchShopHome(val) {
-				this.$emit("click", val)
+				this.$emit("handleClick", val)
+
 				// const id = item.id
-		
+
 				// uni.navigateTo({
 				// 	url: "/pages/home/home?page=shop",
 				// })
@@ -211,25 +239,26 @@
 
 <style lang="scss" scoped>
 	@import '@/style/mixin.scss';
+
 	.container {
 		background-color: #F8F8FA;
-		
 
 		// head
 		.head-section {
 			width: 100%;
-			height: 344rpx;
+			height: 300rpx;
 			// height: calc(344rpx + var(--status-bar-height));
 			// height: 370rpx;
 			position: relative;
-			&.safearea{
+
+			&.safearea {
 				height: 380rpx;
 			}
 
 			.navBack {
 				position: absolute;
 				left: 27rpx;
-				top: 60rpx;
+				top: 75rpx;
 				display: inline-flex;
 				justify-content: flex-start;
 				align-items: center;
@@ -250,7 +279,8 @@
 			.set-inner {
 				position: absolute;
 				right: 47rpx;
-				bottom: 150rpx;
+				// bottom: 145rpx;
+				top: 50rpx;
 				@include flexSB;
 
 				.set-item-l {

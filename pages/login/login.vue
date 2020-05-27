@@ -2,7 +2,7 @@
 	<view class="container">
 
 		<view class="logo">
-			<image src="http://qakj5dvcb.bkt.clouddn.com/static/logo.png" mode=""></image>
+			<image src="https://wxhyx-cdn.aisspc.cn/static/logo.png" mode=""></image>
 		</view>
 
 		<view class="form-section">
@@ -28,8 +28,10 @@
 
 		<!-- btm -->
 		<view class="btm-section text-center">
-			<text>主办单位</text>
-			<text>无锡市梁溪区市场监督局 无锡市梁溪区通江街道</text>
+			<text>无锡好印象-经营评价平台 主办单位</text>
+			<text>
+				无锡市梁溪区通江街道 无锡市梁溪区市场监督管理局通江分局
+			</text>
 		</view>
 
 	</view>
@@ -99,6 +101,10 @@
 			},
 			// 获取用户电话
 			getPhoneNumber(e) {
+				uni.showLoading({
+					title: "获取中...",
+					mask: true
+				})
 				let {
 					errMsg,
 					iv,
@@ -122,7 +128,7 @@
 									title: "授权成功！"
 								})
 								this.mobile.phone = res.data.mobile;
-								uni.hideLoading();
+								uni.hideToast();
 							}
 						}).catch(err => {
 							console.log(err)
@@ -184,7 +190,7 @@
 
 	.container {
 		min-height: 100vh;
-		background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/login_bg.png");
+		background-image: url("https://wxhyx-cdn.aisspc.cn/static/login_bg.png");
 		background-size: 100% 100%;
 		position: relative;
 
@@ -354,16 +360,16 @@
 
 
 		.btm-section {
+			background-image: url("https://wxhyx-cdn.aisspc.cn/static/cm_btm_bg.png");
+			background-size: 100% 100%;
 			@include flexY;
-			@include flexJ;
-			border-top: 1rpx solid #414449;
-			width: 680rpx;
 			position: absolute;
-			left: 50%;
-			transform: translateX(-50%);
-			bottom: 80rpx;
-			padding-top: 45rpx;
-			font-size: 26rpx;
+			width: 100%;
+			left: 0;
+			bottom: 0;
+			padding-top: 40rpx;
+			height: 188rpx;
+			font-size: 22rpx;
 			color: #6F7984;
 			line-height: 40rpx;
 			font-family: Source Han Sans CN;

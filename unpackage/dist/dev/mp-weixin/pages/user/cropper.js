@@ -92,7 +92,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   "tui-image-cropper": function() {
-    return __webpack_require__.e(/*! import() | components/tui-image-cropper/tui-image-cropper */ "components/tui-image-cropper/tui-image-cropper").then(__webpack_require__.bind(null, /*! @/components/tui-image-cropper/tui-image-cropper.vue */ 183))
+    return __webpack_require__.e(/*! import() | components/tui-image-cropper/tui-image-cropper */ "components/tui-image-cropper/tui-image-cropper").then(__webpack_require__.bind(null, /*! @/components/tui-image-cropper/tui-image-cropper.vue */ 190))
   }
 }
 var render = function() {
@@ -132,7 +132,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tuiImageCropper = function tuiImageCropper() {__webpack_require__.e(/*! require.ensure | components/tui-image-cropper/tui-image-cropper */ "components/tui-image-cropper/tui-image-cropper").then((function () {return resolve(__webpack_require__(/*! @/components/tui-image-cropper/tui-image-cropper.vue */ 183));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var tuiImageCropper = function tuiImageCropper() {__webpack_require__.e(/*! require.ensure | components/tui-image-cropper/tui-image-cropper */ "components/tui-image-cropper/tui-image-cropper").then((function () {return resolve(__webpack_require__(/*! @/components/tui-image-cropper/tui-image-cropper.vue */ 190));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -170,7 +170,6 @@ __webpack_require__.r(__webpack_exports__);
       // 	urls: [e.url] // 需要预览的图片http链接列表
       // });
       var userinfo = this.$db.get("userinfo") || "";
-      console.log("e.url", e);
       uni.uploadFile({
         url: 'https://wxhyx.aisspc.cn/addons/qiniu/index/upload',
         filePath: e.url,
@@ -187,10 +186,9 @@ __webpack_require__.r(__webpack_exports__);
 
         //formData:{},传递参数
         success: function success(uploadFileRes) {
-          console.log("uploadFileRes:", uploadFileRes.data, "backUpload:", backUpload);
           var backUpload = JSON.parse(uploadFileRes.data);
           uni.navigateTo({
-            url: "./info?src=".concat(e.url, "&tem=").concat(backUpload) });
+            url: "./info?src=".concat(e.url, "&tem=").concat(backUpload.data.url) });
 
           //自定义操作
         },

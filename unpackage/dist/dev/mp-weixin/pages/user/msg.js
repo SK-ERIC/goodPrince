@@ -154,16 +154,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 var _default =
 {
   data: function data() {
     return {
       msgList: [{
         id: 0,
-        logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
+        logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
         title: "系统消息",
         desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
         date: "刚刚",
@@ -171,7 +168,7 @@ var _default =
 
       {
         id: 1,
-        logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
+        logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
         title: "活动奖励",
         desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
         date: "5月6日",
@@ -179,7 +176,7 @@ var _default =
 
       {
         id: 2,
-        logo: "http://qakj5dvcb.bkt.clouddn.com/static/logo.png",
+        logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
         title: "热门活动",
         desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
         date: "5月6日",

@@ -4,7 +4,7 @@
 			<!-- 这里是状态栏 -->
 			<view class="shopName">
 				<text class="name">{{ shopIndex.shop_title }}</text>
-				<image class="img" v-if="shopIndex.party_member" src="http://qakj5dvcb.bkt.clouddn.com/static/model.png" mode=""></image>
+				<image class="img" v-if="shopIndex.party_member" src="https://wxhyx-cdn.aisspc.cn/static/model.png" mode=""></image>
 			</view>
 
 			<!-- 商户图片 -->
@@ -13,7 +13,7 @@
 					<view class="pic" v-for="(item, index) in shopImg" :key="index" :data-src="shopImg[index].image_url" @click="previewImage(shopImg, $event)">
 						<image class="img" :src="item.image_url" mode=""></image>
 						<!-- <view class="tip-section" v-if="index==0">
-							<image class="tip-img" src="http://qakj5dvcb.bkt.clouddn.com/static/icon-t1.png" mode=""></image>
+							<image class="tip-img" src="https://wxhyx-cdn.aisspc.cn/static/icon-t1.png" mode=""></image>
 							<text>{{ shopInfo.shopPicNum }}</text>
 						</view> -->
 					</view>
@@ -25,21 +25,21 @@
 		<view class="address-section">
 			<view class="address-item-l">
 				<view class="address-inner">
-					<image class="img" src="http://qakj5dvcb.bkt.clouddn.com/static/icon-gps.png" mode=""></image>
+					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-gps.png" mode=""></image>
 					<view class="address-wrap">
 						<text class="type-bold">店家地址 ·</text>
 						<text>{{ shopIndex.shop_address }}</text>
 					</view>
 				</view>
 				<view class="address-inner">
-					<image class="img" src="http://qakj5dvcb.bkt.clouddn.com/static/icon-time.png" mode=""></image>
+					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-time.png" mode=""></image>
 					<view class="address-wrap">
 						<text class="type-bold">营业时间 ·</text>
 						<text>{{ shopIndex.shop_open_add_time }} - {{ shopIndex.shop_open_end_time }}</text>
 					</view>
 				</view>
 				<view class="address-inner">
-					<image class="img" src="http://qakj5dvcb.bkt.clouddn.com/static/icon-eat.png" mode=""></image>
+					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-eat.png" mode=""></image>
 					<view class="address-wrap">
 						<text class="type-bold">主营内容 ·</text>
 						<text>{{ shopIndex.shop_content }}</text>
@@ -80,7 +80,7 @@
 			<view class="rate-inner">
 				<view class="rate-item-l">
 					<text>顾客满意</text>
-					<uni-rate disabled="true" :size="18" :max="5" color="#D5D5D5" active-color="#56789F" :value="shopIndex.score" />
+					<uni-rate disabled="true" :size="18" :max="5" :value="shopIndex.score" />
 				</view>
 				<view class="rate-item-r">
 					{{ shopIndex.score }}分<text>({{ shopIndex.comments.counts }})</text>
@@ -89,7 +89,7 @@
 			<view class="rate-inner">
 				<view class="rate-item-l">
 					<text>综合评分</text>
-					<uni-rate disabled="true" :size="18" :max="5" color="#D5D5D5" active-color="#56789F" :value="shopIndex.total_score" />
+					<uni-rate disabled="true" :size="18" :max="5" :value="shopIndex.total_score" />
 				</view>
 				<view class="rate-item-r">
 					{{ shopIndex.total_score }}分
@@ -127,9 +127,9 @@
 								<uni-rate disabled="true" :size="18" :max="5" :value="item.score_show" />
 							</view>
 							<view class="rate-inner-r">
-								<image @click="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/liked.png"
+								<image @click="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
 								 mode=""></image>
-								<image @click="_changeLike(item, true, index)" v-else class="like-icon" src="http://qakj5dvcb.bkt.clouddn.com/static/like.png"
+								<image @click="_changeLike(item, true, index)" v-else class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/like.png"
 								 mode=""></image>
 								<text class="text">{{ item.zan }}</text>
 							</view>
@@ -156,7 +156,7 @@
 					</view>
 				</view>
 				<view v-if="shopIndex.comments.counts==0" class="nthing-section">
-					<image class="nthing-img" src="http://qakj5dvcb.bkt.clouddn.com/static/nthing.png" mode=""></image>
+					<image class="nthing-img" src="https://wxhyx-cdn.aisspc.cn/static/nthing.png" mode=""></image>
 					<text class="nthing-text">这家店铺还没有顾客评论哦～</text>
 					<view class="cu-btn nthing-btn" @click="_switchPostComments">
 						我来说个话
@@ -166,7 +166,7 @@
 		</view>
 
 		<!-- foot -->
-		<foot></foot>
+		<foot show></foot>
 
 	</view>
 </template>
@@ -215,21 +215,25 @@
 				}
 			},
 		},
-		mounted() {
-			const user_id = this.$db.get("userinfo").user_id || '';
-			const shop_id = this.shopIndex.id;
-			this.$http.postAddBeenShop({
-				user_id,
-				shop_id
-			}, res => {
-				if(res.code == 1){
-					
-				} else {
-					this.$common.errorToShow(res.msg);
-				}
-			})
+		beforeUpdate() {
+			if (this.shopIndex.id) this.postAddBeenShop();
 		},
 		methods: {
+			postAddBeenShop() {
+				console.log("this.shopIndex.id", this.shopIndex.id)
+				const user_id = this.$db.get("userinfo").user_id || '';
+				const shop_id = this.shopIndex.id || "";
+				this.$http.postAddBeenShop({
+					user_id,
+					shop_id
+				}, res => {
+					if (res.code == 1) {
+
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+			},
 			isShowFullText(v) {
 				return v.split("").length >= 56
 			},
@@ -270,12 +274,12 @@
 		background-color: #fff;
 
 		.status_bar {
-			height: 366rpx;
+			height: 306rpx;
 			@include flexY;
 			justify-content: space-between;
 
 			&.model {
-				background-image: url("http://qakj5dvcb.bkt.clouddn.com/static/model_bg.png");
+				background-image: url("https://wxhyx-cdn.aisspc.cn/static/model_bg.png");
 				background-size: 100% 100%;
 			}
 
@@ -283,7 +287,6 @@
 				@include flexX;
 				justify-content: flex-start;
 				margin-left: 30rpx;
-				margin-top: 70rpx;
 
 				.name {
 					font-size: 36rpx;

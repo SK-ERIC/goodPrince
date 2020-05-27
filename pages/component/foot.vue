@@ -1,13 +1,13 @@
 <template>
 	<!-- 底部 -->
-	<view class="bottom-section" :class="{position}">
-		<view class="tip-title" v-show="btm" :class="{white: color}">
+	<view class="bottom-section" :class="[{position}, {lately}]">
+		<view class="tip-title" :class="{white: color}" v-if="btm && (!show || !tip)">
 			<text class="text">
 				啊欧，快到底了哦
 			</text>
 		</view>
-		<view class="comTop" v-show="!btm || color"></view>
-		<view class="code-wrap">
+		<view class="comTop" v-if="(!btm || color) && !show"></view>
+		<view class="code-wrap" v-if="!show">
 			<view class="code-inner text-center" v-for="(item, index) in codeList" :key="index">
 				<text class="text">{{ item.titles }}</text>
 				<image class="code-img" :src="item.image_ewm" mode=""></image>
@@ -17,20 +17,29 @@
 				</view>
 			</view>
 		</view>
-		<view class="supervise-wrap">
-			<image class="icon-phone" src="http://qakj5dvcb.bkt.clouddn.com/static/icon-phone.png" mode=""></image>
+		<view class="supervise-wrap" v-if="!show">
+			<image class="icon-phone" src="https://wxhyx-cdn.aisspc.cn/static/icon-phone.png" mode=""></image>
 			<text>市民监督电话：{{ footInfo.tel }}</text>
 		</view>
 		<!-- 版权 -->
-		<view class="copyright text-center">
-			{{ footInfo.copyright }}
+		<view class="copyright text-center" v-if="false">
+			<!-- {{ footInfo.copyright }} -->
+			通江好印象-经营评价平台主办单位
 		</view>
 		<!-- 备案 -->
-		<view class="recordNo text-center">
-			{{ footInfo.beian }} 公安备案号：{{ footInfo.record }} 网站标识码：{{ footInfo.identification }}
+		<view class="recordNo text-center" v-if="false">
+			<!-- {{ footInfo.beian }} 公安备案号：{{ footInfo.record }} 网站标识码：{{ footInfo.identification }} -->
+			无锡市梁溪区通江街道 无锡市梁溪区市场监督管理局通江分局
+		</view>
+		
+		<view class="com_btm text-center" v-if="!hide">
+			<text>无锡好印象-经营评价平台 主办单位</text>
+			<text>
+				无锡市梁溪区通江街道 无锡市梁溪区市场监督管理局通江分局
+			</text>
 		</view>
 		<view class="government">
-			<image :src="footInfo.gover" mode=""></image>
+			<!-- <image :src="footInfo.gover" mode=""></image> -->
 		</view>
 	</view>
 
@@ -40,15 +49,38 @@
 	export default {
 		name: "foot",
 		props: {
+			// 是否展示tip提示(啊欧，快到底了哦)
 			"btm": {
 				type: Boolean,
 				default: true
 			},
+			// 顶部tip提示（啊欧，快到底了哦）背景是否展示white 
 			"color": {
 				type: Boolean,
 				default: false
 			},
+			// 是否使用定位布局
 			"position": {
+				type: Boolean,
+				default: false
+			},
+			// 页面
+			"show": {
+				type: Boolean,
+				default: false,
+			},
+			// 隐藏
+			"hide": {
+				type: Boolean,
+				default: false,
+			},
+			// 隐藏二维码等等
+			"tip": {
+				type: Boolean,
+				default: false
+			},
+			// lately
+			"lately": {
 				type: Boolean,
 				default: false
 			}
@@ -67,7 +99,7 @@
 			getFootInfo() {
 				this.$http.getFootInfo({}, res => {
 					if (res.code == 1) {
-						this.codeList = res.data;
+						this.codeList = res.data.reverse();
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -97,6 +129,11 @@
 			position: absolute;
 			left: 0;
 			bottom: 0;
+		}
+		&.lately{
+			// position: fixed;
+			// left: 0;
+			// bottom: 0;
 		}
 
 		.tip-title {
@@ -153,16 +190,17 @@
 			.code-inner {
 				@include flexY;
 				@include flexA;
-				width: 260rpx;
+				width: 300rpx;
 
 				&:first-child {
-					margin-right: 60rpx;
+					margin-right: 30rpx;
 				}
 
 				.text {
 					font-size: 24rpx;
 					color: #333E49;
 					font-weight: 400;
+					white-space: nowrap;
 				}
 
 				.code-img {
@@ -204,11 +242,23 @@
 		}
 
 		.recordNo {
-			font-size: 16rpx;
+			// font-size: 16rpx;
+			font-size: 20rpx;
 			color: #8B8B8B;
 			font-weight: 400;
 			margin-top: 15rpx;
 			padding: 0 32rpx;
+		}
+		
+		.com_btm{
+			background-image: url("https://wxhyx-cdn.aisspc.cn/static/cm_btm_bg.png");
+			background-size: 100% 100%;
+			@include flexY;
+			padding-top: 40rpx;
+			font-size: 20rpx;
+			color: #BEBEBE;
+			line-height: 30rpx;
+			font-weight: 400;
 		}
 
 		.government {

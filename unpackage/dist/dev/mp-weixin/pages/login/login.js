@@ -172,6 +172,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
 {
@@ -235,7 +237,11 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
       });
     },
     // 获取用户电话
-    getPhoneNumber: function getPhoneNumber(e) {var _this2 = this;var _e$detail =
+    getPhoneNumber: function getPhoneNumber(e) {var _this2 = this;
+      uni.showLoading({
+        title: "获取中...",
+        mask: true });var _e$detail =
+
 
 
 
@@ -259,7 +265,7 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
                 title: "授权成功！" });
 
               _this2.mobile.phone = res.data.mobile;
-              uni.hideLoading();
+              uni.hideToast();
             }
           }).catch(function (err) {
             console.log(err);

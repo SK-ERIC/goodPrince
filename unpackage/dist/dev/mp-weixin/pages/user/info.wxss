@@ -81,6 +81,9 @@
   color: #142340;
   margin-right: 8rpx;
 }
+.container .info-section .info-item-r input.data-v-569a0f6b {
+  text-align: right;
+}
 .container .info-section .info-item-r.type-picker.data-v-569a0f6b {
   display: -webkit-box;
   display: -webkit-flex;

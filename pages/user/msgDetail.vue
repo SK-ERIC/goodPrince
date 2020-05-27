@@ -1,15 +1,16 @@
 <template>
 	<view class="container">
-		<view class="navBack" @click.stop="navBack">
+		
+		<!-- <view class="navBack" @click.stop="navBack">
 			<text class="cuIcon-back"></text>
 			<text>消息详情</text>
-		</view>
+		</view> -->
 		<view class="msg-section">
 			<text>{{ msg }}</text>
 		</view>
 
 		<!-- foot -->
-		<foot color></foot>
+		<foot color hide position></foot>
 	</view>
 </template>
 
@@ -33,7 +34,7 @@
 			}
 		},
 		onLoad(option) {
-			console.log("option", option)
+			
 		},
 		methods: {
 			navBack() {
@@ -49,7 +50,14 @@
 	@import '@/style/mixin.scss';
 
 	.container {
-		padding-top: 60rpx;
+		position: relative;
+		min-height: 100vh;
+		padding-bottom: 470rpx;
+
+		.status_bar {
+			height: var(--status-bar-height);
+			width: 100%;
+		}
 
 		.navBack {
 			display: inline-flex;

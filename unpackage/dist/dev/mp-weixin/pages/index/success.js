@@ -152,7 +152,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 {
   components: {
     foot: foot },
@@ -165,7 +164,7 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     navBack: function navBack() {
       uni.switchTab({
-        url: "/pages/index/index" });
+        url: "/pages/home/home" });
 
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))

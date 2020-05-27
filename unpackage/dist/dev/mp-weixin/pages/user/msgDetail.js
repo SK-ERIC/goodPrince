@@ -176,6 +176,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 {
   components: {
     foot: foot },
@@ -194,7 +195,7 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   onLoad: function onLoad(option) {
-    console.log("option", option);
+
   },
   methods: {
     navBack: function navBack() {

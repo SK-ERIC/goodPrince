@@ -154,7 +154,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _mescrollMixins = _interopRequireDefault(__webpack_require__(/*! @/components/mescroll-uni/mescroll-mixins.js */ 116));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
 //
 //
 //
@@ -180,18 +184,36 @@ var _mescrollMixins = _interopRequireDefault(__webpack_require__(/*! @/component
 var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var pop = function pop() {__webpack_require__.e(/*! require.ensure | pages/component/pop */ "pages/component/pop").then((function () {return resolve(__webpack_require__(/*! ../component/pop */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var latelyPhotoList = function latelyPhotoList() {__webpack_require__.e(/*! require.ensure | pages/component/latelyPhotoList */ "pages/component/latelyPhotoList").then((function () {return resolve(__webpack_require__(/*! ../component/latelyPhotoList */ 162));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { mixins: [_mescrollMixins.default], // 使用mixin (在main.js注册全局组件)
   components: { foot: foot, pop: pop, latelyPhotoList: latelyPhotoList }, data: function data() {return { total: "", photoList: [], downOption: { auto: false //是否在初始化后,自动执行downCallback; 默认true
       }, upOption: { empty: { use: true, // 是否显示空布局
-          icon: "http://qakj5dvcb.bkt.clouddn.com/static/nthing.png", // 图标路径
+          icon: "https://wxhyx-cdn.aisspc.cn/static/nthing.png", // 图标路径
           tip: '~ 暂无相关数据 ~', // 提示
           btnText: '我来说个话' // 按钮
           // fixed: false, // 是否使用fixed定位,默认false; 配置fixed为true,以下的top和zIndex才生效 (transform会使fixed失效,最终会降级为absolute)
           // top: "100rpx", // fixed定位的top值 (完整的单位值,如 "10%"; "100rpx")
           // zIndex: 99 // fixed定位z-index值
-        } } };}, onLoad: function onLoad(options) {this.total = options.total || "";
+        } } };}, watch: { photoList: { handler: function handler(newVal, oldVal) {for (var i = 0; i < newVal.length; i++) {
+          if (oldVal[i] != newVal[i]) {
+            this.photoList = newVal;
+          }
+        }
+      },
+      deep: true } },
+
+
+  onLoad: function onLoad(options) {
+    this.total = options.total || "";
+    uni.setNavigationBarTitle({
+      title: "\u6211\u62CD\u8FC7\u7684\u5E97(".concat(this.total, ")") });
+
   },
   created: function created() {
     this.postCommentShop();
   },
   methods: {
+    _switchShopHome: function _switchShopHome() {
+      uni.navigateTo({
+        url: "/pages/home/home" });
+
+    },
     postCommentShop: function postCommentShop() {var _this = this;
       var user_id = this.$db.get("userinfo").user_id;
       this.$http.postCommentShop({
@@ -255,15 +277,8 @@ var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/com
     _changeLike: function _changeLike(val) {
       this.$emit('changeLike', val);
     },
-    _changeFullText: function _changeFullText(val) {var
-
-      e =
-      val.e;
-      var index = e.currentTarget.dataset.index;
-      var str = e.currentTarget.dataset.text;
-      for (var i = 0; i < this.photoList.length; i++) {
-        this.photoList[index].fullText = str == "全文" ? "收起全文" : "全文";
-      }
+    _changeFullText: function _changeFullText(val) {
+      this.$emit('changeFullText', val);
     },
     navBack: function navBack() {
       uni.navigateBack({

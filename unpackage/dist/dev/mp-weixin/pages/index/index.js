@@ -351,21 +351,25 @@ __webpack_require__.r(__webpack_exports__);
       }
     } },
 
-  mounted: function mounted() {var _this = this;
-    var user_id = this.$db.get("userinfo").user_id || '';
-    var shop_id = this.shopIndex.id;
-    this.$http.postAddBeenShop({
-      user_id: user_id,
-      shop_id: shop_id },
-    function (res) {
-      if (res.code == 1) {
-
-      } else {
-        _this.$common.errorToShow(res.msg);
-      }
-    });
+  beforeUpdate: function beforeUpdate() {
+    if (this.shopIndex.id) this.postAddBeenShop();
   },
   methods: {
+    postAddBeenShop: function postAddBeenShop() {var _this = this;
+      console.log("this.shopIndex.id", this.shopIndex.id);
+      var user_id = this.$db.get("userinfo").user_id || '';
+      var shop_id = this.shopIndex.id || "";
+      this.$http.postAddBeenShop({
+        user_id: user_id,
+        shop_id: shop_id },
+      function (res) {
+        if (res.code == 1) {
+
+        } else {
+          _this.$common.errorToShow(res.msg);
+        }
+      });
+    },
     isShowFullText: function isShowFullText(v) {
       return v.split("").length >= 56;
     },

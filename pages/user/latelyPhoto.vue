@@ -1,20 +1,22 @@
 <template>
 	<view class="container">
-		<view class="navBack" @click.stop="navBack">
+
+		<!-- <view class="navBack" @click.stop="navBack">
 			<text class="cuIcon-back"></text>
 			<text>我拍过的店 ({{ total }})</text>
-		</view>
+		</view> -->
 
 		<!-- <mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback"> -->
 		<!-- <mescroll-body ref="mescrollRef" @init="mescrollInit"> -->
 
-			<!-- list -->
-			<lately-photo-list :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
+		<!-- list -->
+		<lately-photo-list @switchShopHome="_switchShopHome" :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
 
 		<!-- </mescroll-body> -->
 
 		<!-- foot -->
-		<foot></foot>
+		<!-- <foot tip show lately position></foot> -->
+		<foot show position hide></foot>
 		<!-- pop -->
 		<pop ref="popup" :popCont="popCont"></pop>
 
@@ -43,7 +45,7 @@
 				upOption: {
 					empty: {
 						use: true, // 是否显示空布局
-						icon: "http://qakj5dvcb.bkt.clouddn.com/static/nthing.png", // 图标路径
+						icon: "https://wxhyx-cdn.aisspc.cn/static/nthing.png", // 图标路径
 						tip: '~ 暂无相关数据 ~', // 提示
 						btnText: '我来说个话', // 按钮
 						// fixed: false, // 是否使用fixed定位,默认false; 配置fixed为true,以下的top和zIndex才生效 (transform会使fixed失效,最终会降级为absolute)
@@ -53,19 +55,39 @@
 				}
 			}
 		},
+		watch: {
+			photoList: {
+				handler(newVal, oldVal) {
+					for (let i = 0; i < newVal.length; i++) {
+						if (oldVal[i] != newVal[i]) {
+							this.photoList = newVal;
+						}
+					}
+				},
+				deep: true
+			}
+		},
 		onLoad(options) {
 			this.total = options.total || "";
+			uni.setNavigationBarTitle({
+				title: `我拍过的店(${this.total})`
+			})
 		},
 		created() {
 			this.postCommentShop()
 		},
 		methods: {
+			_switchShopHome() {
+				uni.navigateTo({
+					url:"/pages/home/home"
+				})
+			},
 			postCommentShop() {
 				let user_id = this.$db.get("userinfo").user_id
 				this.$http.postCommentShop({
 					user_id,
-				}, res=>{
-					if(res.code == 1) {
+				}, res => {
+					if (res.code == 1) {
 						this.photoList = res.data;
 					} else {
 						this.$common.errorToShow(res.msg);
@@ -124,14 +146,7 @@
 				this.$emit('changeLike', val)
 			},
 			_changeFullText(val) {
-				const {
-					e
-				} = val;
-				const index = e.currentTarget.dataset.index;
-				const str = e.currentTarget.dataset.text;
-				for (let i = 0; i < this.photoList.length; i++) {
-					this.photoList[index].fullText = str == "全文" ? "收起全文" : "全文";
-				}
+				this.$emit('changeFullText', val)
 			},
 			navBack() {
 				uni.navigateBack({
@@ -146,7 +161,10 @@
 	@import '@/style/mixin.scss';
 
 	.container {
-		padding-top: 60rpx;
+		padding-bottom: 144rpx;
+		min-height: 100vh;
+		position: relative;
+
 
 		.navBack {
 			display: inline-flex;

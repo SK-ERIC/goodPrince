@@ -25,7 +25,7 @@
 /* 透明度 */
 /* 文章场景相关 */
 .container.data-v-a8fcdab0 {
-  padding: 60rpx 48rpx 0;
+  padding: 0 48rpx 0;
 }
 .container .navBack.data-v-a8fcdab0 {
   display: -webkit-inline-box;

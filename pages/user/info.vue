@@ -7,7 +7,7 @@
 			</view>
 			<view class="info-item-r">
 				<view class="img-inner" @tap="chooseImage">
-					<image class="img" :src="info.avatar" mode=""></image>
+					<image class="img" :src="userInfo.avatar" mode=""></image>
 				</view>
 			</view>
 		</view>
@@ -16,25 +16,25 @@
 				昵称
 			</view>
 			<view class="info-item-r">
-				{{ info.nickname}}
+				<input type="text" maxlength="10" v-model="userInfo.nickname" placeholder="请填写..." />
 			</view>
 		</view>
 		<view class="info-section">
 			<view class="info-item-l">
 				年龄
 			</view>
-			<view class="info-item-r">
-				{{ info.age }}
+			<view class="info-item-r type-picker" @click="showTimePicker">
+				{{ userInfo.age }} 岁
+				<text class="cuIcon-unfold"></text>
 			</view>
 		</view>
 		<view class="info-section">
 			<view class="info-item-l">
 				性别
 			</view>
-			<!-- <view class="info-item-r type-picker" @click="openActionSheet"> -->
-			<view class="info-item-r">
+			<view class="info-item-r type-picker" @click="openActionSheet">
 				{{ gender }}
-				<!-- <text class="cuIcon-unfold"></text> -->
+				<text class="cuIcon-unfold"></text>
 			</view>
 		</view>
 		<view class="info-section">
@@ -42,7 +42,7 @@
 				手机号码
 			</view>
 			<view class="info-item-r">
-				{{ info.mobile }}
+				{{ userInfo.mobile }}
 			</view>
 		</view>
 		<!-- #ifdef MP-WEIXIN -->
@@ -52,7 +52,7 @@
 			</view>
 			<view class="info-item-r type-picker">
 				<picker class="addressPicker" mode="region" @change="addressPickerChange" :value="value">
-					{{ info.province }} - {{ info.city }}
+					{{ userInfo.province }} - {{ userInfo.city }}
 				</picker>
 				<text class="cuIcon-unfold"></text>
 			</view>
@@ -60,13 +60,15 @@
 		<!-- #endif -->
 
 		<!-- btn -->
-		<view class="cu-btn save-btn">
+		<view class="cu-btn save-btn" @click="confirmSave">
 			保存
 		</view>
 
 		<tui-actionsheet :show="showActionSheet" :item-list="itemList" :tips="tips" :is-cancel="false" @click="itemClick"
 		 @cancel="closeActionSheet"></tui-actionsheet>
 
+		<tui-datetime ref="dateTime" :type="type" :startYear="startYear" :endYear="endYear" :cancelColor="cancelColor" :color="color"
+		 :setDateTime="setDateTime" :unitTop="unitTop" radius @confirm="change"></tui-datetime>
 
 
 	</view>
@@ -74,56 +76,80 @@
 
 <script>
 	import tuiActionsheet from '@/components/tui-actionsheet/tui-actionsheet.vue'
+	import tuiDatetime from '@/components/tui-datetime/tui-datetime.vue'
 	export default {
 		components: {
-			tuiActionsheet
+			tuiActionsheet,
+			tuiDatetime
 		},
 		data() {
 			return {
-				
-				info: {},
+				userInfo: {},
 				value: [],
 				showActionSheet: false,
 				tips: "选择您的性别",
 				itemList: [{
+					id: 1,
 					text: "男",
 					color: "#2B2B2B"
 				}, {
+					id: 2,
 					text: "女",
 					color: "#2B2B2B"
 				}, {
+					id: 0,
 					text: "不公开",
 					color: "#2B2B2B"
 				}],
-				uploadImg: "", // 上传的头像地址
+				uploadImg: "", // 上传的头像地址	
+				type: 2,
+				startYear: 1980,
+				endYear: 2020,
+				cancelColor: '#888',
+				color: '#5677fc',
+				setDateTime: '',
+				unitTop: false,
+
 			}
 		},
-		computed:{
+		computed: {
 			gender() {
-				let a = this.info.gender;
-				switch(a) {
+				let a = this.userInfo.gender;
+				switch (a) {
 					case 0:
-					return "不公开";
+						return "不公开";
 					case 1:
-					return "男";
+						return "男";
 					case 2:
-					return "女"
+						return "女"
 				}
 			}
 		},
 		onLoad(options) {
-			console.log("options", options)
-			this.info.avatar = options.src || "";
-			this.uploadImg = options.tem || "";
-			this.info = this.$db.get("userinfo") || ""
+			this.endYear = new Date().getFullYear()
+			this.userInfo = this.$db.get("userinfo") || "";
+			if (options.src) this.userInfo.avatar = options.src;
+			if (options.tem) this.uploadImg = options.tem;
 		},
-		mounted() {
-			console.log("mounted", this.uploadImg)
+		watch: {
+			userInfo: {
+				handler(newVal, oldVal) {
+					this.userInfo = newVal;
+				},
+				deep: true
+			}
 		},
 		methods: {
+			showTimePicker() {
+				this.$refs.dateTime.show();
+			},
+			change(e) {
+				const age = this.endYear - e.year;
+				this.$set(this.userInfo, `age`, age)
+			},
 			addressPickerChange(e) {
-				this.info.province = e.detail.value[0]
-				this.info.city = e.detail.value[1]
+				this.$set(this.userInfo, `province`, e.detail.value[0]);
+				this.$set(this.userInfo, `city`, e.detail.value[1]);
 			},
 			chooseImage() {
 				this.$http.uploadImage(1, (res, tem) => {
@@ -138,7 +164,7 @@
 			},
 			itemClick(e) {
 				const index = e.index;
-				this.info.gender = this.itemList[index].text;
+				this.$set(this.userInfo, `gender`, this.itemList[index].id);
 				this.closeActionSheet();
 			},
 			openActionSheet() {
@@ -146,6 +172,49 @@
 			},
 			closeActionSheet() {
 				this.showActionSheet = false
+			},
+			confirmSave() {
+				uni.showLoading({
+					title: "保存中...",
+					mask: true
+				})
+				let {
+					nickname,
+					avatar,
+					province,
+					city,
+					gender,
+					age
+				} = this.userInfo;
+				
+				let data = {
+					nickname,
+					avatar,
+					province,
+					city,
+					gender,
+					age
+				}
+				if(this.uploadImg) data.avatar = this.uploadImg;
+				this.$http.postProfile(data, res => {
+					uni.hideLoading()
+					if (res.code == 1) {
+						uni.showToast({
+							icon: "success",
+							title: "保存成功",
+							mask: true
+						})
+						setTimeout(() => {
+							uni.navigateTo({
+								url: "/pages/home/home?page=user"
+							})
+							uni.hideToast()
+						}, 500)
+
+					} else {
+						this.$common.errorToShow(res.msg)
+					}
+				})
 			},
 		}
 	}
@@ -209,6 +278,10 @@
 				font-size: 30rpx;
 				color: #142340;
 				margin-right: 8rpx;
+
+				input {
+					text-align: right;
+				}
 
 				&.type-picker {
 					@include flexX;

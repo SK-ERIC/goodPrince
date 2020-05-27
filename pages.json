@@ -3,11 +3,11 @@
 		{
 			"path": "pages/home/home",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "首页"
 			}
 		},
 		{
-			"path":"pages/login/base",
+			"path": "pages/login/base",
 			"style": {
 				"navigationStyle": "custom"
 			}
@@ -27,12 +27,12 @@
 		{
 			"path": "pages/index/postComments",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": ""
 			}
 		}, {
 			"path": "pages/index/success",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": ""
 			}
 		},
 		{
@@ -50,25 +50,25 @@
 		{
 			"path": "pages/user/msg",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "我的消息"
 			}
 		},
 		{
 			"path": "pages/user/msgDetail",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "消息详情"
 			}
 		},
 		{
 			"path": "pages/user/latelyShop",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": ""
 			}
 		},
 		{
 			"path": "pages/user/latelyPhoto",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": ""
 			}
 		},
 		{

@@ -202,6 +202,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function latelyShopList() {__webpack_require__.e(/*! require.ensure | pages/component/latelyShopList */ "pages/component/latelyShopList").then((function () {return resolve(__webpack_require__(/*! ../component/latelyShopList */ 155));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var latelyPhotoList = function latelyPhotoList() {__webpack_require__.e(/*! require.ensure | pages/component/latelyPhotoList */ "pages/component/latelyPhotoList").then((function () {return resolve(__webpack_require__(/*! ../component/latelyPhotoList */ 162));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var pop = function pop() {__webpack_require__.e(/*! require.ensure | pages/component/pop */ "pages/component/pop").then((function () {return resolve(__webpack_require__(/*! ../component/pop */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
@@ -212,48 +213,66 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
     foot: foot,
     pop: pop },
 
-  props: {
-    userInfo: {
-      type: Object,
-      default: {} } },
-
-
   data: function data() {
     return {
       topLeftText: "我的个人中心",
       latelyList: [],
       photoList: [],
+      userInfo: {},
       popCont: "您今天对此条留言的点赞次数已达上限",
       isShowSafearea: false };
 
+
   },
+  watch: {
+    photoList: {
+      handler: function handler(newVal, oldVal) {
+        for (var i = 0; i < newVal.length; i++) {
+          if (oldVal[i] != newVal[i]) {
+            this.photoList = newVal;
+          }
+        }
+      },
+      deep: true } },
+
+
   created: function created() {
-    this.postCommentShop();
-    this.postBeenShop();
+    this.getUserInfo();
   },
   mounted: function mounted() {
-    this.isShowSafearea = this.$common.checkPlatFromFunc();
+    // this.isShowSafearea = this.$common.checkPlatFromFunc();
   },
   methods: {
-    postCommentShop: function postCommentShop() {var _this = this;
-      this.$http.postCommentShop({
-        user_id: this.userInfo.user_id },
-      function (res) {
+    getUserInfo: function getUserInfo() {var _this = this;
+      this.$http.getUserInfo({}, function (res) {
         if (res.code == 1) {
-          _this.photoList = res.data;
+          _this.userInfo = res.data.userinfo;
+          _this.postCommentShop();
+          _this.postBeenShop();
         } else {
           _this.$common.errorToShow(res.msg);
         }
       });
     },
-    postBeenShop: function postBeenShop() {var _this2 = this;
+    postCommentShop: function postCommentShop() {var _this2 = this;
+      this.$http.postCommentShop({
+        user_id: this.userInfo.user_id },
+      function (res) {
+        if (res.code == 1) {
+          _this2.photoList = res.data.slice(0, 1);
+        } else {
+          _this2.$common.errorToShow(res.msg);
+        }
+      });
+    },
+    postBeenShop: function postBeenShop() {var _this3 = this;
       this.$http.postBeenShop({
         user_id: this.userInfo.user_id },
       function (res) {
         if (res.code == 1) {
-          _this2.latelyList = res.data;
+          _this3.latelyList = res.data;
         } else {
-          _this2.$common.errorToShow(res.msg);
+          _this3.$common.errorToShow(res.msg);
         }
       });
     },
@@ -264,20 +283,29 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
         current: current });
 
     },
-    _changeLike: function _changeLike(val) {
-      console.log("user--val", val);var
+    _changeLike: function _changeLike(val) {var _this4 = this;var
 
       item =
 
 
       val.item,bl = val.bl,index = val.index;
-      var num = parseInt(this.photoList[index].like_num);
+      var num = +this.photoList[index].zan;
+
       if (bl) {
-        this.photoList[index].like = bl;
-        this.photoList[index].like_num = num + 1;
+        this.$http.postSaveZan({
+          cid: item.id,
+          uid: item.uid },
+        function (res) {
+          if (res.code == 1) {
+            _this4.$set(_this4.photoList[index], "like", bl);
+            _this4.$set(_this4.photoList[index], "zan", ++num);
+          } else {
+            _this4.$common.errorToShow(res.msg);
+          }
+        });
       } else {
         // if (num > 0) {
-        // 	this.photoList[index].like_num = num - 1;
+        // 	this.photoList[index].zan = num - 1;
         // }
         this.$refs.popup.$refs.pop.open();
       }
@@ -288,9 +316,8 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
       val.e;
       var index = e.currentTarget.dataset.index;
       var str = e.currentTarget.dataset.text;
-      for (var i = 0; i < this.photoList.length; i++) {
-        this.photoList[index].fullText = str == "全文" ? "收起全文" : "全文";
-      }
+      this.photoList[index].full_text = str == "全文" ? "收起全文" : "全文";
+
     },
     _switchToMsg: function _switchToMsg() {
       uni.navigateTo({
@@ -314,7 +341,8 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
     },
 
     _switchShopHome: function _switchShopHome(val) {
-      this.$emit("click", val);
+      this.$emit("handleClick", val);
+
       // const id = item.id
 
       // uni.navigateTo({
