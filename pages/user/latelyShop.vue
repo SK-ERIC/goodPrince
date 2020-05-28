@@ -72,7 +72,6 @@
 				})
 			},
 			postBeenShop() {
-				let user_id = this.$db.get("userinfo").user_id
 				this.$http.postBeenShop({
 					user_id: this.user_id,
 					page: this.pageIndex,

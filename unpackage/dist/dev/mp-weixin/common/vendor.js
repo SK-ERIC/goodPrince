@@ -3722,7 +3722,7 @@ if (hadRuntime) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.postShopCommentsList = exports.postBeenShop = exports.postCommentShop = exports.postAddBeenShop = exports.getFootConfig = exports.getFootInfo = exports.getUserInfo = exports.postSendCode = exports.postMobilelogin = exports.getMobile = exports.postProfile = exports.postPushComment = exports.postSaveZan = exports.getShopIndex = exports.wxLogin = exports.uploadImage = exports.domain = void 0;var common = _interopRequireWildcard(__webpack_require__(/*! ./common.js */ 18));
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.getReplyContent = exports.getReplySms = exports.postShopCommentsList = exports.postBeenShop = exports.postCommentShop = exports.postAddBeenShop = exports.getFootConfig = exports.getFootInfo = exports.getUserInfo = exports.postSendCode = exports.postMobilelogin = exports.getMobile = exports.postProfile = exports.postPushComment = exports.postSaveZan = exports.getShopIndex = exports.wxLogin = exports.uploadImage = exports.domain = void 0;var common = _interopRequireWildcard(__webpack_require__(/*! ./common.js */ 18));
 var db = _interopRequireWildcard(__webpack_require__(/*! ./db.js */ 19));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;} //引入common
 //引入db
 var domain = 'https://wxhyx.aisspc.cn';exports.domain = domain;
@@ -3983,7 +3983,11 @@ exports.postAddBeenShop = postAddBeenShop;var postCommentShop = function postCom
 // 去过的店
 exports.postCommentShop = postCommentShop;var postBeenShop = function postBeenShop(data, callback) {return post('shops/beenShop', data, callback);};
 // 首页评论List
-exports.postBeenShop = postBeenShop;var postShopCommentsList = function postShopCommentsList(data, callback) {return post('shops/shopCommentsList', data, callback);};exports.postShopCommentsList = postShopCommentsList;
+exports.postBeenShop = postBeenShop;var postShopCommentsList = function postShopCommentsList(data, callback) {return post('shops/shopCommentsList', data, callback);};
+// 个人中心消息
+exports.postShopCommentsList = postShopCommentsList;var getReplySms = function getReplySms(data, callback) {return post('user/getReplySms', data, callback);};
+// 个人中心消息详情
+exports.getReplySms = getReplySms;var getReplyContent = function getReplyContent(data, callback) {return post('user/getReplyContent', data, callback);};exports.getReplyContent = getReplyContent;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

@@ -1,10 +1,6 @@
 <template>
 	<view class="container">
-		
-		<!-- <view class="navBack" @click.stop="navBack">
-			<text class="cuIcon-back"></text>
-			<text>消息详情</text>
-		</view> -->
+
 		<view class="msg-section">
 			<text>{{ msg }}</text>
 		</view>
@@ -22,24 +18,22 @@
 		},
 		data() {
 			return {
-				msg: `蓝湖是一款产品文档和设计图的共享平台,帮助互联网
-						团队更好地管理文档和设计图。蓝湖可以在线展示Ax
-						ure,自动生成设计图标注,与团队共享设计图,展示页面
-						之间的跳转关系..
-
-						蓝湖是一款产品文档和设计图的共享平台,帮助互联网
-						团队更好地管理文档和设计图。蓝湖可以在线展示Ax
-						ure,自动生成设计图标注,与团队共享设计图,展示页面
-						之间的跳转关系..`
+				msg: ""
 			}
 		},
-		onLoad(option) {
-			
+		onLoad(options) {
+			this.getReplyContent(options.id)
 		},
 		methods: {
-			navBack() {
-				uni.navigateBack({
-					delta: 1
+			getReplyContent(id) {
+				this.$http.getReplyContent({
+					id
+				}, res => {
+					if (res.code == 1) {
+						this.msg = res.data.contents
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
 				})
 			}
 		}

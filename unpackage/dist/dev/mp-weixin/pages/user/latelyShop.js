@@ -204,7 +204,6 @@ var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/com
 
     },
     postBeenShop: function postBeenShop() {var _this = this;
-      var user_id = this.$db.get("userinfo").user_id;
       this.$http.postBeenShop({
         user_id: this.user_id,
         page: this.pageIndex,

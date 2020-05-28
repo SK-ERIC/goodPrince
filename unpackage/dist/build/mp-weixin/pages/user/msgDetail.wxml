@@ -1,1 +1,1 @@
-<view class="container data-v-05710ebf"><view class="msg-section data-v-05710ebf"><text class="data-v-05710ebf">{{msg}}</text></view><foot vue-id="20e3263f-1" color="{{true}}" hide="{{true}}" position="{{true}}" class="data-v-05710ebf" bind:__l="__l"></foot></view>
+<view class="container data-v-4f8eeaff"><view class="msg-section data-v-4f8eeaff"><text class="data-v-4f8eeaff">{{msg}}</text></view><foot vue-id="20e3263f-1" color="{{true}}" hide="{{true}}" position="{{true}}" class="data-v-4f8eeaff" bind:__l="__l"></foot></view>

@@ -8,13 +8,13 @@ const post = (method, data, callback) => {
 	uni.showLoading({
 		title: '加载中'
 	});
-	
+
 	let userinfo = db.get("userinfo");
-	
+
 	if (userinfo) {
 		data.token = userinfo.token;
 	}
-	
+
 	uni.request({
 		url: http + method,
 		header: {
@@ -24,7 +24,7 @@ const post = (method, data, callback) => {
 		method: 'POST',
 		success: (response) => {
 			uni.hideLoading();
-			const result = response.data			
+			const result = response.data
 			// 登录信息过期或者未登录
 			if (result.code === 401) {
 				//db.del("userinfo");
@@ -52,7 +52,7 @@ const post = (method, data, callback) => {
 				});
 			}
 			callback(result);
-			
+
 		},
 		fail: (error) => {
 			uni.hideLoading();
@@ -65,26 +65,26 @@ const post = (method, data, callback) => {
 }
 //GET方法
 const get = (url, data, callback) => {
-	
+
 	uni.showLoading({
 		title: '加载中'
-	});	
+	});
 	let header = {
 		'Content-Type': 'application/x-www-form-urlencoded', //自定义请求头信息
 	}
 	// 判断token是否存在
 	let userinfo = db.get("userinfo");
-	
+
 	if (userinfo) {
 		header.token = userinfo.token;
 	}
-	
 
-	
+
+
 	let param = common.builderUrlParams(http + url, data)
-	
+
 	// console.log(url, data, param, header);
-	
+
 	uni.request({
 		url: param,
 		header: header,
@@ -212,7 +212,7 @@ export const uploadImage = (num, callback) => {
 						'token': userinfo.token
 					},
 					success: (uploadFileRes) => {
-						callback(JSON.parse(uploadFileRes.data),tempFilePaths)
+						callback(JSON.parse(uploadFileRes.data), tempFilePaths)
 					},
 					fail: (error) => {
 						if (error && error.response) {
@@ -260,6 +260,7 @@ export const postCommentShop = (data, callback) => post('shops/commentShop', dat
 export const postBeenShop = (data, callback) => post('shops/beenShop', data, callback)
 // 首页评论List
 export const postShopCommentsList = (data, callback) => post('shops/shopCommentsList', data, callback)
-
-
-
+// 个人中心消息
+export const getReplySms = (data, callback) => post('user/getReplySms', data, callback)
+// 个人中心消息详情
+export const getReplyContent = (data, callback) => post('user/getReplyContent', data, callback)

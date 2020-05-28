@@ -11,7 +11,7 @@
 			<view class="set-inner">
 				<view class="set-item-l" @click="_switchToMsg">
 					<image src="https://wxhyx-cdn.aisspc.cn/static/user_msg.png" mode=""></image>
-					<text>99+</text>
+					<text v-if="userInfo.replyCount">{{ userInfo.replyCount }}</text>
 				</view>
 				<view class="set-item-r" @click="_switchEditInfo">
 					<image src="https://wxhyx-cdn.aisspc.cn/static/user_set.png" mode=""></image>
@@ -296,14 +296,15 @@
 						position: absolute;
 						top: -5rpx;
 						right: -20rpx;
-						font-size: 15rpx;
+						font-size: 18rpx;
 						font-weight: 400;
 						color: #FEFFFF;
-						height: 24rpx;
 						line-height: 24rpx;
 						border-radius: 12rpx;
 						background-color: #FF5C5C;
 						padding: 0 6rpx;
+						min-width: 24rpx;
+						text-align: center;
 					}
 
 				}

@@ -159,11 +159,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
-
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -183,27 +179,24 @@ __webpack_require__.r(__webpack_exports__);
 
   data: function data() {
     return {
-      msg: "\u84DD\u6E56\u662F\u4E00\u6B3E\u4EA7\u54C1\u6587\u6863\u548C\u8BBE\u8BA1\u56FE\u7684\u5171\u4EAB\u5E73\u53F0,\u5E2E\u52A9\u4E92\u8054\u7F51\n\t\t\t\t\t\u56E2\u961F\u66F4\u597D\u5730\u7BA1\u7406\u6587\u6863\u548C\u8BBE\u8BA1\u56FE\u3002\u84DD\u6E56\u53EF\u4EE5\u5728\u7EBF\u5C55\u793AAx\n\t\t\t\t\ture,\u81EA\u52A8\u751F\u6210\u8BBE\u8BA1\u56FE\u6807\u6CE8,\u4E0E\u56E2\u961F\u5171\u4EAB\u8BBE\u8BA1\u56FE,\u5C55\u793A\u9875\u9762\n\t\t\t\t\t\u4E4B\u95F4\u7684\u8DF3\u8F6C\u5173\u7CFB..\n\n\t\t\t\t\t\u84DD\u6E56\u662F\u4E00\u6B3E\u4EA7\u54C1\u6587\u6863\u548C\u8BBE\u8BA1\u56FE\u7684\u5171\u4EAB\u5E73\u53F0,\u5E2E\u52A9\u4E92\u8054\u7F51\n\t\t\t\t\t\u56E2\u961F\u66F4\u597D\u5730\u7BA1\u7406\u6587\u6863\u548C\u8BBE\u8BA1\u56FE\u3002\u84DD\u6E56\u53EF\u4EE5\u5728\u7EBF\u5C55\u793AAx\n\t\t\t\t\ture,\u81EA\u52A8\u751F\u6210\u8BBE\u8BA1\u56FE\u6807\u6CE8,\u4E0E\u56E2\u961F\u5171\u4EAB\u8BBE\u8BA1\u56FE,\u5C55\u793A\u9875\u9762\n\t\t\t\t\t\u4E4B\u95F4\u7684\u8DF3\u8F6C\u5173\u7CFB.." };
-
-
-
-
-
-
-
-
+      msg: "" };
 
   },
-  onLoad: function onLoad(option) {
-
+  onLoad: function onLoad(options) {
+    this.getReplyContent(options.id);
   },
   methods: {
-    navBack: function navBack() {
-      uni.navigateBack({
-        delta: 1 });
-
+    getReplyContent: function getReplyContent(id) {var _this = this;
+      this.$http.getReplyContent({
+        id: id },
+      function (res) {
+        if (res.code == 1) {
+          _this.msg = res.data.contents;
+        } else {
+          _this.$common.errorToShow(res.msg);
+        }
+      });
     } } };exports.default = _default;
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ })
 

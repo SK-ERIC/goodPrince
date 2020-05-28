@@ -130,63 +130,96 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var _default =
-{
-  data: function data() {
-    return {
-      msgList: [{
-        id: 0,
-        logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
-        title: "系统消息",
-        desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
-        date: "刚刚",
-        read: false },
-
-      {
-        id: 1,
-        logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
-        title: "活动奖励",
-        desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
-        date: "5月6日",
-        read: true },
-
-      {
-        id: 2,
-        logo: "https://wxhyx-cdn.aisspc.cn/static/logo.png",
-        title: "热门活动",
-        desc: "【梁溪区市场监督管理局】关于复工复产中的劳【梁溪区市场监督管理局】关于复工复产中的劳...",
-        date: "5月6日",
-        read: true }] };
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
 
 
 
-  },
-  methods: {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _mescrollMixins = _interopRequireDefault(__webpack_require__(/*! @/components/mescroll-uni/mescroll-mixins.js */ 108));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = { mixins: [_mescrollMixins.default], // 使用mixin (在main.js注册全局组件)
+  data: function data() {return { msgList: [], pageIndex: 1, pageSize: 5, user_id: "", upOption: { page: { num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
+          size: 3, // 每页数据的数量
+          time: null // 加载第一页数据服务器返回的时间; 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
+        }, textColor: "gray", // 文本颜色 (当bgColor配置了颜色,而textColor未配置时,则textColor会默认为白色)
+        textLoading: '加载中 ...', // 加载中的提示文本
+        textNoMore: '-- END --', // 没有更多数据的提示文本
+        empty: { use: true, // 是否显示空布局
+          icon: "https://wxhyx-cdn.aisspc.cn/static/nthing.png", // 图标路径
+          tip: '~ 暂无相关数据 ~' // 提示
+          // btnText: '我来说个话', // 按钮
+          // // fixed: false, // 是否使用fixed定位,默认false; 配置fixed为true,以下的top和zIndex才生效 (transform会使fixed失效,最终会降级为absolute)
+          // // top: "100rpx", // fixed定位的top值 (完整的单位值,如 "10%"; "100rpx")
+          // // zIndex: 99 // fixed定位z-index值
+        } } };}, onLoad: function onLoad(options) {this.user_id = this.$db.get("userinfo").user_id;}, methods: { getReplySms: function getReplySms() {var _this = this;var user_id = this.$db.get("userinfo").user_id;this.$http.getReplySms({ user_id: this.user_id, page: this.pageIndex,
+        page_size: this.pageSize },
+      function (res) {
+        //联网成功的回调,隐藏下拉刷新的状态
+        _this.mescroll.endSuccess();
+        if (res.code == 1) {
+          _this.mescroll.endBySize(_this.msgList.length, _this.total); //必传参数(当前页的数据个数, 总数据量)
+          if (_this.pageIndex == 1) _this.msgList = []; //如果是第一页需手动制空列表
+          _this.msgList = _this.msgList.concat(res.data.list);
+        } else {
+          _this.$common.errorToShow(res.msg);
+        }
+      });
+    },
+    /*下拉刷新的回调 */
+    downCallback: function downCallback() {
+      // 这里加载你想下拉刷新的数据
+      this.getReplySms();
+      // 下拉刷新的回调,默认重置上拉加载列表为第一页 (自动执行 page.num=1, 再触发upCallback方法 )
+      this.mescroll.resetUpScroll();
+    },
+    /*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */
+    upCallback: function upCallback(page) {
+      this.pageIndex = page.num;
+      this.pageSize = page.size;
+      this.getReplySms();
+    },
     _switchToDetail: function _switchToDetail(item) {
       uni.navigateTo({
         url: "/pages/user/msgDetail?id=".concat(item.id) });
