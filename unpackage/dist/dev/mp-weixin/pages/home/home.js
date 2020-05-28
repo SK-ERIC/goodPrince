@@ -196,6 +196,7 @@ var _this;var _default =
 
       showLoading: false,
       shopInfo: {},
+      shopId: 1,
       topNum: 0,
       commentList: [], // 评论列表
       popCont: "您今天对此条留言的点赞次数已达上限" };
@@ -214,7 +215,18 @@ var _this;var _default =
 
 
   onLoad: function onLoad(options) {
+    console.log("home", options);
+    var id = "";
+    if (options.id) id = options.id;
     if (options.page) this.page = options.page;
+    //在此函数中获取扫描普通链接二维码参数
+    if (options.q) {
+      var q = decodeURIComponent(options.q);
+      var access_token = utils.getQueryString(q, 'access_token');
+      id = utils.getQueryString(q, 'id');
+    };
+    if (id) this.shopId = id;
+
     this.init_page_size();
     this.getShopIndex();
   },
@@ -264,14 +276,28 @@ var _this;var _default =
     // 店铺信息
     getShopIndex: function getShopIndex() {var _this3 = this;
       this.$http.getShopIndex({
-        // shop_id: null
-      }, function (res) {
+        shop_id: this.shopId },
+      function (res) {
         if (res.code == 1) {
           // this.shopInfo = Object.assign({},res.data)
           _this3.shopInfo = res.data;
-          _this3.commentList = res.data.comments.list.slice(0, 2);
+          _this3.postShopCommentsList();
+          // this.commentList = res.data.comments.list.slice(0, 2);
         } else {
           _this3.$common.errorToShow(res.msg);
+        }
+      });
+    },
+    postShopCommentsList: function postShopCommentsList() {var _this4 = this;
+      this.$http.postShopCommentsList({
+        // shop_id: null,
+        page: 1,
+        page_size: 2 },
+      function (res) {
+        if (res.code == 1) {
+          _this4.commentList = res.data;
+        } else {
+          _this4.$common.errorToShow(res.msg);
         }
       });
     },
@@ -279,8 +305,10 @@ var _this;var _default =
       console.log("店铺信息：", val);
       this.page = "shop";
       this.topNum = this.topNum + 0.001;
+      this.shopId = val.shop_id;
+      this.getShopIndex();
     },
-    changeTab: function changeTab(item) {var _this4 = this;
+    changeTab: function changeTab(item) {var _this5 = this;
       if (item.page) {
         if (item.page == 'user' && !this.$db.userMobile()) return;
         this.page = item.page;
@@ -296,7 +324,7 @@ var _this;var _default =
               url: "/pages/index/postComments?src=".concat(tem, "&tem=").concat(res.data.url) });
 
           } else {
-            _this4.$common.errorToShow(res.msg);
+            _this5.$common.errorToShow(res.msg);
           }
         });
       }
@@ -305,15 +333,15 @@ var _this;var _default =
       // 因为数据全都在vuex 动态管理
     },
     // 初始化内容区域的高度
-    init_page_size: function init_page_size() {var _this5 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-                _this5.$nextTick( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var sysInfo, query, tabbarObj, tabbarNodeRes, pageHeight;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
+    init_page_size: function init_page_size() {var _this6 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                _this6.$nextTick( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var sysInfo, query, tabbarObj, tabbarNodeRes, pageHeight;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                           sysInfo = uni.getSystemInfoSync();
-                          query = uni.createSelectorQuery().in(_this5);
+                          query = uni.createSelectorQuery().in(_this6);
                           tabbarObj = query.select('#tabbar');_context.next = 5;return (
-                            _this5.syncBoundingClientRect(tabbarObj));case 5:tabbarNodeRes = _context.sent;
+                            _this6.syncBoundingClientRect(tabbarObj));case 5:tabbarNodeRes = _context.sent;
                           pageHeight = sysInfo.windowHeight - tabbarNodeRes.height;
-                          _this5.containerHeight = pageHeight;
-                          _this5.showPage = true;case 9:case "end":return _context.stop();}}}, _callee);})));case 1:case "end":return _context2.stop();}}}, _callee2);}))();
+                          _this6.containerHeight = pageHeight;
+                          _this6.showPage = true;case 9:case "end":return _context.stop();}}}, _callee);})));case 1:case "end":return _context2.stop();}}}, _callee2);}))();
 
     },
     syncBoundingClientRect: function syncBoundingClientRect(nodeobj) {

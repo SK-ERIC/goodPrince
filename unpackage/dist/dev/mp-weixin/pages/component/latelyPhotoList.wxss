@@ -27,6 +27,39 @@
 .container .photo-section .photo-list.data-v-326d8838 {
   padding: 0 32rpx;
 }
+.container .photo-section .photo-list .nthing-section.data-v-326d8838 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-top: 230rpx;
+  padding-bottom: 130rpx;
+}
+.container .photo-section .photo-list .nthing-section .nthing-img.data-v-326d8838 {
+  width: 220rpx;
+  height: 220rpx;
+}
+.container .photo-section .photo-list .nthing-section .nthing-text.data-v-326d8838 {
+  margin: 40rpx 0 56rpx;
+  font-size: 30rpx;
+  color: #AFB0B5;
+}
+.container .photo-section .photo-list .nthing-section .nthing-btn.data-v-326d8838 {
+  width: 480rpx;
+  height: 100rpx;
+  background-color: #FF544C;
+  border-radius: 50rpx;
+  color: #FFFFFF;
+  font-size: 32rpx;
+  text-align: center;
+  font-weight: 400;
+}
 .container .photo-section .photo-list .photo-cont.data-v-326d8838 {
   padding: 40rpx 0 52rpx;
   border-bottom: 2rpx solid #EFEFEF;

@@ -166,7 +166,7 @@
 		</view>
 
 		<!-- foot -->
-		<foot show></foot>
+		<foot show tip></foot>
 
 	</view>
 </template>
@@ -220,7 +220,6 @@
 		},
 		methods: {
 			postAddBeenShop() {
-				console.log("this.shopIndex.id", this.shopIndex.id)
 				const user_id = this.$db.get("userinfo").user_id || '';
 				const shop_id = this.shopIndex.id || "";
 				this.$http.postAddBeenShop({
@@ -235,7 +234,7 @@
 				})
 			},
 			isShowFullText(v) {
-				return v.split("").length >= 56
+				return v.split("").length >= 64
 			},
 			previewImage(v, e) {
 				let list = [];
@@ -292,6 +291,7 @@
 					font-size: 36rpx;
 					color: #282828;
 					font-weight: 500;
+					line-height: 45rpx;
 				}
 
 				.img {

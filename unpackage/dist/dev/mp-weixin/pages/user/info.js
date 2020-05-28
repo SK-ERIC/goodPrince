@@ -93,10 +93,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
-  "tui-actionsheet": function() {
+  tuiActionsheet: function() {
     return __webpack_require__.e(/*! import() | components/tui-actionsheet/tui-actionsheet */ "components/tui-actionsheet/tui-actionsheet").then(__webpack_require__.bind(null, /*! @/components/tui-actionsheet/tui-actionsheet.vue */ 176))
   },
-  "tui-datetime": function() {
+  tuiDatetime: function() {
     return __webpack_require__.e(/*! import() | components/tui-datetime/tui-datetime */ "components/tui-datetime/tui-datetime").then(__webpack_require__.bind(null, /*! @/components/tui-datetime/tui-datetime.vue */ 183))
   }
 }

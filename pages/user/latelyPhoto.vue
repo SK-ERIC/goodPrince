@@ -6,17 +6,16 @@
 			<text>我拍过的店 ({{ total }})</text>
 		</view> -->
 
-		<!-- <mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" @up="upCallback"> -->
-		<!-- <mescroll-body ref="mescrollRef" @init="mescrollInit"> -->
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" @down="downCallback" :up="upOption" @up="upCallback">
 
-		<!-- list -->
-		<lately-photo-list @switchShopHome="_switchShopHome" :photoList="photoList" @changeLike="_changeLike" @changeFullText="_changeFullText"></lately-photo-list>
+			<!-- list -->
+			<lately-photo-list @switchShopHome="_switchShopHome" :photoList="photoList" @changeLike="_changeLike"
+			 @changeFullText="_changeFullText"></lately-photo-list>
 
-		<!-- </mescroll-body> -->
+		</mescroll-body>
 
 		<!-- foot -->
-		<!-- <foot tip show lately position></foot> -->
-		<foot show position hide></foot>
+		<!-- <foot show position hide></foot> -->
 		<!-- pop -->
 		<pop ref="popup" :popCont="popCont"></pop>
 
@@ -39,18 +38,24 @@
 			return {
 				total: "",
 				photoList: [],
-				downOption: {
-					auto: false //是否在初始化后,自动执行downCallback; 默认true
-				},
+				pageIndex: 1,
+				pageSize: 5,
+				user_id: "",
+				popCont: "您今天对此条留言的点赞次数已达上限",
 				upOption: {
+					page: {
+						num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
+						size: 3, // 每页数据的数量
+						time: null // 加载第一页数据服务器返回的时间; 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
+					},
 					empty: {
-						use: true, // 是否显示空布局
+						use: false, // 是否显示空布局
 						icon: "https://wxhyx-cdn.aisspc.cn/static/nthing.png", // 图标路径
 						tip: '~ 暂无相关数据 ~', // 提示
-						btnText: '我来说个话', // 按钮
-						// fixed: false, // 是否使用fixed定位,默认false; 配置fixed为true,以下的top和zIndex才生效 (transform会使fixed失效,最终会降级为absolute)
-						// top: "100rpx", // fixed定位的top值 (完整的单位值,如 "10%"; "100rpx")
-						// zIndex: 99 // fixed定位z-index值
+						// btnText: '我来说个话', // 按钮
+						// // fixed: false, // 是否使用fixed定位,默认false; 配置fixed为true,以下的top和zIndex才生效 (transform会使fixed失效,最终会降级为absolute)
+						// // top: "100rpx", // fixed定位的top值 (完整的单位值,如 "10%"; "100rpx")
+						// // zIndex: 99 // fixed定位z-index值
 					},
 				}
 			}
@@ -68,27 +73,30 @@
 			}
 		},
 		onLoad(options) {
-			this.total = options.total || "";
+			if (options.total) this.total = options.total;
+			this.user_id = this.$db.get("userinfo").user_id
 			uni.setNavigationBarTitle({
 				title: `我拍过的店(${this.total})`
 			})
 		},
-		created() {
-			this.postCommentShop()
-		},
 		methods: {
-			_switchShopHome() {
+			_switchShopHome(val) {
 				uni.navigateTo({
-					url:"/pages/home/home"
+					url: `/pages/home/home?id=${val.shop_id}`
 				})
 			},
 			postCommentShop() {
-				let user_id = this.$db.get("userinfo").user_id
 				this.$http.postCommentShop({
-					user_id,
+					user_id: this.user_id,
+					page: this.pageIndex,
+					page_size: this.pageSize
 				}, res => {
+					//联网成功的回调,隐藏下拉刷新的状态
+					this.mescroll.endSuccess();
 					if (res.code == 1) {
-						this.photoList = res.data;
+						this.mescroll.endBySize(this.photoList.length, this.total); //必传参数(当前页的数据个数, 总数据量)
+						if (this.pageIndex == 1) this.photoList = []; //如果是第一页需手动制空列表
+						this.photoList = this.photoList.concat(res.data);
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -96,43 +104,16 @@
 			},
 			/*下拉刷新的回调 */
 			downCallback() {
-				//联网加载数据
-				apiNewList().then(data => {
-					//联网成功的回调,隐藏下拉刷新的状态
-					this.mescroll.endSuccess();
-					//设置列表数据
-					this.dataList.unshift(data[0]);
-				}).catch(() => {
-					//联网失败的回调,隐藏下拉刷新的状态
-					this.mescroll.endErr();
-				})
+				// 这里加载你想下拉刷新的数据
+				this.postCommentShop();
+				// 下拉刷新的回调,默认重置上拉加载列表为第一页 (自动执行 page.num=1, 再触发upCallback方法 )
+				this.mescroll.resetUpScroll()
 			},
 			/*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */
 			upCallback(page) {
-				//联网加载数据
-				apiGoods(page.num, page.size, this.isGoodsEdit).then(curPageData => {
-					//联网成功的回调,隐藏下拉刷新和上拉加载的状态;
-					//mescroll会根据传的参数,自动判断列表如果无任何数据,则提示空;列表无下一页数据,则提示无更多数据;
-
-					//方法一(推荐): 后台接口有返回列表的总页数 totalPage
-					//this.mescroll.endByPage(curPageData.length, totalPage); //必传参数(当前页的数据个数, 总页数)
-
-					//方法二(推荐): 后台接口有返回列表的总数据量 totalSize
-					//this.mescroll.endBySize(curPageData.length, totalSize); //必传参数(当前页的数据个数, 总数据量)
-
-					//方法三(推荐): 您有其他方式知道是否有下一页 hasNext
-					//this.mescroll.endSuccess(curPageData.length, hasNext); //必传参数(当前页的数据个数, 是否有下一页true/false)
-
-					//方法四 (不推荐),会存在一个小问题:比如列表共有20条数据,每页加载10条,共2页.如果只根据当前页的数据个数判断,则需翻到第三页才会知道无更多数据
-					this.mescroll.endSuccess(curPageData.length);
-
-					//设置列表数据
-					if (page.num == 1) this.goods = []; //如果是第一页需手动制空列表
-					this.goods = this.goods.concat(curPageData); //追加新数据
-				}).catch(() => {
-					//联网失败, 结束加载
-					this.mescroll.endErr();
-				})
+				this.pageIndex = page.num;
+				this.pageSize = page.size;
+				this.postCommentShop();
 			},
 			previewImage(v, e) {
 				const current = e.currentTarget.dataset.src;
@@ -143,10 +124,41 @@
 				console.log(v, e)
 			},
 			_changeLike(val) {
-				this.$emit('changeLike', val)
+				// this.$emit('changeLike', val)
+				const {
+					item,
+					bl,
+					index
+				} = val;
+				let num = +this.photoList[index].zan;
+
+				if (bl) {
+					this.$http.postSaveZan({
+						cid: item.id,
+						uid: item.uid
+					}, res => {
+						if (res.code == 1) {
+							this.$set(this.photoList[index], `like`, bl);
+							this.$set(this.photoList[index], `zan`, ++num);
+						} else {
+							this.$common.errorToShow(res.msg);
+						}
+					})
+				} else {
+					// if (num > 0) {
+					// 	this.photoList[index].zan = num - 1;
+					// }
+					this.$refs.popup.$refs.pop.open();
+				}
 			},
 			_changeFullText(val) {
-				this.$emit('changeFullText', val)
+				// this.$emit('changeFullText', val)
+				const {
+					e
+				} = val;
+				const index = e.currentTarget.dataset.index;
+				const str = e.currentTarget.dataset.text;
+				this.photoList[index].full_text = str == "全文" ? "收起全文" : "全文";
 			},
 			navBack() {
 				uni.navigateBack({
@@ -164,6 +176,7 @@
 		padding-bottom: 144rpx;
 		min-height: 100vh;
 		position: relative;
+		padding-bottom: 220rpx;
 
 
 		.navBack {

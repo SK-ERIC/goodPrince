@@ -258,3 +258,8 @@ export const postAddBeenShop = (data, callback) => post('shops/addBeenShop', dat
 export const postCommentShop = (data, callback) => post('shops/commentShop', data, callback)
 // 去过的店
 export const postBeenShop = (data, callback) => post('shops/beenShop', data, callback)
+// 首页评论List
+export const postShopCommentsList = (data, callback) => post('shops/shopCommentsList', data, callback)
+
+
+

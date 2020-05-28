@@ -52,7 +52,6 @@
   left: 0;
   bottom: 24rpx;
   height: 35rpx;
-  background: -webkit-gradient(linear, left top, right top, from(#F98F30), to(#FFAD03));
   background: -webkit-linear-gradient(left, #F98F30, #FFAD03);
   background: linear-gradient(90deg, #F98F30, #FFAD03);
   border-radius: 0rpx 18rpx 18rpx 0rpx;

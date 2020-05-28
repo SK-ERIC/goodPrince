@@ -91,7 +91,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
-  "tui-image-cropper": function() {
+  tuiImageCropper: function() {
     return __webpack_require__.e(/*! import() | components/tui-image-cropper/tui-image-cropper */ "components/tui-image-cropper/tui-image-cropper").then(__webpack_require__.bind(null, /*! @/components/tui-image-cropper/tui-image-cropper.vue */ 190))
   }
 }

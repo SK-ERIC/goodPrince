@@ -64,6 +64,7 @@
 				],
 				showLoading: false,
 				shopInfo: {},
+				shopId: 1,
 				topNum: 0,
 				commentList: [], // 评论列表
 				popCont: "您今天对此条留言的点赞次数已达上限",
@@ -82,7 +83,18 @@
 			}
 		},
 		onLoad(options) {
+			console.log("home", options)
+			let id = "";
+			if (options.id) id = options.id;
 			if (options.page) this.page = options.page;
+			//在此函数中获取扫描普通链接二维码参数
+			if (options.q) {
+				let q = decodeURIComponent(options.q)
+				let access_token = utils.getQueryString(q, 'access_token');
+				id = utils.getQueryString(q, 'id');
+			};
+			if (id) this.shopId = id;
+
 			this.init_page_size();
 			this.getShopIndex();
 		},
@@ -132,12 +144,26 @@
 			// 店铺信息
 			getShopIndex() {
 				this.$http.getShopIndex({
-					// shop_id: null
+					shop_id: this.shopId
 				}, res => {
 					if (res.code == 1) {
 						// this.shopInfo = Object.assign({},res.data)
 						this.shopInfo = res.data;
-						this.commentList = res.data.comments.list.slice(0, 2);
+						this.postShopCommentsList()
+						// this.commentList = res.data.comments.list.slice(0, 2);
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+			},
+			postShopCommentsList() {
+				this.$http.postShopCommentsList({
+					// shop_id: null,
+					page: 1,
+					page_size: 2
+				}, res => {
+					if (res.code == 1) {
+						this.commentList = res.data;
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -147,15 +173,17 @@
 				console.log("店铺信息：", val)
 				this.page = "shop";
 				this.topNum = this.topNum + 0.001;
+				this.shopId = val.shop_id;
+				this.getShopIndex();
 			},
 			changeTab(item) {
 				if (item.page) {
 					if (item.page == 'user' && !this.$db.userMobile()) return;
 					this.page = item.page;
 					uni.setNavigationBarTitle({
-						title:item.title
+						title: item.title
 					})
-					
+
 				} else {
 					if (!this.$db.userMobile()) return;
 					this.$http.uploadImage(1, (res, tem) => {

@@ -4,24 +4,10 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
-		"es6": false,
-		"postcss": true,
-		"preloadBackgroundData": false,
+		"urlCheck": false,
 		"minified": false,
-		"newFeature": true,
-		"coverView": true,
-		"autoAudits": false,
-		"showShadowRootInWxmlPanel": true,
-		"scopeDataCheck": false,
-		"checkInvalidKey": true,
-		"checkSiteMap": true,
-		"uploadWithSourceMap": true,
-		"babelSetting": {
-			"ignore": [],
-			"disablePlugins": [],
-			"outputPath": ""
-		}
+		"es6": false,
+		"postcss": true
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.9.2",

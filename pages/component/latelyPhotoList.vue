@@ -42,6 +42,10 @@
 						{{ item.shopkeeper.content }}
 					</view>
 				</view>
+				<view v-if="photoList.length==0" class="nthing-section">
+					<image class="nthing-img" src="https://wxhyx-cdn.aisspc.cn/static/nthing.png" mode=""></image>
+					<text class="nthing-text">您还没有评论过哦～</text>
+				</view>
 			</view>
 		</view>
 
@@ -76,7 +80,7 @@
 				this.$emit("switchShopHome", item)
 			},
 			isShowFullText(v) {
-				return v.split("").length >= 56
+				return v.split("").length > 64
 			},
 			_changeLike(item, bl, index) {
 				this.$emit("changeLike", {
@@ -114,6 +118,36 @@
 
 			.photo-list {
 				padding: 0 32rpx;
+				
+				.nthing-section {
+					@include flexY;
+					@include flexA;
+					padding-top: 230rpx;
+					padding-bottom: 130rpx;
+				
+					.nthing-img {
+						width: 220rpx;
+						height: 220rpx;
+					}
+				
+					.nthing-text {
+						margin: 40rpx 0 56rpx;
+						font-size: 30rpx;
+						color: #AFB0B5;
+					}
+				
+					.nthing-btn {
+						width: 480rpx;
+						height: 100rpx;
+						background-color: #FF544C;
+						border-radius: 50rpx;
+						color: #FFFFFF;
+						font-size: 32rpx;
+						text-align: center;
+						font-weight: 400;
+					}
+				}
+				
 
 				.photo-cont {
 					padding: 40rpx 0 52rpx;

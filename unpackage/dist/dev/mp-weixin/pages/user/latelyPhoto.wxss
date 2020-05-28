@@ -28,6 +28,7 @@
   padding-bottom: 144rpx;
   min-height: 100vh;
   position: relative;
+  padding-bottom: 220rpx;
 }
 .container .navBack.data-v-4a658f92 {
   display: -webkit-inline-box;

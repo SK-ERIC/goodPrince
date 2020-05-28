@@ -720,10 +720,10 @@ function initVueComponent(Vue, vueOptions) {
   var VueComponent;
   if (isFn(vueOptions)) {
     VueComponent = vueOptions;
-    vueOptions = VueComponent.extendOptions;
   } else {
     VueComponent = Vue.extend(vueOptions);
   }
+  vueOptions = VueComponent.options;
   return [VueComponent, vueOptions];
 }
 
@@ -757,7 +757,7 @@ function initData(vueOptions, context) {
     try {
       data = data.call(context); // 支持 Vue.prototype 上挂的数据
     } catch (e) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.warn('根据 Vue 的 data 函数初始化小程序 data 失败，请尽量确保 data 函数中不访问 vm 对象，否则可能影响首次数据渲染速度。', data);
       }
     }
@@ -1409,6 +1409,10 @@ function parseBaseComponent(vueComponentOptions)
       __e: handleEvent } };
 
 
+  // externalClasses
+  if (vueOptions.externalClasses) {
+    componentOptions.externalClasses = vueOptions.externalClasses;
+  }
 
   if (Array.isArray(vueOptions.wxsCallMethods)) {
     vueOptions.wxsCallMethods.forEach(function (callMethod) {
@@ -1560,7 +1564,7 @@ uni$1;exports.default = _default;
 
 /***/ }),
 
-/***/ 116:
+/***/ 108:
 /*!********************************************************************!*\
   !*** D:/UNI/goodPrince/components/mescroll-uni/mescroll-mixins.js ***!
   \********************************************************************/
@@ -3718,7 +3722,7 @@ if (hadRuntime) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.postBeenShop = exports.postCommentShop = exports.postAddBeenShop = exports.getFootConfig = exports.getFootInfo = exports.getUserInfo = exports.postSendCode = exports.postMobilelogin = exports.getMobile = exports.postProfile = exports.postPushComment = exports.postSaveZan = exports.getShopIndex = exports.wxLogin = exports.uploadImage = exports.domain = void 0;var common = _interopRequireWildcard(__webpack_require__(/*! ./common.js */ 18));
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.postShopCommentsList = exports.postBeenShop = exports.postCommentShop = exports.postAddBeenShop = exports.getFootConfig = exports.getFootInfo = exports.getUserInfo = exports.postSendCode = exports.postMobilelogin = exports.getMobile = exports.postProfile = exports.postPushComment = exports.postSaveZan = exports.getShopIndex = exports.wxLogin = exports.uploadImage = exports.domain = void 0;var common = _interopRequireWildcard(__webpack_require__(/*! ./common.js */ 18));
 var db = _interopRequireWildcard(__webpack_require__(/*! ./db.js */ 19));function _getRequireWildcardCache() {if (typeof WeakMap !== "function") return null;var cache = new WeakMap();_getRequireWildcardCache = function _getRequireWildcardCache() {return cache;};return cache;}function _interopRequireWildcard(obj) {if (obj && obj.__esModule) {return obj;}if (obj === null || typeof obj !== "object" && typeof obj !== "function") {return { default: obj };}var cache = _getRequireWildcardCache();if (cache && cache.has(obj)) {return cache.get(obj);}var newObj = {};var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;for (var key in obj) {if (Object.prototype.hasOwnProperty.call(obj, key)) {var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;if (desc && (desc.get || desc.set)) {Object.defineProperty(newObj, key, desc);} else {newObj[key] = obj[key];}}}newObj.default = obj;if (cache) {cache.set(obj, newObj);}return newObj;} //引入common
 //引入db
 var domain = 'https://wxhyx.aisspc.cn';exports.domain = domain;
@@ -3977,7 +3981,9 @@ exports.getFootConfig = getFootConfig;var postAddBeenShop = function postAddBeen
 // 拍过的店
 exports.postAddBeenShop = postAddBeenShop;var postCommentShop = function postCommentShop(data, callback) {return post('shops/commentShop', data, callback);};
 // 去过的店
-exports.postCommentShop = postCommentShop;var postBeenShop = function postBeenShop(data, callback) {return post('shops/beenShop', data, callback);};exports.postBeenShop = postBeenShop;
+exports.postCommentShop = postCommentShop;var postBeenShop = function postBeenShop(data, callback) {return post('shops/beenShop', data, callback);};
+// 首页评论List
+exports.postBeenShop = postBeenShop;var postShopCommentsList = function postShopCommentsList(data, callback) {return post('shops/shopCommentsList', data, callback);};exports.postShopCommentsList = postShopCommentsList;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
@@ -9911,7 +9917,7 @@ function type(obj) {
 
 function flushCallbacks$1(vm) {
     if (vm.__next_tick_callbacks && vm.__next_tick_callbacks.length) {
-        if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+        if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:flushCallbacks[' + vm.__next_tick_callbacks.length + ']');
@@ -9932,14 +9938,14 @@ function nextTick$1(vm, cb) {
     //1.nextTick 之前 已 setData 且 setData 还未回调完成
     //2.nextTick 之前存在 render watcher
     if (!vm.__next_tick_pending && !hasRenderWatcher(vm)) {
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + vm._uid +
                 ']:nextVueTick');
         }
         return nextTick(cb, vm)
     }else{
-        if(Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG){
+        if(Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG){
             var mpInstance$1 = vm.$scope;
             console.log('[' + (+new Date) + '][' + (mpInstance$1.is || mpInstance$1.route) + '][' + vm._uid +
                 ']:nextMPTick');
@@ -10015,7 +10021,7 @@ var patch = function(oldVnode, vnode) {
     });
     var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
-      if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
+      if (Object({"VUE_APP_PLATFORM":"mp-weixin","NODE_ENV":"development","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
           ']差量更新',
           JSON.stringify(diffData));

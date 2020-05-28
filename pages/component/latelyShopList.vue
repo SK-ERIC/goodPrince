@@ -31,10 +31,6 @@
 					</view>
 				</view>
 			</view>
-
-			<view class="nthing-section">
-
-			</view>
 		</view>
 
 	</view>

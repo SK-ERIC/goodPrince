@@ -41,16 +41,14 @@
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: flex;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .tui-cropper-box.data-v-2cebc490 {
 	position: relative;
 	/* transition-duration: 0.3s; */
 	border-style: solid;
 	border-width: 1rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .tui-flex-auto.data-v-2cebc490 {
 	-webkit-box-flex: 1;
@@ -80,8 +78,7 @@
 	border-style: solid;
 	pointer-events: auto;
 	position: absolute;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 }
 .tui-top-left.data-v-2cebc490 {
 	border-bottom-width: 0 !important;
@@ -103,8 +100,7 @@
 	width: 100%;
 	height: 120rpx;
 	padding: 0 40rpx;
-	-webkit-box-sizing: border-box;
-	        box-sizing: border-box;
+	box-sizing: border-box;
 	position: fixed;
 	left: 0;
 	bottom: 0;

@@ -31,11 +31,11 @@
 			<!-- {{ footInfo.beian }} 公安备案号：{{ footInfo.record }} 网站标识码：{{ footInfo.identification }} -->
 			无锡市梁溪区通江街道 无锡市梁溪区市场监督管理局通江分局
 		</view>
-		
+
 		<view class="com_btm text-center" v-if="!hide">
-			<text>无锡好印象-经营评价平台 主办单位</text>
+			<text>{{ footInfo.copyright }}</text>
 			<text>
-				无锡市梁溪区通江街道 无锡市梁溪区市场监督管理局通江分局
+				{{ footInfo.address }}
 			</text>
 		</view>
 		<view class="government">
@@ -130,7 +130,8 @@
 			left: 0;
 			bottom: 0;
 		}
-		&.lately{
+
+		&.lately {
 			// position: fixed;
 			// left: 0;
 			// bottom: 0;
@@ -249,8 +250,8 @@
 			margin-top: 15rpx;
 			padding: 0 32rpx;
 		}
-		
-		.com_btm{
+
+		.com_btm {
 			background-image: url("https://wxhyx-cdn.aisspc.cn/static/cm_btm_bg.png");
 			background-size: 100% 100%;
 			@include flexY;
