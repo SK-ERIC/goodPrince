@@ -45,7 +45,7 @@
 				upOption: {
 					page: {
 						num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
-						size: 3, // 每页数据的数量
+						size: 5, // 每页数据的数量
 						time: null // 加载第一页数据服务器返回的时间; 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
 					},
 					empty: {
@@ -131,25 +131,25 @@
 					index
 				} = val;
 				let num = +this.photoList[index].zan;
-
-				if (bl) {
-					this.$http.postSaveZan({
-						cid: item.id,
-						uid: item.uid
-					}, res => {
-						if (res.code == 1) {
+				this.$http.postSaveZan({
+					cid: item.id,
+					uid: item.user_id
+				}, res => {
+					if (res.code == 1) {
+						const code = res.data.code;
+						const msg = res.data.msg;
+						if (code == 200) {
 							this.$set(this.photoList[index], `like`, bl);
 							this.$set(this.photoList[index], `zan`, ++num);
-						} else {
-							this.$common.errorToShow(res.msg);
+						} else if (code == 100) {
+							this.popCont = msg;
+							this.$refs.popup.$refs.pop.open();
 						}
-					})
-				} else {
-					// if (num > 0) {
-					// 	this.photoList[index].zan = num - 1;
-					// }
-					this.$refs.popup.$refs.pop.open();
-				}
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+
 			},
 			_changeFullText(val) {
 				// this.$emit('changeFullText', val)

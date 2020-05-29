@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-	
+
 		<!-- head -->
 		<view class="head-section" :class="{safearea: isShowSafearea}">
 			<view class="navBack">
@@ -105,7 +105,7 @@
 				userInfo: {},
 				popCont: "您今天对此条留言的点赞次数已达上限",
 				isShowSafearea: false,
-				
+
 			}
 		},
 		watch: {
@@ -122,6 +122,9 @@
 		},
 		created() {
 			this.getUserInfo();
+			uni.setNavigationBarTitle({
+				title: "个人中心"
+			})
 		},
 		mounted() {
 			// this.isShowSafearea = this.$common.checkPlatFromFunc();
@@ -131,6 +134,7 @@
 				this.$http.getUserInfo({}, res => {
 					if (res.code == 1) {
 						this.userInfo = res.data.userinfo;
+						this.$db.set('userinfo', res.data.userinfo)
 						this.postCommentShop();
 						this.postBeenShop();
 					} else {
@@ -143,7 +147,7 @@
 					user_id: this.userInfo.user_id
 				}, res => {
 					if (res.code == 1) {
-						this.photoList = res.data.slice(0,1);
+						this.photoList = res.data.slice(0, 1);
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -175,24 +179,25 @@
 				} = val;
 				let num = +this.photoList[index].zan;
 
-				if (bl) {
-					this.$http.postSaveZan({
-						cid: item.id,
-						uid: item.uid
-					}, res => {
-						if (res.code == 1) {
+				this.$http.postSaveZan({
+					cid: item.id,
+					uid: item.user_id
+				}, res => {
+					if (res.code == 1) {
+						const code = res.data.code;
+						const msg = res.data.msg;
+						if (code == 200) {
 							this.$set(this.photoList[index], `like`, bl);
 							this.$set(this.photoList[index], `zan`, ++num);
-						} else {
-							this.$common.errorToShow(res.msg);
+						} else if (code == 100) {
+							this.popCont = msg;
+							this.$refs.popup.$refs.pop.open();
 						}
-					})
-				} else {
-					// if (num > 0) {
-					// 	this.photoList[index].zan = num - 1;
-					// }
-					this.$refs.popup.$refs.pop.open();
-				}
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+
 			},
 			_changeFullText(val) {
 				const {
@@ -201,7 +206,7 @@
 				const index = e.currentTarget.dataset.index;
 				const str = e.currentTarget.dataset.text;
 				this.photoList[index].full_text = str == "全文" ? "收起全文" : "全文";
-				
+
 			},
 			_switchToMsg() {
 				uni.navigateTo({

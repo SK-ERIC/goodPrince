@@ -343,12 +343,10 @@ __webpack_require__.r(__webpack_exports__);
             title: "保存成功",
             mask: true });
 
-          setTimeout(function () {
-            uni.navigateTo({
-              url: "/pages/home/home?page=user" });
+          uni.hideToast();
+          uni.navigateTo({
+            url: "/pages/home/home?page=user" });
 
-            uni.hideToast();
-          }, 500);
 
         } else {
           _this2.$common.errorToShow(res.msg);

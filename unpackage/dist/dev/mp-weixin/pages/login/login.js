@@ -190,8 +190,12 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
         interval: '' },
 
       loginMobile: false,
-      phoneReg: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/ };
+      phoneReg: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
+      footInfo: {} };
 
+  },
+  onLoad: function onLoad() {
+    this.getFootConfig();
   },
   watch: {
     /**
@@ -317,6 +321,15 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 49);var _default =
           icon: "none" });
 
       }
+    },
+    getFootConfig: function getFootConfig() {var _this4 = this;
+      this.$http.getFootConfig({}, function (res) {
+        if (res.code == 1) {
+          _this4.footInfo = res.data;
+        } else {
+          _this4.$common.errorToShow(res.msg);
+        }
+      });
     } } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 

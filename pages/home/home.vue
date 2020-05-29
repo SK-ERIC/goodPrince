@@ -1,6 +1,7 @@
 <template>
 	<view :style="showPage ? 'opacity: 1;' : 'opacity: 0;' ">
-		<scroll-view scroll-y="true" :scroll-top="topNum" class="app-container" :style="'height:'+containerHeight+'px'">
+		<scroll-view scroll-y="true" :scroll-top="topNum" class="app-container" :style="'height:'+containerHeight+'px'"
+		 :lower-threshold='100' @scrolltolower="scrolltolower">
 			<view v-if="page =='shop'" :class="page=='shop'?'animation-fade':''">
 				<cu-shop :shopIndex="shopInfo" :commentList="commentList" @changeLike="_changeLike" @changeFullText="_changeFullText"
 				 @switchPostComments="_switchPostComments"></cu-shop>
@@ -66,6 +67,9 @@
 				shopInfo: {},
 				shopId: 1,
 				topNum: 0,
+				pageIndex: 1,
+				pageSize: 5,
+				total: 0,
 				commentList: [], // 评论列表
 				popCont: "您今天对此条留言的点赞次数已达上限",
 			}
@@ -99,7 +103,12 @@
 			this.getShopIndex();
 		},
 		methods: {
-
+			scrolltolower() {
+				if (this.page == 'shop') {
+					this.pageIndex += 1;
+					this.postShopCommentsList()
+				}
+			},
 			_changeLike(val) {
 				if (!this.$db.userMobile()) return;
 				const {
@@ -108,24 +117,25 @@
 					index
 				} = val;
 				let num = +this.commentList[index].zan;
-				if (bl) {
-					this.$http.postSaveZan({
-						cid: item.id,
-						uid: item.uid
-					}, res => {
-						if (res.code == 1) {
+
+				this.$http.postSaveZan({
+					cid: item.id,
+					uid: item.user_id
+				}, res => {
+					if (res.code == 1) {
+						const code = res.data.code;
+						const msg = res.data.msg;
+						if (code == 200) {
 							this.$set(this.commentList[index], `like`, bl);
 							this.$set(this.commentList[index], `zan`, ++num);
-						} else {
-							this.$common.errorToShow(res.msg);
+						} else if (code == 100) {
+							this.popCont = msg;
+							this.$refs.popup.$refs.pop.open();
 						}
-					})
-				} else {
-					// if (num > 0) {
-					// 	this.commentList[index].zan = num - 1;
-					// }
-					this.$refs.popup.$refs.pop.open();
-				}
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
 			},
 			_changeFullText(val) {
 				const {
@@ -149,6 +159,7 @@
 					if (res.code == 1) {
 						// this.shopInfo = Object.assign({},res.data)
 						this.shopInfo = res.data;
+						this.total = res.data.comments.counts;
 						this.postShopCommentsList()
 						// this.commentList = res.data.comments.list.slice(0, 2);
 					} else {
@@ -158,12 +169,13 @@
 			},
 			postShopCommentsList() {
 				this.$http.postShopCommentsList({
-					// shop_id: null,
-					page: 1,
-					page_size: 2
+					shop_id: this.shopId,
+					page: this.pageIndex,
+					page_size: this.pageSize
 				}, res => {
 					if (res.code == 1) {
-						this.commentList = res.data;
+						if (this.pageIndex == 1) this.commentList = []; //如果是第一页需手动制空列表
+						this.commentList = this.commentList.concat(res.data);
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
@@ -183,7 +195,7 @@
 					uni.setNavigationBarTitle({
 						title: item.title
 					})
-
+					this.topNum += 0.0001;
 				} else {
 					if (!this.$db.userMobile()) return;
 					this.$http.uploadImage(1, (res, tem) => {

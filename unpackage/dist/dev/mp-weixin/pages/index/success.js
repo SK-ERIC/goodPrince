@@ -152,6 +152,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 {
   components: {
     foot: foot },
@@ -162,8 +164,8 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
-    navBack: function navBack() {
-      uni.switchTab({
+    backHome: function backHome() {
+      uni.navigateTo({
         url: "/pages/home/home" });
 
     } } };exports.default = _default;

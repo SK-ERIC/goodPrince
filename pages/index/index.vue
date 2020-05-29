@@ -104,6 +104,7 @@
 			<view class="title">
 				顾客有话说 {{ shopIndex.comments.counts }}
 			</view>
+
 			<view class="comment-list">
 				<view v-if="shopIndex.comments.counts>0" class="comment-cont" v-for="(item, index) in commentList" :key="index">
 					<view class="info-wrap">
@@ -127,9 +128,9 @@
 								<uni-rate disabled="true" :size="18" :max="5" :value="item.score_show" />
 							</view>
 							<view class="rate-inner-r">
-								<image @click="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
+								<image @click.stop="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
 								 mode=""></image>
-								<image @click="_changeLike(item, true, index)" v-else class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/like.png"
+								<image @click.stop="_changeLike(item, true, index)" v-else class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/like.png"
 								 mode=""></image>
 								<text class="text">{{ item.zan }}</text>
 							</view>
@@ -139,12 +140,14 @@
 							{{ item.content }}
 						</view>
 						<!-- 全文 -->
-						<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index' @click="_changeFullText">
+						<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index'
+						 @click.stop="_changeFullText">
 							{{ item.full_text }}
 						</view>
 						<!-- 图片列表 -->
 						<view class="img-list">
-							<view class="img-cont" v-for="(img, ind) in item.image" :key="ind" :data-src="item.image[ind].image_url" @click="previewImage(item.image, $event)">
+							<view class="img-cont" v-for="(img, ind) in item.image" :key="ind" :data-src="item.image[ind].image_url"
+							 @click.stop="previewImage(item.image, $event)">
 								<image :src="img.image_url" mode=""></image>
 							</view>
 						</view>
@@ -163,6 +166,8 @@
 					</view>
 				</view>
 			</view>
+
+
 		</view>
 
 		<!-- foot -->

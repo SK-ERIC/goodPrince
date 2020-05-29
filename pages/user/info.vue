@@ -24,7 +24,7 @@
 				年龄
 			</view>
 			<view class="info-item-r type-picker" @click="showTimePicker">
-				{{ userInfo.age }} 岁
+				{{ userInfo.age }}
 				<text class="cuIcon-unfold"></text>
 			</view>
 		</view>
@@ -186,7 +186,7 @@
 					gender,
 					age
 				} = this.userInfo;
-				
+
 				let data = {
 					nickname,
 					avatar,
@@ -195,7 +195,7 @@
 					gender,
 					age
 				}
-				if(this.uploadImg) data.avatar = this.uploadImg;
+				if (this.uploadImg) data.avatar = this.uploadImg;
 				this.$http.postProfile(data, res => {
 					uni.hideLoading()
 					if (res.code == 1) {
@@ -204,12 +204,10 @@
 							title: "保存成功",
 							mask: true
 						})
-						setTimeout(() => {
-							uni.navigateTo({
-								url: "/pages/home/home?page=user"
-							})
-							uni.hideToast()
-						}, 500)
+						uni.hideToast()
+						uni.navigateTo({
+							url: "/pages/home/home?page=user"
+						})
 
 					} else {
 						this.$common.errorToShow(res.msg)

@@ -30,12 +30,12 @@
 				total: "",
 				latelyList: [],
 				pageIndex: 1,
-				pageSize: 5,
+				pageSize: 10,
 				user_id: "",
 				upOption: {
 					page: {
 						num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
-						size: 3, // 每页数据的数量
+						size: 10, // 每页数据的数量
 						time: null // 加载第一页数据服务器返回的时间; 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
 					},
 					textColor: "gray", // 文本颜色 (当bgColor配置了颜色,而textColor未配置时,则textColor会默认为白色)

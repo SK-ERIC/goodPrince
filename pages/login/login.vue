@@ -28,9 +28,9 @@
 
 		<!-- btm -->
 		<view class="btm-section text-center">
-			<text>无锡好印象-经营评价平台 主办单位</text>
+			<text>{{ footInfo.copyright }}</text>
 			<text>
-				无锡市梁溪区通江街道 无锡市梁溪区市场监督管理局通江分局
+				{{ footInfo.address }}
 			</text>
 		</view>
 
@@ -54,7 +54,11 @@
 				},
 				loginMobile: false,
 				phoneReg: /^[1](([3][0-9])|([4][5-9])|([5][0-3,5-9])|([6][5,6])|([7][0-8])|([8][0-9])|([9][1,8,9]))[0-9]{8}$/,
+				footInfo: {}
 			}
+		},
+		onLoad() {
+			this.getFootConfig()
 		},
 		watch: {
 			/**
@@ -181,6 +185,15 @@
 					})
 				}
 			},
+			getFootConfig() {
+				this.$http.getFootConfig({}, res => {
+					if (res.code == 1) {
+						this.footInfo = res.data;
+					} else {
+						this.$common.errorToShow(res.msg)
+					}
+				})
+			}
 		}
 	}
 </script>

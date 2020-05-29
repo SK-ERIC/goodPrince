@@ -238,6 +238,9 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
 
   created: function created() {
     this.getUserInfo();
+    uni.setNavigationBarTitle({
+      title: "个人中心" });
+
   },
   mounted: function mounted() {
     // this.isShowSafearea = this.$common.checkPlatFromFunc();
@@ -247,6 +250,7 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
       this.$http.getUserInfo({}, function (res) {
         if (res.code == 1) {
           _this.userInfo = res.data.userinfo;
+          _this.$db.set('userinfo', res.data.userinfo);
           _this.postCommentShop();
           _this.postBeenShop();
         } else {
@@ -291,24 +295,25 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
       val.item,bl = val.bl,index = val.index;
       var num = +this.photoList[index].zan;
 
-      if (bl) {
-        this.$http.postSaveZan({
-          cid: item.id,
-          uid: item.uid },
-        function (res) {
-          if (res.code == 1) {
+      this.$http.postSaveZan({
+        cid: item.id,
+        uid: item.user_id },
+      function (res) {
+        if (res.code == 1) {
+          var code = res.data.code;
+          var msg = res.data.msg;
+          if (code == 200) {
             _this4.$set(_this4.photoList[index], "like", bl);
             _this4.$set(_this4.photoList[index], "zan", ++num);
-          } else {
-            _this4.$common.errorToShow(res.msg);
+          } else if (code == 100) {
+            _this4.popCont = msg;
+            _this4.$refs.popup.$refs.pop.open();
           }
-        });
-      } else {
-        // if (num > 0) {
-        // 	this.photoList[index].zan = num - 1;
-        // }
-        this.$refs.popup.$refs.pop.open();
-      }
+        } else {
+          _this4.$common.errorToShow(res.msg);
+        }
+      });
+
     },
     _changeFullText: function _changeFullText(val) {var
 

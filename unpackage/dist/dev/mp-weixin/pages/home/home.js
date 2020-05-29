@@ -165,6 +165,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 var _this;var _default =
 {
   components: {
@@ -198,6 +199,9 @@ var _this;var _default =
       shopInfo: {},
       shopId: 1,
       topNum: 0,
+      pageIndex: 1,
+      pageSize: 5,
+      total: 0,
       commentList: [], // 评论列表
       popCont: "您今天对此条留言的点赞次数已达上限" };
 
@@ -231,7 +235,12 @@ var _this;var _default =
     this.getShopIndex();
   },
   methods: {
-
+    scrolltolower: function scrolltolower() {
+      if (this.page == 'shop') {
+        this.pageIndex += 1;
+        this.postShopCommentsList();
+      }
+    },
     _changeLike: function _changeLike(val) {var _this2 = this;
       if (!this.$db.userMobile()) return;var
 
@@ -240,24 +249,25 @@ var _this;var _default =
 
       val.item,bl = val.bl,index = val.index;
       var num = +this.commentList[index].zan;
-      if (bl) {
-        this.$http.postSaveZan({
-          cid: item.id,
-          uid: item.uid },
-        function (res) {
-          if (res.code == 1) {
+
+      this.$http.postSaveZan({
+        cid: item.id,
+        uid: item.user_id },
+      function (res) {
+        if (res.code == 1) {
+          var code = res.data.code;
+          var msg = res.data.msg;
+          if (code == 200) {
             _this2.$set(_this2.commentList[index], "like", bl);
             _this2.$set(_this2.commentList[index], "zan", ++num);
-          } else {
-            _this2.$common.errorToShow(res.msg);
+          } else if (code == 100) {
+            _this2.popCont = msg;
+            _this2.$refs.popup.$refs.pop.open();
           }
-        });
-      } else {
-        // if (num > 0) {
-        // 	this.commentList[index].zan = num - 1;
-        // }
-        this.$refs.popup.$refs.pop.open();
-      }
+        } else {
+          _this2.$common.errorToShow(res.msg);
+        }
+      });
     },
     _changeFullText: function _changeFullText(val) {var
 
@@ -281,6 +291,7 @@ var _this;var _default =
         if (res.code == 1) {
           // this.shopInfo = Object.assign({},res.data)
           _this3.shopInfo = res.data;
+          _this3.total = res.data.comments.counts;
           _this3.postShopCommentsList();
           // this.commentList = res.data.comments.list.slice(0, 2);
         } else {
@@ -290,12 +301,13 @@ var _this;var _default =
     },
     postShopCommentsList: function postShopCommentsList() {var _this4 = this;
       this.$http.postShopCommentsList({
-        // shop_id: null,
-        page: 1,
-        page_size: 2 },
+        shop_id: this.shopId,
+        page: this.pageIndex,
+        page_size: this.pageSize },
       function (res) {
         if (res.code == 1) {
-          _this4.commentList = res.data;
+          if (_this4.pageIndex == 1) _this4.commentList = []; //如果是第一页需手动制空列表
+          _this4.commentList = _this4.commentList.concat(res.data);
         } else {
           _this4.$common.errorToShow(res.msg);
         }
@@ -315,7 +327,7 @@ var _this;var _default =
         uni.setNavigationBarTitle({
           title: item.title });
 
-
+        this.topNum += 0.0001;
       } else {
         if (!this.$db.userMobile()) return;
         this.$http.uploadImage(1, function (res, tem) {

@@ -155,7 +155,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var _mescrollMixins = _interopRequireDefault(__webpack_require__(/*! @/components/mescroll-uni/mescroll-mixins.js */ 108));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
+var _mescrollMixins = _interopRequireDefault(__webpack_require__(/*! @/components/mescroll-uni/mescroll-mixins.js */ 92));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };} //
 //
 //
 //
@@ -181,7 +181,7 @@ var _mescrollMixins = _interopRequireDefault(__webpack_require__(/*! @/component
 //
 var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 148));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var pop = function pop() {__webpack_require__.e(/*! require.ensure | pages/component/pop */ "pages/component/pop").then((function () {return resolve(__webpack_require__(/*! ../component/pop */ 169));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var latelyPhotoList = function latelyPhotoList() {__webpack_require__.e(/*! require.ensure | pages/component/latelyPhotoList */ "pages/component/latelyPhotoList").then((function () {return resolve(__webpack_require__(/*! ../component/latelyPhotoList */ 162));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default = { mixins: [_mescrollMixins.default], // 使用mixin (在main.js注册全局组件)
   components: { foot: foot, pop: pop, latelyPhotoList: latelyPhotoList }, data: function data() {return { total: "", photoList: [], pageIndex: 1, pageSize: 5, user_id: "", popCont: "您今天对此条留言的点赞次数已达上限", upOption: { page: { num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
-          size: 3, // 每页数据的数量
+          size: 5, // 每页数据的数量
           time: null // 加载第一页数据服务器返回的时间; 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
         }, empty: { use: false, // 是否显示空布局
           icon: "https://wxhyx-cdn.aisspc.cn/static/nthing.png", // 图标路径
@@ -263,25 +263,25 @@ var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/com
 
       val.item,bl = val.bl,index = val.index;
       var num = +this.photoList[index].zan;
-
-      if (bl) {
-        this.$http.postSaveZan({
-          cid: item.id,
-          uid: item.uid },
-        function (res) {
-          if (res.code == 1) {
+      this.$http.postSaveZan({
+        cid: item.id,
+        uid: item.user_id },
+      function (res) {
+        if (res.code == 1) {
+          var code = res.data.code;
+          var msg = res.data.msg;
+          if (code == 200) {
             _this2.$set(_this2.photoList[index], "like", bl);
             _this2.$set(_this2.photoList[index], "zan", ++num);
-          } else {
-            _this2.$common.errorToShow(res.msg);
+          } else if (code == 100) {
+            _this2.popCont = msg;
+            _this2.$refs.popup.$refs.pop.open();
           }
-        });
-      } else {
-        // if (num > 0) {
-        // 	this.photoList[index].zan = num - 1;
-        // }
-        this.$refs.popup.$refs.pop.open();
-      }
+        } else {
+          _this2.$common.errorToShow(res.msg);
+        }
+      });
+
     },
     _changeFullText: function _changeFullText(val) {
       // this.$emit('changeFullText', val)
