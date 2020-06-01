@@ -37,9 +37,9 @@
 						</view>
 					</view>
 					<!-- 回复 -->
-					<view class="reply-warp" v-if="item.shopkeeper">
+					<view class="reply-warp" v-if="item.keeper_content">
 						<text class="reply">店家回复: </text>
-						{{ item.shopkeeper.content }}
+						{{ item.keeper_content }}
 					</view>
 				</view>
 				<view v-if="photoList.length==0" class="nthing-section">
