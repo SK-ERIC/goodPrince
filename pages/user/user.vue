@@ -209,8 +209,9 @@
 
 			},
 			_switchToMsg() {
+				const total = this.userInfo.replyCount;
 				uni.navigateTo({
-					url: "/pages/user/msg"
+					url: `/pages/user/msg?total={total}`
 				})
 			},
 			_switchEditInfo() {

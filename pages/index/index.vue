@@ -26,21 +26,21 @@
 			<view class="address-item-l">
 				<view class="address-inner">
 					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-gps.png" mode=""></image>
-					<view class="address-wrap">
+					<view class="address-wrap" v-if="shopIndex.shop_address">
 						<text class="type-bold">店家地址 ·</text>
 						<text>{{ shopIndex.shop_address }}</text>
 					</view>
 				</view>
 				<view class="address-inner">
 					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-time.png" mode=""></image>
-					<view class="address-wrap">
+					<view class="address-wrap" v-if="shopIndex.shop_open_add_time">
 						<text class="type-bold">营业时间 ·</text>
 						<text>{{ shopIndex.shop_open_add_time }} - {{ shopIndex.shop_open_end_time }}</text>
 					</view>
 				</view>
 				<view class="address-inner">
 					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-eat.png" mode=""></image>
-					<view class="address-wrap">
+					<view class="address-wrap" v-if="shopIndex.shop_content">
 						<text class="type-bold">主营内容 ·</text>
 						<text>{{ shopIndex.shop_content }}</text>
 					</view>
@@ -285,6 +285,7 @@
 			&.model {
 				background-image: url("https://wxhyx-cdn.aisspc.cn/static/model_bg.png");
 				background-size: 100% 100%;
+				padding-top: 30rpx;
 			}
 
 			.shopName {

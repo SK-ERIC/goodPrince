@@ -224,10 +224,12 @@ var _this;var _default =
     if (options.id) id = options.id;
     if (options.page) this.page = options.page;
     //在此函数中获取扫描普通链接二维码参数
-    if (options.q) {
-      var q = decodeURIComponent(options.q);
-      var access_token = utils.getQueryString(q, 'access_token');
-      id = utils.getQueryString(q, 'id');
+    if (options.scene) {
+      // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
+      var scene = decodeURIComponent(options.scene);
+      // let access_token = utils.getQueryString(q, 'access_token');
+      // id = utils.getQueryString(q, 'id');
+      id = scene;
     };
     if (id) this.shopId = id;
 

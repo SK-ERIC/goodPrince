@@ -27,12 +27,14 @@
 						{{ item.content }}
 					</view>
 					<!-- 全文 -->
-					<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index' @click.stop="_changeFullText">
+					<view class="fullText" v-if="isShowFullText(item.content)" :data-text="item.full_text" :data-index='index'
+					 @click.stop="_changeFullText">
 						{{ item.full_text }}
 					</view>
 					<!-- 图片列表 -->
 					<view class="img-list">
-						<view class="img-cont" v-for="(img, ind) in item.image" :key="ind" :data-src="item.image[ind].image_url" @click.stop="previewImage(item.image, $event)">
+						<view class="img-cont" v-for="(img, ind) in item.image" :key="ind" :data-src="item.image[ind].image_url"
+						 @click.stop="previewImage(item.image, $event)">
 							<image :src="img.image_url" mode=""></image>
 						</view>
 					</view>
@@ -118,24 +120,24 @@
 
 			.photo-list {
 				padding: 0 32rpx;
-				
+
 				.nthing-section {
 					@include flexY;
 					@include flexA;
 					padding-top: 230rpx;
 					padding-bottom: 130rpx;
-				
+
 					.nthing-img {
 						width: 220rpx;
 						height: 220rpx;
 					}
-				
+
 					.nthing-text {
 						margin: 40rpx 0 56rpx;
 						font-size: 30rpx;
 						color: #AFB0B5;
 					}
-				
+
 					.nthing-btn {
 						width: 480rpx;
 						height: 100rpx;
@@ -147,7 +149,7 @@
 						font-weight: 400;
 					}
 				}
-				
+
 
 				.photo-cont {
 					padding: 40rpx 0 52rpx;

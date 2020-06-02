@@ -980,8 +980,9 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
 
     },
     _switchToMsg: function _switchToMsg() {
+      var total = this.userInfo.replyCount;
       uni.navigateTo({
-        url: "/pages/user/msg" });
+        url: "/pages/user/msg?total={total}" });
 
     },
     _switchEditInfo: function _switchEditInfo() {

@@ -105,7 +105,7 @@
 			/*下拉刷新的回调 */
 			downCallback() {
 				// 这里加载你想下拉刷新的数据
-				this.postCommentShop();
+				// this.postCommentShop();
 				// 下拉刷新的回调,默认重置上拉加载列表为第一页 (自动执行 page.num=1, 再触发upCallback方法 )
 				this.mescroll.resetUpScroll()
 			},

@@ -180,7 +180,7 @@ var _mescrollMixins = _interopRequireDefault(__webpack_require__(/*! @/component
 //
 //
 var _default = { mixins: [_mescrollMixins.default], // 使用mixin (在main.js注册全局组件)
-  data: function data() {return { msgList: [], pageIndex: 1, pageSize: 5, user_id: "", upOption: { page: { num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
+  data: function data() {return { msgList: [], total: 0, pageIndex: 1, pageSize: 5, user_id: "", upOption: { page: { num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
           size: 3, // 每页数据的数量
           time: null // 加载第一页数据服务器返回的时间; 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
         }, textColor: "gray", // 文本颜色 (当bgColor配置了颜色,而textColor未配置时,则textColor会默认为白色)
@@ -193,7 +193,9 @@ var _default = { mixins: [_mescrollMixins.default], // 使用mixin (在main.js�
           // // fixed: false, // 是否使用fixed定位,默认false; 配置fixed为true,以下的top和zIndex才生效 (transform会使fixed失效,最终会降级为absolute)
           // // top: "100rpx", // fixed定位的top值 (完整的单位值,如 "10%"; "100rpx")
           // // zIndex: 99 // fixed定位z-index值
-        } } };}, onLoad: function onLoad(options) {this.user_id = this.$db.get("userinfo").user_id;}, methods: { getReplySms: function getReplySms() {var _this = this;var user_id = this.$db.get("userinfo").user_id;this.$http.getReplySms({ user_id: this.user_id, page: this.pageIndex,
+        } } };}, onLoad: function onLoad(options) {this.user_id = this.$db.get("userinfo").user_id;if (options.total) this.total = options.total;}, methods: { getReplySms: function getReplySms() {var _this = this;var user_id = this.$db.get("userinfo").user_id;this.$http.getReplySms({
+        user_id: this.user_id,
+        page: this.pageIndex,
         page_size: this.pageSize },
       function (res) {
         //联网成功的回调,隐藏下拉刷新的状态
@@ -210,7 +212,7 @@ var _default = { mixins: [_mescrollMixins.default], // 使用mixin (在main.js�
     /*下拉刷新的回调 */
     downCallback: function downCallback() {
       // 这里加载你想下拉刷新的数据
-      this.getReplySms();
+      // this.getReplySms();
       // 下拉刷新的回调,默认重置上拉加载列表为第一页 (自动执行 page.num=1, 再触发upCallback方法 )
       this.mescroll.resetUpScroll();
     },

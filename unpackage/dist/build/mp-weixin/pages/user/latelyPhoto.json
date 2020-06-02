@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "usingComponents": {
-    "foot": "/pages/component/foot",
-    "pop": "/pages/component/pop",
-    "lately-photo-list": "/pages/component/latelyPhotoList"
-  }
-}

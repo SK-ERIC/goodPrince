@@ -43,6 +43,7 @@
 .content .status_bar.model.data-v-97335ae4 {
   background-image: url("https://wxhyx-cdn.aisspc.cn/static/model_bg.png");
   background-size: 100% 100%;
+  padding-top: 30rpx;
 }
 .content .status_bar .shopName.data-v-97335ae4 {
   display: -webkit-box;

@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "修改资料",
-  "usingComponents": {
-    "tui-actionsheet": "/components/tui-actionsheet/tui-actionsheet",
-    "tui-datetime": "/components/tui-datetime/tui-datetime"
-  }
-}

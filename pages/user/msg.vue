@@ -29,6 +29,7 @@
 		data() {
 			return {
 				msgList: [],
+				total: 0,
 				pageIndex: 1,
 				pageSize: 5,
 				user_id: "",
@@ -55,6 +56,7 @@
 		},
 		onLoad(options) {
 			this.user_id = this.$db.get("userinfo").user_id
+			if(options.total) this.total = options.total
 		},
 		methods: {
 			getReplySms() {
@@ -78,7 +80,7 @@
 			/*下拉刷新的回调 */
 			downCallback() {
 				// 这里加载你想下拉刷新的数据
-				this.getReplySms();
+				// this.getReplySms();
 				// 下拉刷新的回调,默认重置上拉加载列表为第一页 (自动执行 page.num=1, 再触发upCallback方法 )
 				this.mescroll.resetUpScroll()
 			},

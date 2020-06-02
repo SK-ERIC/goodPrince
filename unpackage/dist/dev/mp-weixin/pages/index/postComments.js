@@ -286,7 +286,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$http.postPushComment(params, function (res) {
         if (res.code == 200) {
 
-          uni.navigateTo({
+          // uni.navigateTo({
+          // 	url: "/pages/index/success"
+          // })
+          uni.reLaunch({
             url: "/pages/index/success" });
 
         } else {
