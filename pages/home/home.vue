@@ -3,11 +3,14 @@
 		<scroll-view scroll-y="true" :scroll-top="topNum" class="app-container" :style="'height:'+containerHeight+'px'"
 		 :lower-threshold='100' @scrolltolower="scrolltolower">
 			<view v-if="page =='shop'" :class="page=='shop'?'animation-fade':''">
-				<cu-shop :shopIndex="shopInfo" :commentList="commentList" @changeLike="_changeLike" @changeFullText="_changeFullText"
-				 @switchPostComments="_switchPostComments"></cu-shop>
+				<cu-shop v-if="shopId && !isShowScan" :shopIndex="shopInfo" :commentList="commentList" @changeLike="_changeLike"
+				 @changeFullText="_changeFullText" @switchPostComments="_switchPostComments"></cu-shop>
+
+				<cu-scan v-else></cu-scan>
+
 			</view>
 			<view v-if="page =='user'" :class="page=='user'?'animation-fade':''">
-				<cu-user :userInfo="userInfo" @handleClick="_handleClick"></cu-user>
+				<cu-user :msgNum="msgNum"  :userInfo="userInfo" @handleClick="_handleClick"></cu-user>
 			</view>
 		</scroll-view>
 		<!-- pop -->
@@ -33,6 +36,9 @@
 </template>
 
 <script>
+	import {
+		mapMutations
+	} from 'vuex'
 	import pop from '../component/pop'
 	let _this;
 	export default {
@@ -47,7 +53,7 @@
 				tabbar: [{
 						"iconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_shop.png",
 						"selectedIconPath": "https://wxhyx-cdn.aisspc.cn/static/tabIcon_shop_sel.png",
-						"title": "首页",
+						"title": "店家",
 						"page": "shop"
 					},
 					{
@@ -65,13 +71,16 @@
 				],
 				showLoading: false,
 				shopInfo: {},
-				shopId: 1,
+				shopId: "",
 				topNum: 0,
 				pageIndex: 1,
 				pageSize: 5,
 				total: 0,
+				msgNum: 0,
+				isShowScan: false,
 				commentList: [], // 评论列表
 				popCont: "您今天对此条留言的点赞次数已达上限",
+				finished: false, // 是否已加载完成
 			}
 		},
 		watch: {
@@ -86,28 +95,67 @@
 				deep: true
 			}
 		},
-		onLoad(options) {
+		async onLoad(options) {
 			console.log("home", options)
 			let id = "";
-			if (options.id) id = options.id;
-			if (options.page) this.page = options.page;
-			//在此函数中获取扫描普通链接二维码参数
+
+			// 1 如果是历史中启动小程序，尝试获取店铺id
+			if (this.$db.get("shop_id")) id = this.$db.get("shop_id");
+
+			// 2 在此函数中获取扫描普通链接二维码参数
 			if (options.scene) {
-				  // scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
+				// scene 需要使用 decodeURIComponent 才能获取到生成二维码时传入的 scene
 				const scene = decodeURIComponent(options.scene)
-				// let access_token = utils.getQueryString(q, 'access_token');
-				// id = utils.getQueryString(q, 'id');
 				id = scene;
 			};
-			if (id) this.shopId = id;
+
+			// 3 页面跳转过来的
+			if (options.id) id = options.id;
+			if (options.page) this.page = options.page;
+
+			// 定义当前登录的店铺id
+			this.shopId = id;
+			this.$db.set("shop_id", id);
+
+			if (id) {
+				const shop = await this.getShopIndex()
+				// 0是删除，1是正常，2是暂停展示
+				if (shop.status != 1) {
+					uni.showToast({
+						title: "该店铺存在异常~",
+						duration: 2000,
+						icon: "none",
+						mask: true,
+						success: () => {
+							this.isShowScan = true;
+							this.shopId = "";
+							this.$db.set("shop_id", "")
+						}
+					})
+				}
+				this.postShopCommentsList()
+			};
 
 			this.init_page_size();
-			this.getShopIndex();
+
+		},
+		onShow() {
+			this.getUserInfo()
 		},
 		methods: {
+			...mapMutations(['shopConfig']),
+			getUserInfo() {
+				this.$http.getUserInfo({}, res => {
+					if (res.code == 1) {
+						this.msgNum = res.data.userinfo.replyCount
+					} else {
+						this.$common.errorToShow(res.msg);
+					}
+				})
+			},
 			scrolltolower() {
-				if (this.page == 'shop') {
-					this.pageIndex += 1;
+				if (this.page == 'shop' && this.shopId && !this.finished) {
+					this.pageIndex++;
 					this.postShopCommentsList()
 				}
 			},
@@ -119,20 +167,23 @@
 					index
 				} = val;
 				let num = +this.commentList[index].zan;
-
+				const user_id = this.$db.get("userinfo").user_id
 				this.$http.postSaveZan({
 					cid: item.id,
-					uid: item.user_id
+					uid: user_id
 				}, res => {
 					if (res.code == 1) {
 						const code = res.data.code;
 						const msg = res.data.msg;
 						if (code == 200) {
-							this.$set(this.commentList[index], `like`, bl);
+							this.$set(this.commentList[index], `myZan`, 1);
 							this.$set(this.commentList[index], `zan`, ++num);
 						} else if (code == 100) {
 							this.popCont = msg;
 							this.$refs.popup.$refs.pop.open();
+						} else if (code == 300) {
+							this.$set(this.commentList[index], `myZan`, 0);
+							this.$set(this.commentList[index], `zan`, --num);
 						}
 					} else {
 						this.$common.errorToShow(res.msg);
@@ -155,51 +206,100 @@
 			},
 			// 店铺信息
 			getShopIndex() {
-				this.$http.getShopIndex({
-					shop_id: this.shopId
-				}, res => {
-					if (res.code == 1) {
-						// this.shopInfo = Object.assign({},res.data)
-						this.shopInfo = res.data;
-						this.total = res.data.comments.counts;
-						this.postShopCommentsList()
-						// this.commentList = res.data.comments.list.slice(0, 2);
-					} else {
-						this.$common.errorToShow(res.msg);
-					}
+				const _this = this
+				return new Promise((resolve, reject) => {
+					_this.$http.getShopIndex({
+						shop_id: _this.shopId
+					}, res => {
+						if (res.code == 1) {
+							_this.shopInfo = res.data;
+							_this.total = res.data.comments.counts || 0;
+							_this.shopConfig(res.data);
+							resolve(res.data)
+						} else {
+							this.$common.errorToShow(res.msg);
+						}
+					})
 				})
+
 			},
 			postShopCommentsList() {
+				const total = this.shopInfo.comments.counts || 0;
+				const user_id = this.$db.get("userinfo").user_id;
 				this.$http.postShopCommentsList({
 					shop_id: this.shopId,
+					user_id,
 					page: this.pageIndex,
 					page_size: this.pageSize
 				}, res => {
 					if (res.code == 1) {
-						if (this.pageIndex == 1) this.commentList = []; //如果是第一页需手动制空列表
-						this.commentList = this.commentList.concat(res.data);
+						// 返回当前页的数据
+						const data = res.data;
+						// 加载结束
+						if (data == null || data.length == 0) {
+							this.finished = true
+							return
+						}
+						// 如果是第一页需手动制空列表
+						if (this.pageIndex == 1) this.commentList = [];
+						// 将新数据与老数据进行合并
+						this.commentList = this.commentList.concat(data);
+						//如果列表数据条数>=总条数，不再触发滚动加载
+						if (this.commentList.length >= total) {
+							this.finished = true
+						}
 					} else {
 						this.$common.errorToShow(res.msg);
 					}
 				})
 			},
-			_handleClick(val) {
-				console.log("店铺信息：", val)
-				this.page = "shop";
+			async _handleClick(val) {
+				const _this = this
 				this.topNum = this.topNum + 0.001;
 				this.shopId = val.shop_id;
-				this.getShopIndex();
+				this.$db.set("shop_id", val.shop_id)
+				this.page = "shop";
+				const shop = await this.getShopIndex();
+
+				if (shop.status != 1) {
+					uni.showToast({
+						title: "该店铺存在异常~",
+						icon: "none",
+						mask: true,
+						success: () => {
+							this.isShowScan = true;
+							this.shopId = "";
+							this.$db.set("shop_id", "")
+						}
+					})
+					return
+				}
+				_this.postShopCommentsList()
 			},
 			changeTab(item) {
 				if (item.page) {
 					if (item.page == 'user' && !this.$db.userMobile()) return;
 					this.page = item.page;
+					let title = "";
+					if (this.page == "shop" && !this.shopId) {
+						title = "通江好印象"
+					} else {
+						title = item.title
+					}
 					uni.setNavigationBarTitle({
-						title: item.title
+						title: title
 					})
 					this.topNum += 0.0001;
 				} else {
 					if (!this.$db.userMobile()) return;
+					if (!this.shopId) {
+						uni.showToast({
+							title: "请选择一个店家",
+							icon: "none"
+						})
+						return
+					}
+
 					this.$http.uploadImage(1, (res, tem) => {
 						if (res.code == 1) {
 							uni.navigateTo({
@@ -209,6 +309,8 @@
 							this.$common.errorToShow(res.msg);
 						}
 					})
+
+
 				}
 
 				// 可代替onshow去做一些业务逻辑

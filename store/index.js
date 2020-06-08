@@ -5,13 +5,16 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
 	state: {
-		shopConfig: {},
+		shopInfo: {},
 		config: {}, 
 		redirectPage: '',
 		uuid:'',//当前客户端
 		building_id: 0
 	},
     mutations: {
+		 shopConfig(state, payload) {
+			state.shopInfo = payload
+		 },
 		config (state, payload) {
 			state.config = payload
 		},		
@@ -20,10 +23,8 @@ const store = new Vuex.Store({
 		},
 		building_id(state, payload){
 			state.building_id = payload
-		},
-		shopConfig(state, payload) {
-			state.shopConfig = payload
 		}
+		
 	},
 	actions: {
 

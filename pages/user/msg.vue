@@ -4,7 +4,7 @@
 			<view class="msg-wrap">
 				<view class="msg-section" v-for="(item, index) in msgList" :key="index" @click="_switchToDetail(item)">
 					<view class="msg-item-l">
-						<image class="img" src="http://qakj5dvcb.bkt.clouddn.com/static/logo_wh.png" mode=""></image>
+						<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/msgIcon.png" mode=""></image>
 						<text class="dot" v-show="!item.is_read"></text>
 					</view>
 					<view class="msg-item-r">
@@ -31,12 +31,12 @@
 				msgList: [],
 				total: 0,
 				pageIndex: 1,
-				pageSize: 5,
+				pageSize: 15,
 				user_id: "",
 				upOption: {
 					page: {
 						num: 0, // 当前页码,默认0,回调之前会加1,即callback(page)会从1开始
-						size: 3, // 每页数据的数量
+						size: 15, // 每页数据的数量
 						time: null // 加载第一页数据服务器返回的时间; 防止用户翻页时,后台新增了数据从而导致下一页数据重复;
 					},
 					textColor: "gray", // 文本颜色 (当bgColor配置了颜色,而textColor未配置时,则textColor会默认为白色)
@@ -57,6 +57,9 @@
 		onLoad(options) {
 			this.user_id = this.$db.get("userinfo").user_id
 			if(options.total) this.total = options.total
+		},
+		onShow() {
+			this.getReplySms();
 		},
 		methods: {
 			getReplySms() {

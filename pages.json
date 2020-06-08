@@ -3,7 +3,7 @@
 		{
 			"path": "pages/home/home",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "店家"
 			}
 		},
 		{
@@ -22,6 +22,12 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path":"pages/index/scan",
+			"style": {
+				"navigationBarTitleText": "通江好印象"
 			}
 		},
 		{
@@ -79,7 +85,7 @@
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "无锡好印象",
+		"navigationBarTitleText": "通江好印象",
 		"navigationBarBackgroundColor": "#FFFFFF",
 		"backgroundColor": "#F8F8F8"
 	}

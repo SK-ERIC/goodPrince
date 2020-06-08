@@ -37,8 +37,10 @@ const prePage = ()=>{
 
 /*           注册全局自定义组件            */
 import cuShop from '@/pages/index/index.vue';
+import cuScan from '@/pages/index/scan.vue';
 import cuUser from '@/pages/user/user.vue';
 Vue.component('cu-shop', cuShop)
+Vue.component('cu-scan', cuScan)
 Vue.component('cu-user', cuUser)
 
 import MescrollBody from "@/components/mescroll-uni/mescroll-body.vue"

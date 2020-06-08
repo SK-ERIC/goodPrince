@@ -1,0 +1,7 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "uni-rate": "/components/uni-rate/uni-rate",
+    "foot": "/pages/component/foot"
+  }
+}

@@ -10,11 +10,11 @@
 								<text class="date">{{ item.add_date }}</text>
 								<view class="rate">
 									<text>综合评分</text>
-									<uni-rate disabled="true" :size="18" :max="5" :value="item.score_show" />
+									<uni-rate disabled="true" :size="14" :max="5" :value="item.score_show" />
 								</view>
 							</view>
 							<view class="item-r">
-								<image @click.stop="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
+								<image @click.stop="_changeLike(item, false, index)" v-if="item.myZan" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
 								 mode=""></image>
 								<image @click.stop="_changeLike(item, true, index)" v-else class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/like.png"
 								 mode=""></image>
@@ -200,8 +200,9 @@
 							@include flexX;
 
 							.like-icon {
-								width: 34rpx;
-								height: 34rpx;
+								width: 40rpx;
+								height: 40rpx;
+								margin-right: 5rpx;
 							}
 
 							.text {

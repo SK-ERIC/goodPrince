@@ -22,7 +22,7 @@
 			}
 		},
 		onLoad(options) {
-			this.getReplyContent(options.id)
+			this.getReplyContent(options.id);
 		},
 		methods: {
 			getReplyContent(id) {

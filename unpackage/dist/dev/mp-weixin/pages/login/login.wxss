@@ -227,4 +227,7 @@
   font-family: Source Han Sans CN;
   font-weight: 400;
 }
+.container .btm-section text.data-v-f242a908 {
+  white-space: nowrap;
+}
 

@@ -1,13 +1,8 @@
 <template>
 	<view class="container">
-		<!-- <view class="navBack" @click.stop="navBack">
-			<text class="cuIcon-back"></text>
-			<text>{{ topLeftText }}</text>
-		</view> -->
-		<!-- 评分 -->
 		<view class="rate-section">
-			<text class="text">综合评分</text>
-			<uni-rate :value="rate" :size="18" :max="5" @change="changeRate" />
+			<text class="text">评分</text>
+			<uni-rate :value="rate" :size="22" :max="5" :margin="10" @change="changeRate" />
 			<text class="score">{{ rate }}分</text>
 		</view>
 		<!-- 评述 -->
@@ -52,6 +47,9 @@
 </template>
 
 <script>
+	import {
+		mapState
+	} from 'vuex'
 	import uniRate from '@/components/uni-rate/uni-rate.vue';
 	export default {
 		components:{
@@ -59,7 +57,7 @@
 		},
 		data() {
 			return {
-				topLeftText: "粤玲珑广式早茶",
+				topLeftText: "",
 				rate: 0, // 评分
 				comCont: "", // 评论
 				imgList: [], // 预览本地地址
@@ -75,9 +73,10 @@
 				this.filePath.push(options.tem);
 			}
 			uni.setNavigationBarTitle({
-				title: this.topLeftText
+				title: this.shopInfo.shop_title
 			})
 		},
+		computed: mapState(['shopInfo']),
 		methods:{
 			chooseImage() {
 				this.$http.uploadImage(1, (res, tem)=> {
@@ -141,7 +140,7 @@
 				
 				const params = {
 					uid,
-					sid: 1,
+					sid: this.shopInfo.id,
 					content: this.comCont,
 					score: Number(this.rate)*2,
 					files: this.filePath.join(',')
@@ -149,10 +148,6 @@
 			
 				this.$http.postPushComment(params,res=>{
 					if(res.code == 200) {
-						
-						// uni.navigateTo({
-						// 	url: "/pages/index/success"
-						// })
 						uni.reLaunch({
 							url: "/pages/index/success"
 						})
@@ -160,7 +155,6 @@
 						this.$common.errorToShow(res.msg);
 					}
 				})
-				
 			},
 			cancelBtn() {
 				uni.navigateBack({
@@ -169,11 +163,6 @@
 			},
 			changeRate(e) {
 				this.rate = e.value;
-			},
-			navBack() {
-				uni.navigateBack({
-					delta: 1
-				})
 			}
 		}
 	}

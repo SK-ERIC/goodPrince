@@ -24,7 +24,8 @@
 				年龄
 			</view>
 			<view class="info-item-r type-picker" @click="showTimePicker">
-				{{ userInfo.age }}
+				<text v-if="userInfo.age || userInfo.age=='0'">{{ userInfo.age }} 岁</text>
+				<text v-else>未选择</text>
 				<text class="cuIcon-unfold"></text>
 			</view>
 		</view>
@@ -52,7 +53,8 @@
 			</view>
 			<view class="info-item-r type-picker">
 				<picker class="addressPicker" mode="region" @change="addressPickerChange" :value="value">
-					{{ userInfo.province }} - {{ userInfo.city }}
+					<text v-if="userInfo.province && userInfo.province != 'null '">{{ userInfo.province }} - {{ userInfo.city }}</text>
+					<text v-else>未选择</text>
 				</picker>
 				<text class="cuIcon-unfold"></text>
 			</view>

@@ -1564,6 +1564,77 @@ uni$1;exports.default = _default;
 
 /***/ }),
 
+/***/ 100:
+/*!********************************************************************!*\
+  !*** D:/UNI/goodPrince/components/mescroll-uni/mescroll-mixins.js ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // mescroll-body 和 mescroll-uni 通用
+
+// import MescrollUni from "./mescroll-uni.vue";
+// import MescrollBody from "./mescroll-body.vue";
+
+var MescrollMixin = {
+  // components: { // 非H5端无法通过mixin注册组件, 只能在main.js中注册全局组件或具体界面中注册
+  // 	MescrollUni,
+  // 	MescrollBody
+  // },
+  data: function data() {
+    return {
+      mescroll: null //mescroll实例对象
+    };
+  },
+  // 注册系统自带的下拉刷新 (配置down.native为true时生效, 还需在pages配置enablePullDownRefresh:true;详请参考mescroll-native的案例)
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.mescroll && this.mescroll.onPullDownRefresh();
+  },
+  // 注册列表滚动事件,用于判定在顶部可下拉刷新,在指定位置可显示隐藏回到顶部按钮 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
+  onPageScroll: function onPageScroll(e) {
+    this.mescroll && this.mescroll.onPageScroll(e);
+  },
+  // 注册滚动到底部的事件,用于上拉加载 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
+  onReachBottom: function onReachBottom() {
+    this.mescroll && this.mescroll.onReachBottom();
+  },
+  methods: {
+    // mescroll组件初始化的回调,可获取到mescroll对象
+    mescrollInit: function mescrollInit(mescroll) {
+      this.mescroll = mescroll;
+      this.mescrollInitByRef(); // 兼容字节跳动小程序
+    },
+    // 以ref的方式初始化mescroll对象 (兼容字节跳动小程序: http://www.mescroll.com/qa.html?v=20200107#q26)
+    mescrollInitByRef: function mescrollInitByRef() {
+      if (!this.mescroll || !this.mescroll.resetUpScroll) {
+        var mescrollRef = this.$refs.mescrollRef;
+        if (mescrollRef) this.mescroll = mescrollRef.mescroll;
+      }
+    },
+    // 下拉刷新的回调
+    downCallback: function downCallback() {
+      // mixin默认resetUpScroll
+      this.mescroll.resetUpScroll();
+    },
+    // 上拉加载的回调
+    upCallback: function upCallback() {var _this = this;
+      // mixin默认延时500自动结束加载
+      setTimeout(function () {
+        _this.mescroll.endErr();
+      }, 500);
+    } },
+
+  mounted: function mounted() {
+    this.mescrollInitByRef(); // 兼容字节跳动小程序, 避免未设置@init或@init此时未能取到ref的情况
+  } };var _default =
+
+
+
+MescrollMixin;exports.default = _default;
+
+/***/ }),
+
 /***/ 12:
 /*!**********************************************************************************************************!*\
   !*** ./node_modules/@dcloudio/vue-cli-plugin-uni/packages/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -1933,7 +2004,7 @@ var _default = {
 
 /***/ }),
 
-/***/ 130:
+/***/ 138:
 /*!*****************************************************************!*\
   !*** D:/UNI/goodPrince/components/mescroll-uni/mescroll-uni.js ***!
   \*****************************************************************/
@@ -2807,7 +2878,7 @@ MeScroll.prototype.setBounce = function (isBounce) {
 
 /***/ }),
 
-/***/ 131:
+/***/ 139:
 /*!************************************************************************!*\
   !*** D:/UNI/goodPrince/components/mescroll-uni/mescroll-uni-option.js ***!
   \************************************************************************/
@@ -3671,7 +3742,7 @@ var post = function post(method, data, callback) {
   uni.request({
     url: http + method,
     header: {
-      'Content-Type': 'application/x-www-form-urlencoded' //自定义请求头信息
+      'Content-Type': 'application/x-www-form-urlencoded' // 自定义请求头信息
     },
     data: data,
     method: 'POST',
@@ -3898,7 +3969,8 @@ exports.postProfile = postProfile;var getMobile = function getMobile(data, callb
 // 手机验证码登录
 exports.getMobile = getMobile;var postMobilelogin = function postMobilelogin(data, callback) {return post("user/changemobile", data, callback);};
 // 发送验证码
-exports.postMobilelogin = postMobilelogin;var postSendCode = function postSendCode(data, callback) {return post("user/sendCode", data, callback);};
+exports.postMobilelogin = postMobilelogin;var postSendCode = function postSendCode(data, callback) {return post("sms/send", data, callback);};
+// export const postSendCode = (data, callback) => post("user/sendCode", data, callback)
 // 个人中心
 exports.postSendCode = postSendCode;var getUserInfo = function getUserInfo(data, callback) {return get("user/getUserInfo", data, callback);};
 // 页面底部信息1
@@ -4291,7 +4363,7 @@ function userToken(callback) {
   }
 }
 
-// 获取用户mobile
+// 判断用户mobile
 function userMobile() {
   var userinfo = get("userinfo");
   if (!userinfo.mobile) {
@@ -10381,7 +10453,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.PH = void 
 
 /***/ }),
 
-/***/ 216:
+/***/ 224:
 /*!*******************************************************!*\
   !*** D:/UNI/goodPrince/components/uni-icons/icons.js ***!
   \*******************************************************/
@@ -10565,7 +10637,56 @@ module.exports = g;
 
 /***/ }),
 
-/***/ 49:
+/***/ 5:
+/*!****************************************!*\
+  !*** D:/UNI/goodPrince/store/index.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
+var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 6));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
+
+_vue.default.use(_vuex.default);
+
+var store = new _vuex.default.Store({
+  state: {
+    shopInfo: {},
+    config: {},
+    redirectPage: '',
+    uuid: '', //当前客户端
+    building_id: 0 },
+
+  mutations: {
+    shopConfig: function shopConfig(state, payload) {
+      state.shopInfo = payload;
+    },
+    config: function config(state, payload) {
+      state.config = payload;
+    },
+    redirect: function redirect(state, payload) {
+      state.redirectPage = payload.page;
+    },
+    building_id: function building_id(state, payload) {
+      state.building_id = payload;
+    } },
+
+
+  actions: {},
+
+
+  getters: {
+    shopConfig: function shopConfig(state) {return state.config;},
+    uuid: function uuid(state) {return state.uuid;} } });var _default =
+
+
+
+store;exports.default = _default;
+
+/***/ }),
+
+/***/ 56:
 /*!******************************************!*\
   !*** D:/UNI/goodPrince/config/WxAuth.js ***!
   \******************************************/
@@ -10619,54 +10740,6 @@ module.exports = {
   checkSession: checkSession,
   onLogin: onLogin };
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
-
-/***/ }),
-
-/***/ 5:
-/*!****************************************!*\
-  !*** D:/UNI/goodPrince/store/index.js ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));
-var _vuex = _interopRequireDefault(__webpack_require__(/*! vuex */ 6));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}
-
-_vue.default.use(_vuex.default);
-
-var store = new _vuex.default.Store({
-  state: {
-    shopConfig: {},
-    config: {},
-    redirectPage: '',
-    uuid: '', //当前客户端
-    building_id: 0 },
-
-  mutations: {
-    config: function config(state, payload) {
-      state.config = payload;
-    },
-    redirect: function redirect(state, payload) {
-      state.redirectPage = payload.page;
-    },
-    building_id: function building_id(state, payload) {
-      state.building_id = payload;
-    },
-    shopConfig: function shopConfig(state, payload) {
-      state.shopConfig = payload;
-    } },
-
-  actions: {},
-
-
-  getters: {
-    shopConfig: function shopConfig(state) {return state.config;},
-    uuid: function uuid(state) {return state.uuid;} } });var _default =
-
-
-
-store;exports.default = _default;
 
 /***/ }),
 
@@ -11618,77 +11691,6 @@ var index_esm = {
 
 /* harmony default export */ __webpack_exports__["default"] = (index_esm);
 
-
-/***/ }),
-
-/***/ 92:
-/*!********************************************************************!*\
-  !*** D:/UNI/goodPrince/components/mescroll-uni/mescroll-mixins.js ***!
-  \********************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; // mescroll-body 和 mescroll-uni 通用
-
-// import MescrollUni from "./mescroll-uni.vue";
-// import MescrollBody from "./mescroll-body.vue";
-
-var MescrollMixin = {
-  // components: { // 非H5端无法通过mixin注册组件, 只能在main.js中注册全局组件或具体界面中注册
-  // 	MescrollUni,
-  // 	MescrollBody
-  // },
-  data: function data() {
-    return {
-      mescroll: null //mescroll实例对象
-    };
-  },
-  // 注册系统自带的下拉刷新 (配置down.native为true时生效, 还需在pages配置enablePullDownRefresh:true;详请参考mescroll-native的案例)
-  onPullDownRefresh: function onPullDownRefresh() {
-    this.mescroll && this.mescroll.onPullDownRefresh();
-  },
-  // 注册列表滚动事件,用于判定在顶部可下拉刷新,在指定位置可显示隐藏回到顶部按钮 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
-  onPageScroll: function onPageScroll(e) {
-    this.mescroll && this.mescroll.onPageScroll(e);
-  },
-  // 注册滚动到底部的事件,用于上拉加载 (此方法为页面生命周期,无法在子组件中触发, 仅在mescroll-body生效)
-  onReachBottom: function onReachBottom() {
-    this.mescroll && this.mescroll.onReachBottom();
-  },
-  methods: {
-    // mescroll组件初始化的回调,可获取到mescroll对象
-    mescrollInit: function mescrollInit(mescroll) {
-      this.mescroll = mescroll;
-      this.mescrollInitByRef(); // 兼容字节跳动小程序
-    },
-    // 以ref的方式初始化mescroll对象 (兼容字节跳动小程序: http://www.mescroll.com/qa.html?v=20200107#q26)
-    mescrollInitByRef: function mescrollInitByRef() {
-      if (!this.mescroll || !this.mescroll.resetUpScroll) {
-        var mescrollRef = this.$refs.mescrollRef;
-        if (mescrollRef) this.mescroll = mescrollRef.mescroll;
-      }
-    },
-    // 下拉刷新的回调
-    downCallback: function downCallback() {
-      // mixin默认resetUpScroll
-      this.mescroll.resetUpScroll();
-    },
-    // 上拉加载的回调
-    upCallback: function upCallback() {var _this = this;
-      // mixin默认延时500自动结束加载
-      setTimeout(function () {
-        _this.mescroll.endErr();
-      }, 500);
-    } },
-
-  mounted: function mounted() {
-    this.mescrollInitByRef(); // 兼容字节跳动小程序, 避免未设置@init或@init此时未能取到ref的情况
-  } };var _default =
-
-
-
-MescrollMixin;exports.default = _default;
 
 /***/ })
 

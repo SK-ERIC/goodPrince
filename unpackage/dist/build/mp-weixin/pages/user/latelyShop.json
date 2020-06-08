@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "",
+  "usingComponents": {
+    "foot": "/pages/component/foot",
+    "lately-shop-list": "/pages/component/latelyShopList"
+  }
+}

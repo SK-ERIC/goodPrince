@@ -44,6 +44,7 @@
   background-image: url("https://wxhyx-cdn.aisspc.cn/static/model_bg.png");
   background-size: 100% 100%;
   padding-top: 30rpx;
+  height: 340rpx;
 }
 .content .status_bar .shopName.data-v-97335ae4 {
   display: -webkit-box;
@@ -159,12 +160,26 @@
   width: 32rpx;
   height: 32rpx;
   margin-right: 18rpx;
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
 }
-.content .address-section .address-item-l .address-inner .type-bold.data-v-97335ae4 {
+.content .address-section .address-item-l .address-inner .address-wrap.data-v-97335ae4 {
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+  overflow: hidden;
+  white-space: normal;
+}
+.content .address-section .address-item-l .address-inner .address-wrap .type-bold.data-v-97335ae4 {
   font-weight: bold;
   white-space: nowrap;
+  margin-right: 8rpx;
 }
 .content .address-section .address-item-r.data-v-97335ae4 {
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -393,11 +408,12 @@
           align-items: center;
 }
 .content .comment-section .comment-list .comment-cont .comment-inner .rate-wrap .rate-inner-r .like-icon.data-v-97335ae4 {
-  width: 34rpx;
-  height: 34rpx;
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 5rpx;
 }
 .content .comment-section .comment-list .comment-cont .comment-inner .rate-wrap .rate-inner-r .text.data-v-97335ae4 {
-  font-size: 30rpx;
+  font-size: 34rpx;
   color: #B1B1B1;
   font-weight: 400;
 }

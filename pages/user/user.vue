@@ -11,7 +11,7 @@
 			<view class="set-inner">
 				<view class="set-item-l" @click="_switchToMsg">
 					<image src="https://wxhyx-cdn.aisspc.cn/static/user_msg.png" mode=""></image>
-					<text v-if="userInfo.replyCount">{{ userInfo.replyCount }}</text>
+					<text v-if="msgNum">{{ msgNum }}</text>
 				</view>
 				<view class="set-item-r" @click="_switchEditInfo">
 					<image src="https://wxhyx-cdn.aisspc.cn/static/user_set.png" mode=""></image>
@@ -26,7 +26,7 @@
 				</view>
 				<view class="item-r">
 					<text class="name">{{ userInfo.nickname }}</text>
-					<text class="address" v-show="userInfo.province">{{ userInfo.province }} {{ userInfo.city }}</text>
+					<text class="address" v-if="userInfo.province && userInfo.province != 'null '">{{ userInfo.province }} {{ userInfo.city }}</text>
 				</view>
 			</view>
 			<view class="user-inner-b grid col-3">
@@ -97,6 +97,12 @@
 			foot,
 			pop,
 		},
+		props:{
+			msgNum: {
+				type: Number,
+				default: 0
+			}
+		},
 		data() {
 			return {
 				topLeftText: "我的个人中心",
@@ -126,9 +132,6 @@
 				title: "个人中心"
 			})
 		},
-		mounted() {
-			// this.isShowSafearea = this.$common.checkPlatFromFunc();
-		},
 		methods: {
 			getUserInfo() {
 				this.$http.getUserInfo({}, res => {
@@ -147,6 +150,7 @@
 					user_id: this.userInfo.user_id
 				}, res => {
 					if (res.code == 1) {
+						console.log("最近拍过的店： ", res.data)
 						this.photoList = res.data.slice(0, 1);
 					} else {
 						this.$common.errorToShow(res.msg);
@@ -158,6 +162,7 @@
 					user_id: this.userInfo.user_id
 				}, res => {
 					if (res.code == 1) {
+						console.log("最近去过的店： ", res.data)
 						this.latelyList = res.data;
 					} else {
 						this.$common.errorToShow(res.msg);
@@ -178,20 +183,23 @@
 					index
 				} = val;
 				let num = +this.photoList[index].zan;
-
+				const user_id = this.$db.get("userinfo").user_id
 				this.$http.postSaveZan({
 					cid: item.id,
-					uid: item.user_id
+					uid: user_id
 				}, res => {
 					if (res.code == 1) {
 						const code = res.data.code;
 						const msg = res.data.msg;
 						if (code == 200) {
-							this.$set(this.photoList[index], `like`, bl);
+							this.$set(this.photoList[index], `myZan`, 1);
 							this.$set(this.photoList[index], `zan`, ++num);
 						} else if (code == 100) {
 							this.popCont = msg;
 							this.$refs.popup.$refs.pop.open();
+						} else if (code == 300) {
+							this.$set(this.photoList[index], `myZan`, 0);
+							this.$set(this.photoList[index], `zan`, --num);
 						}
 					} else {
 						this.$common.errorToShow(res.msg);
@@ -211,7 +219,7 @@
 			_switchToMsg() {
 				const total = this.userInfo.replyCount;
 				uni.navigateTo({
-					url: `/pages/user/msg?total={total}`
+					url: `/pages/user/msg?total=${total}`
 				})
 			},
 			_switchEditInfo() {
@@ -348,7 +356,7 @@
 
 				.item-r {
 					@include flexY;
-					justify-content: space-around;
+					justify-content: space-between;
 					margin-left: 24rpx;
 					height: 120rpx;
 
@@ -356,12 +364,13 @@
 						font-size: 44rpx;
 						color: #212223;
 						font-weight: bold;
+						margin-top: 12rpx;
 					}
 
 					.address {
 						font-size: 28rpx;
 						color: #757676;
-						margin-top: 22prx;
+						margin-bottom: 18prx;
 					}
 				}
 			}

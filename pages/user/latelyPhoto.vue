@@ -131,19 +131,23 @@
 					index
 				} = val;
 				let num = +this.photoList[index].zan;
+				const user_id = this.$db.get("userinfo").user_id
 				this.$http.postSaveZan({
 					cid: item.id,
-					uid: item.user_id
+					uid: user_id
 				}, res => {
 					if (res.code == 1) {
 						const code = res.data.code;
 						const msg = res.data.msg;
 						if (code == 200) {
-							this.$set(this.photoList[index], `like`, bl);
+							this.$set(this.photoList[index], `myZan`, 1);
 							this.$set(this.photoList[index], `zan`, ++num);
 						} else if (code == 100) {
 							this.popCont = msg;
 							this.$refs.popup.$refs.pop.open();
+						} else if (code == 300) {
+							this.$set(this.photoList[index], `myZan`, 0);
+							this.$set(this.photoList[index], `zan`, --num);
 						}
 					} else {
 						this.$common.errorToShow(res.msg);

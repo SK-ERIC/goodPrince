@@ -75,7 +75,7 @@ function userToken(callback) {
 	}
 }
 
-// 获取用户mobile
+// 判断用户mobile
 function userMobile() {
 	const userinfo = get("userinfo");
 	if (!userinfo.mobile) {

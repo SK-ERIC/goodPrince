@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "lately-shop-list": "/pages/component/latelyShopList",
+    "lately-photo-list": "/pages/component/latelyPhotoList",
+    "foot": "/pages/component/foot",
+    "pop": "/pages/component/pop"
+  }
+}

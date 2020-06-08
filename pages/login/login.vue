@@ -387,6 +387,10 @@
 			line-height: 40rpx;
 			font-family: Source Han Sans CN;
 			font-weight: 400;
+
+			text {
+				white-space: nowrap;
+			}
 		}
 
 

@@ -24,23 +24,23 @@
 		<!-- 地址 -->
 		<view class="address-section">
 			<view class="address-item-l">
-				<view class="address-inner">
+				<view class="address-inner" v-if="shopIndex.shop_address">
 					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-gps.png" mode=""></image>
-					<view class="address-wrap" v-if="shopIndex.shop_address">
+					<view class="address-wrap">
 						<text class="type-bold">店家地址 ·</text>
 						<text>{{ shopIndex.shop_address }}</text>
 					</view>
 				</view>
-				<view class="address-inner">
+				<view class="address-inner" v-if="shopIndex.shop_open_add_time">
 					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-time.png" mode=""></image>
-					<view class="address-wrap" v-if="shopIndex.shop_open_add_time">
+					<view class="address-wrap">
 						<text class="type-bold">营业时间 ·</text>
 						<text>{{ shopIndex.shop_open_add_time }} - {{ shopIndex.shop_open_end_time }}</text>
 					</view>
 				</view>
-				<view class="address-inner">
+				<view class="address-inner" v-if="shopIndex.shop_content">
 					<image class="img" src="https://wxhyx-cdn.aisspc.cn/static/icon-eat.png" mode=""></image>
-					<view class="address-wrap" v-if="shopIndex.shop_content">
+					<view class="address-wrap">
 						<text class="type-bold">主营内容 ·</text>
 						<text>{{ shopIndex.shop_content }}</text>
 					</view>
@@ -102,7 +102,7 @@
 		<!-- 顾客有话说 -->
 		<view class="comment-section">
 			<view class="title">
-				顾客有话说 {{ shopIndex.comments.counts }}
+				顾客有话说
 			</view>
 
 			<view class="comment-list">
@@ -125,10 +125,10 @@
 						<view class="rate-wrap">
 							<view class="rate-inner-l">
 								<text class="text">满意度打分</text>
-								<uni-rate disabled="true" :size="18" :max="5" :value="item.score_show" />
+								<uni-rate disabled="true" :size="14" :max="5" :value="item.score_show" />
 							</view>
 							<view class="rate-inner-r">
-								<image @click.stop="_changeLike(item, false, index)" v-if="item.like" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
+								<image @click.stop="_changeLike(item, false, index)" v-if="item.myZan" class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/liked.png"
 								 mode=""></image>
 								<image @click.stop="_changeLike(item, true, index)" v-else class="like-icon" src="https://wxhyx-cdn.aisspc.cn/static/like.png"
 								 mode=""></image>
@@ -187,7 +187,16 @@
 		props: {
 			shopIndex: {
 				type: Object,
-				default: {}
+				default: {
+					shop_title: "",
+					shop_address: "",
+					shop_open_add_time: "",
+					shop_open_end_time: "",
+					shop_content: "",
+					looks: 0,
+					score: 0,
+					total_score: 0
+				}
 			},
 			commentList: {
 				type: Array,
@@ -220,7 +229,12 @@
 				}
 			},
 		},
-		beforeUpdate() {
+		watch: {
+			shopIndex(newVal, oldVal) {
+				this.postAddBeenShop();
+			},
+		},
+		mounted() {
 			if (this.shopIndex.id) this.postAddBeenShop();
 		},
 		methods: {
@@ -286,6 +300,7 @@
 				background-image: url("https://wxhyx-cdn.aisspc.cn/static/model_bg.png");
 				background-size: 100% 100%;
 				padding-top: 30rpx;
+				height: 340rpx;
 			}
 
 			.shopName {
@@ -390,17 +405,24 @@
 						width: 32rpx;
 						height: 32rpx;
 						margin-right: 18rpx;
+						flex-shrink: 0;
 					}
 
-					.type-bold {
-						font-weight: bold;
-						white-space: nowrap;
+					.address-wrap {
+						@include two_txt_cut;
+
+						.type-bold {
+							font-weight: bold;
+							white-space: nowrap;
+							margin-right: 8rpx;
+						}
 					}
 				}
 
 			}
 
 			.address-item-r {
+				flex-shrink: 0;
 				@include flexY;
 				@include flexJ;
 				align-items: center;
@@ -591,12 +613,13 @@
 								@include flexX;
 
 								.like-icon {
-									width: 34rpx;
-									height: 34rpx;
+									width: 40rpx;
+									height: 40rpx;
+									margin-right: 5rpx;
 								}
 
 								.text {
-									font-size: 30rpx;
+									font-size: 34rpx;
 									color: #B1B1B1;
 									font-weight: 400;
 								}

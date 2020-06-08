@@ -1,0 +1,33 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/login/base",
+    "pages/login/login",
+    "pages/index/index",
+    "pages/index/scan",
+    "pages/index/postComments",
+    "pages/index/success",
+    "pages/user/user",
+    "pages/user/info",
+    "pages/user/msg",
+    "pages/user/msgDetail",
+    "pages/user/latelyShop",
+    "pages/user/latelyPhoto",
+    "pages/user/cropper"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "通江好印象",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#F8F8F8"
+  },
+  "usingComponents": {
+    "cu-shop": "/pages/index/index",
+    "cu-scan": "/pages/index/scan",
+    "cu-user": "/pages/user/user",
+    "mescroll-body": "/components/mescroll-uni/mescroll-body",
+    "mescroll-uni": "/components/mescroll-uni/mescroll-uni"
+  },
+  "sitemapLocation": "sitemap.json"
+}

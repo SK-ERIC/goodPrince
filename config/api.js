@@ -18,7 +18,7 @@ const post = (method, data, callback) => {
 	uni.request({
 		url: http + method,
 		header: {
-			'Content-Type': 'application/x-www-form-urlencoded', //自定义请求头信息
+			'Content-Type': 'application/x-www-form-urlencoded', // 自定义请求头信息
 		},
 		data: data,
 		method: 'POST',
@@ -245,7 +245,8 @@ export const getMobile = (data, callback) => post("wechat_mp/getMobile", data, c
 // 手机验证码登录
 export const postMobilelogin = (data, callback) => post("user/changemobile", data, callback)
 // 发送验证码
-export const postSendCode = (data, callback) => post("user/sendCode", data, callback)
+export const postSendCode = (data, callback) => post("sms/send", data, callback)
+// export const postSendCode = (data, callback) => post("user/sendCode", data, callback)
 // 个人中心
 export const getUserInfo = (data, callback) => get("user/getUserInfo", data, callback)
 // 页面底部信息1

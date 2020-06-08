@@ -137,8 +137,9 @@
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-justify-content: space-around;
-          justify-content: space-around;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
   margin-left: 24rpx;
   height: 120rpx;
 }
@@ -146,11 +147,12 @@
   font-size: 44rpx;
   color: #212223;
   font-weight: bold;
+  margin-top: 12rpx;
 }
 .container .user-section .user-inner-t .item-r .address.data-v-3c1cc008 {
   font-size: 28rpx;
   color: #757676;
-  margin-top: 22prx;
+  margin-bottom: 18prx;
 }
 .container .user-section .user-inner-b .info-cont.data-v-3c1cc008 {
   display: -webkit-box;
