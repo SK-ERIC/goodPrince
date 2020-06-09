@@ -174,6 +174,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 56);var _default =
 {
@@ -321,6 +323,11 @@ var WxAuth = __webpack_require__(/*! @/config/WxAuth */ 56);var _default =
           icon: "none" });
 
       }
+    },
+    switchToHome: function switchToHome() {
+      uni.reLaunch({
+        url: "/pages/home/home" });
+
     },
     getFootConfig: function getFootConfig() {var _this4 = this;
       this.$http.getFootConfig({}, function (res) {

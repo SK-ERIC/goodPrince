@@ -24,6 +24,8 @@
 			<button type="default" class="cu-btn loginBtn" :disabled="!loginMobile" @tap="fnLogin">
 				登录
 			</button>
+
+			<button type="default" class="cu-btn cancel_btn" @click="switchToHome">取消</button>
 		</view>
 
 		<!-- btm -->
@@ -184,6 +186,11 @@
 						icon: "none"
 					})
 				}
+			},
+			switchToHome() {
+				uni.reLaunch({
+					url: "/pages/home/home"
+				})
 			},
 			getFootConfig() {
 				this.$http.getFootConfig({}, res => {
@@ -352,7 +359,7 @@
 		}
 
 		.btn-section {
-			@include flexX;
+			@include flexY;
 			@include flexJ;
 			padding-top: 40rpx;
 
@@ -368,6 +375,19 @@
 				color: #FFFFFF;
 				font-size: 34rpx;
 				margin: 0 auto;
+				font-weight: 500;
+			}
+
+			.cancel_btn {
+				width: 520rpx;
+				height: 98rpx;
+				color: #FFFFFF;
+				background: rgba(21, 25, 35, .5);
+				border-radius: 49rpx;
+				border: 2rpx solid #4B4E5E;
+				font-size: 34rpx;
+				font-weight: 500;
+				margin: 24rpx auto 0;
 			}
 		}
 

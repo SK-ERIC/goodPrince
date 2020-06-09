@@ -185,9 +185,10 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
@@ -204,6 +205,18 @@
   color: #FFFFFF;
   font-size: 34rpx;
   margin: 0 auto;
+  font-weight: 500;
+}
+.container .btn-section .cancel_btn.data-v-f242a908 {
+  width: 520rpx;
+  height: 98rpx;
+  color: #FFFFFF;
+  background: rgba(21, 25, 35, 0.5);
+  border-radius: 49rpx;
+  border: 2rpx solid #4B4E5E;
+  font-size: 34rpx;
+  font-weight: 500;
+  margin: 24rpx auto 0;
 }
 .container .btm-section.data-v-f242a908 {
   background-image: url("https://wxhyx-cdn.aisspc.cn/static/cm_btm_bg.png");
