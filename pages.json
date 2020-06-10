@@ -9,7 +9,7 @@
 		{
 			"path": "pages/login/base",
 			"style": {
-				"navigationStyle": "custom"
+				"navigationBarTitleText": "授权"
 			}
 		},
 		{
