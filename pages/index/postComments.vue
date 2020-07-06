@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="rate-section">
 			<text class="text">评分</text>
-			<uni-rate :value="rate" :size="22" :max="5" :margin="10" @change="changeRate" />
+			<uni-rate :value="rate" :size="32" :max="5" :margin="6" @change="changeRate" />
 			<text class="score">{{ rate }}分</text>
 		</view>
 		<!-- 评述 -->

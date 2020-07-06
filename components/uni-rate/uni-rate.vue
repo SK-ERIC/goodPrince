@@ -1,6 +1,7 @@
 <template>
 	<view class="uni-rate">
-		<view :key="index" :style="{ marginLeft: margin + 'px' }" @click="_onClick(index, $event)" class="uni-rate__icon" v-for="(star, index) in stars">
+		<view :key="index" :style="{ marginLeft: margin + 'px' }" @click="_onClick(index, $event)" class="uni-rate__icon"
+		 v-for="(star, index) in stars">
 			<uni-icons id="id" :color="color" :size="size" :type="isFill ? 'star-filled' : 'star'" />
 			<!-- #ifdef APP-NVUE -->
 			<view :style="{ width: star.activeWitch.replace('%','')*size/100+'px'}" class="uni-rate__icon-on">
@@ -83,11 +84,12 @@
 		},
 		data() {
 			return {
-				valueSync: ""
+				valueSync: "",
+				starWidth: 0, // 每个星星的宽度
 			};
 		},
-		watch:{
-			value (e) {
+		watch: {
+			value(e) {
 				this.valueSync = e;
 			}
 		},
@@ -121,20 +123,33 @@
 		created() {
 			this.valueSync = Number(this.value);
 		},
+		async mounted() {
+			let {left, width} = await this.getClientRect('#id', this);
+			this.starWidth = width;
+			this.starBoxLeft = left;
+		},
 		methods: {
 			_onClick(index, e) {
+				let _this = this;
 				if (this.disabled) {
 					return;
 				}
-				// const query = uni.createSelectorQuery().in(this);
-				// query.select('#id').boundingClientRect(data=>{
-				// 	const rateWidth = data.width;
-				// }).exec()
-				// console.log("e", e)
-				this.valueSync = index + 1;
-				this.$emit("change", {
-					value: this.valueSync
+				let diff = e.detail.x - e.currentTarget.offsetLeft
+				if (diff > this.starWidth / 2) {
+					_this.valueSync = index + 1;
+				} else {
+					_this.valueSync = index + 0.5;
+				}
+				_this.$emit("change", {
+					value: _this.valueSync
 				});
+			},
+			getClientRect(selector, component) {
+			  return new Promise((resolve, reject) => {
+			      let query = component ? uni.createSelectorQuery().in(component) : uni.createSelectorQuery();
+			      return query.select(selector).boundingClientRect(resolve).exec()
+			    }
+			  )
 			}
 		}
 	};

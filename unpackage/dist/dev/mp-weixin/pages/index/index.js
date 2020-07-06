@@ -78,7 +78,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniRate: function() {
-    return __webpack_require__.e(/*! import() | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 149))
+    return Promise.all(/*! import() | components/uni-rate/uni-rate */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-rate/uni-rate")]).then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 149))
   }
 }
 var render = function() {
@@ -134,7 +134,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {__webpack_require__.e(/*! require.ensure | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 149));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 156));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {Promise.all(/*! require.ensure | components/uni-rate/uni-rate */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-rate/uni-rate")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 149));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 156));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 

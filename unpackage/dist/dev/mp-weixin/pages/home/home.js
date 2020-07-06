@@ -249,26 +249,27 @@ var _this;var _default =
               _this2.shopId = id;
               _this2.$db.set("shop_id", id);if (!
 
-              id) {_context.next = 15;break;}_context.next = 12;return (
-                _this2.getShopIndex());case 12:shop = _context.sent;
-              // 0是删除，1是正常，2是暂停展示
-              if (shop.status != 1) {
-                uni.showToast({
-                  title: "该店铺存在异常~",
-                  duration: 2000,
-                  icon: "none",
-                  mask: true,
-                  success: function success() {
-                    _this2.isShowScan = true;
-                    _this2.shopId = "";
-                    _this2.$db.set("shop_id", "");
-                  } });
+              id) {_context.next = 19;break;}_context.next = 12;return (
+                _this2.getShopIndex());case 12:shop = _context.sent;if (!(
 
-              }
-              _this2.postShopCommentsList();case 15:
+              shop.status != 1)) {_context.next = 17;break;}
+              uni.showToast({
+                title: "该店铺存在异常~",
+                duration: 2000,
+                icon: "none",
+                mask: true,
+                success: function success() {
+                  _this2.isShowScan = true;
+                  _this2.shopId = "";
+                  _this2.$db.set("shop_id", "");
+                } });_context.next = 19;break;case 17:_context.next = 19;return (
+
+
+                _this2.postShopCommentsList());case 19:
+
               ;
 
-              _this2.init_page_size();case 17:case "end":return _context.stop();}}}, _callee);}))();
+              _this2.init_page_size();case 21:case "end":return _context.stop();}}}, _callee);}))();
 
   },
   onShow: function onShow() {
@@ -348,6 +349,8 @@ var _this;var _default =
             _this.total = res.data.comments.counts || 0;
             _this.shopConfig(res.data);
             resolve(res.data);
+          } else if (res.code == 0) {
+            resolve({ status: 0 });
           } else {
             _this5.$common.errorToShow(res.msg);
           }
@@ -393,7 +396,7 @@ var _this;var _default =
                 _this7.page = "shop";_context2.next = 7;return (
                   _this7.getShopIndex());case 7:shop = _context2.sent;if (!(
 
-                shop.status != 1)) {_context2.next = 11;break;}
+                shop.status != 1)) {_context2.next = 13;break;}
                 uni.showToast({
                   title: "该店铺存在异常~",
                   icon: "none",
@@ -402,11 +405,12 @@ var _this;var _default =
                     _this7.isShowScan = true;
                     _this7.shopId = "";
                     _this7.$db.set("shop_id", "");
-                  } });return _context2.abrupt("return");case 11:
+                  } });return _context2.abrupt("return");case 13:_context2.next = 15;return (
 
 
 
-                _this.postShopCommentsList();case 12:case "end":return _context2.stop();}}}, _callee2);}))();
+                  _this.postShopCommentsList());case 15:case "end":return _context2.stop();}}}, _callee2);}))();
+
     },
     changeTab: function changeTab(item) {var _this8 = this;
       if (item.page) {

@@ -132,8 +132,9 @@
 							this.$db.set("shop_id", "")
 						}
 					})
+				} else {
+					await this.postShopCommentsList()
 				}
-				this.postShopCommentsList()
 			};
 
 			this.init_page_size();
@@ -216,6 +217,8 @@
 							_this.total = res.data.comments.counts || 0;
 							_this.shopConfig(res.data);
 							resolve(res.data)
+						} else if (res.code == 0) {
+							resolve({status: 0})
 						} else {
 							this.$common.errorToShow(res.msg);
 						}
@@ -273,8 +276,9 @@
 						}
 					})
 					return
+				} else {
+					await _this.postShopCommentsList()
 				}
-				_this.postShopCommentsList()
 			},
 			changeTab(item) {
 				if (item.page) {

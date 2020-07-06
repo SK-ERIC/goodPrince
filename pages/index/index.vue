@@ -11,7 +11,7 @@
 			<scroll-view scroll-x scroll-with-animation>
 				<view class="picList">
 					<view class="pic" v-for="(item, index) in shopImg" :key="index" :data-src="shopImg[index].image_url" @click="previewImage(shopImg, $event)">
-						<image class="img" :src="item.image_url" mode=""></image>
+						<image class="img" :src="item.image_url" mode="aspectFill"></image>
 						<!-- <view class="tip-section" v-if="index==0">
 							<image class="tip-img" src="https://wxhyx-cdn.aisspc.cn/static/icon-t1.png" mode=""></image>
 							<text>{{ shopInfo.shopPicNum }}</text>
@@ -65,12 +65,12 @@
 			<view class="cardList">
 				<view class="cardCont">
 					<view v-for="(item, index) in LicenseList" :key="index" :data-src="LicenseList[index].image_url" @click="previewImage(LicenseList, $event)">
-						<image class="img-big" :src="item.image_url" mode=""></image>
+						<image class="img-big" :src="item.image_url" mode="aspectFill"></image>
 					</view>
 				</view>
 				<view class="cardCont type-small">
 					<view v-for="(item, index) in cardList" :key="index" :data-src="cardList[index].image_url" @click="previewImage(cardList, $event)">
-						<image class="img-sma" :src="item.image_url" mode=""></image>
+						<image class="img-sma" :src="item.image_url" mode="aspectFill"></image>
 					</view>
 				</view>
 			</view>
@@ -148,7 +148,7 @@
 						<view class="img-list">
 							<view class="img-cont" v-for="(img, ind) in item.image" :key="ind" :data-src="item.image[ind].image_url"
 							 @click.stop="previewImage(item.image, $event)">
-								<image :src="img.image_url" mode=""></image>
+								<image :src="img.image_url" mode="aspectFill"></image>
 							</view>
 						</view>
 						<!-- 回复 -->

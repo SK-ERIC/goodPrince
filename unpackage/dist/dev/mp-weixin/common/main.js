@@ -60,6 +60,28 @@ _vue.default.component('mescroll-uni', MescrollUni);
 
 
 
+var updateManager = uni.getUpdateManager();
+updateManager.onCheckForUpdate(function (res) {
+  // console.log(res.hasUpdate)
+});
+updateManager.onUpdateReady(function (res) {
+  uni.showModal({
+    title: '更新提示',
+    content: '新版本已经准备好，是否重启应用？',
+    success: function success(res) {
+      if (res.confirm) {
+        // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启
+        updateManager.applyUpdate();
+      }
+    } });
+
+});
+updateManager.onUpdateFailed(function (res) {
+  uni.showToast({
+    title: "更新失败" });
+
+});
+
 _vue.default.config.productionTip = false;
 _vue.default.prototype.$fire = new _vue.default();
 _vue.default.prototype.$store = _store.default;
@@ -308,7 +330,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniRate: function() {
-    return __webpack_require__.e(/*! import() | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 149))
+    return Promise.all(/*! import() | components/uni-rate/uni-rate */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-rate/uni-rate")]).then(__webpack_require__.bind(null, /*! @/components/uni-rate/uni-rate.vue */ 149))
   }
 }
 var render = function() {
@@ -362,7 +384,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {__webpack_require__.e(/*! require.ensure | components/uni-rate/uni-rate */ "components/uni-rate/uni-rate").then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 149));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 156));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniRate = function uniRate() {Promise.all(/*! require.ensure | components/uni-rate/uni-rate */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-rate/uni-rate")]).then((function () {return resolve(__webpack_require__(/*! @/components/uni-rate/uni-rate.vue */ 149));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var foot = function foot() {__webpack_require__.e(/*! require.ensure | pages/component/foot */ "pages/component/foot").then((function () {return resolve(__webpack_require__(/*! ../component/foot */ 156));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 

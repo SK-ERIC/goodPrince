@@ -3,7 +3,7 @@
 		<view class="shop-section">
 			<view class="lately-cont" v-for="(item, index) in latelyList" :key="index" @click="_switchShopHome(item)" v-if="item.shop.length != 0">
 				<view class="item-l">
-					<image class="img" :src="item.shop_img.image_url" mode=""></image>
+					<image class="img" :src="item.shop_img.image_url" mode="aspectFill"></image>
 					<text class="browse">浏览: {{ item.shop[0].looks }}</text>
 				</view>
 				<view class="item-r">
