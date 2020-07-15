@@ -97,18 +97,13 @@
 			foot,
 			pop,
 		},
-		props:{
-			msgNum: {
-				type: Number,
-				default: 0
-			}
-		},
 		data() {
 			return {
 				topLeftText: "我的个人中心",
 				latelyList: [],
 				photoList: [],
 				userInfo: {},
+				msgNum: 0,
 				popCont: "您今天对此条留言的点赞次数已达上限",
 				isShowSafearea: false,
 
@@ -137,6 +132,7 @@
 				this.$http.getUserInfo({}, res => {
 					if (res.code == 1) {
 						this.userInfo = res.data.userinfo;
+						this.msgNum = res.data.userinfo.replyCount
 						this.$db.set('userinfo', res.data.userinfo)
 						this.postCommentShop();
 						this.postBeenShop();

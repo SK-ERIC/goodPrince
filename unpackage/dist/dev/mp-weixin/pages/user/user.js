@@ -213,18 +213,13 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
     foot: foot,
     pop: pop },
 
-  props: {
-    msgNum: {
-      type: Number,
-      default: 0 } },
-
-
   data: function data() {
     return {
       topLeftText: "我的个人中心",
       latelyList: [],
       photoList: [],
       userInfo: {},
+      msgNum: 0,
       popCont: "您今天对此条留言的点赞次数已达上限",
       isShowSafearea: false };
 
@@ -253,6 +248,7 @@ var _vuex = __webpack_require__(/*! vuex */ 6);var latelyShopList = function lat
       this.$http.getUserInfo({}, function (res) {
         if (res.code == 1) {
           _this.userInfo = res.data.userinfo;
+          _this.msgNum = res.data.userinfo.replyCount;
           _this.$db.set('userinfo', res.data.userinfo);
           _this.postCommentShop();
           _this.postBeenShop();

@@ -10,7 +10,7 @@
 
 			</view>
 			<view v-if="page =='user'" :class="page=='user'?'animation-fade':''">
-				<cu-user :msgNum="msgNum"  :userInfo="userInfo" @handleClick="_handleClick"></cu-user>
+				<cu-user @handleClick="_handleClick"></cu-user>
 			</view>
 		</scroll-view>
 		<!-- pop -->
@@ -76,7 +76,6 @@
 				pageIndex: 1,
 				pageSize: 5,
 				total: 0,
-				msgNum: 0,
 				isShowScan: false,
 				commentList: [], // 评论列表
 				popCont: "您今天对此条留言的点赞次数已达上限",
@@ -140,20 +139,8 @@
 			this.init_page_size();
 
 		},
-		onShow() {
-			this.getUserInfo()
-		},
 		methods: {
 			...mapMutations(['shopConfig']),
-			getUserInfo() {
-				this.$http.getUserInfo({}, res => {
-					if (res.code == 1) {
-						this.msgNum = res.data.userinfo.replyCount
-					} else {
-						this.$common.errorToShow(res.msg);
-					}
-				})
-			},
 			scrolltolower() {
 				if (this.page == 'shop' && this.shopId && !this.finished) {
 					this.pageIndex++;
@@ -218,7 +205,9 @@
 							_this.shopConfig(res.data);
 							resolve(res.data)
 						} else if (res.code == 0) {
-							resolve({status: 0})
+							resolve({
+								status: 0
+							})
 						} else {
 							this.$common.errorToShow(res.msg);
 						}
@@ -281,6 +270,7 @@
 				}
 			},
 			changeTab(item) {
+				const _this = this
 				if (item.page) {
 					if (item.page == 'user' && !this.$db.userMobile()) return;
 					this.page = item.page;
@@ -304,13 +294,57 @@
 						return
 					}
 
-					this.$http.uploadImage(1, (res, tem) => {
-						if (res.code == 1) {
-							uni.navigateTo({
-								url: `/pages/index/postComments?src=${tem}&tem=${res.data.url}`
+					// this.$http.uploadImage(1, (res, tem) => {
+					// 	if (res.code == 1) {
+					// 		uni.navigateTo({
+					// 			url: `/pages/index/postComments?src=${tem}&tem=${res.data.url}`
+					// 		})
+					// 	} else {
+					// 		this.$common.errorToShow(res.msg);
+					// 	}
+					// })
+
+					// 选择图片直接上传
+					uni.chooseImage({
+						count: 1, //默认9
+						sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
+						sourceType: ['camera', 'album'], //从相册选择
+						success: function(res) {
+							console.log(JSON.stringify(res.tempFilePaths));
+							uni.showLoading({
+								title: '上传中...'
+							});
+							let userinfo = _this.$db.get("userinfo");
+							uni.uploadFile({
+								url: 'https://wxhyx.aisspc.cn/addons/qiniu/index/upload',
+								filePath: res.tempFilePaths[0],
+								fileType: 'image',
+								name: 'file',
+								headers: {
+									'Accept': 'application/json',
+									'Content-Type': 'multipart/form-data',
+								},
+								formData: {
+									'method': 'images.upload',
+									'upfile': res.tempFilePaths[0],
+									'token': userinfo.token
+								},
+								success: (uploadFileRes) => {
+									const backUpload = JSON.parse(uploadFileRes.data);
+									uni.navigateTo({
+										// url: `./info?src=${e.url}&tem=${backUpload.data.url}`
+										url: `/pages/index/postComments?src=${res.tempFilePaths[0]}&tem=${backUpload.data.url}`
+									})
+									uni.hideLoading();
+									//自定义操作
+								},
+								complete:()=> {
+									//console.log("this is headimg"+this.headimg)   
+								},
+								fail:(e)=> {
+									console.log("this is errormes " + e.message)
+								}
 							})
-						} else {
-							this.$common.errorToShow(res.msg);
 						}
 					})
 
