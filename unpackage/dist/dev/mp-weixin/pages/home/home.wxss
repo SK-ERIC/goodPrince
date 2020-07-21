@@ -24,23 +24,23 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.app-container.data-v-33010c88 {
+.app-container.data-v-92bb8f34 {
   min-height: 600rpx;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
-.tabbar-icon image.data-v-33010c88 {
+.tabbar-icon image.data-v-92bb8f34 {
   width: 56rpx;
   height: 56rpx;
 }
-.tabbar-icon:nth-child(2) image.data-v-33010c88 {
+.tabbar-icon:nth-child(2) image.data-v-92bb8f34 {
   width: 118rpx;
   height: 78rpx;
 }
-.tabbar-icon text.data-v-33010c88 {
+.tabbar-icon text.data-v-92bb8f34 {
   font-size: 20rpx;
-  color: #B3B3B3;
+  color: #b3b3b3;
 }
-.tabbar-icon text.acitvieColor.data-v-33010c88 {
-  color: #FF5F52;
+.tabbar-icon text.acitvieColor.data-v-92bb8f34 {
+  color: #ff5f52;
 }
 

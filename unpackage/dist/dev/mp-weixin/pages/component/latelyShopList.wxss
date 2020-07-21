@@ -24,30 +24,30 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.container .shop-section.data-v-ae7f2b20 {
+.container .shop-section.data-v-6bc246d2 {
   margin: 26rpx 30rpx 0;
   background-color: #FFFFFF;
   border-radius: 16rpx;
   padding: 40rpx 20rpx 60rpx;
 }
-.container .shop-section .lately-cont.data-v-ae7f2b20 {
+.container .shop-section .lately-cont.data-v-6bc246d2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   margin-bottom: 80rpx;
 }
-.container .shop-section .lately-cont.data-v-ae7f2b20:last-child {
+.container .shop-section .lately-cont.data-v-6bc246d2:last-child {
   margin-bottom: 0;
 }
-.container .shop-section .lately-cont .item-l.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-l.data-v-6bc246d2 {
   position: relative;
 }
-.container .shop-section .lately-cont .item-l .img.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-l .img.data-v-6bc246d2 {
   width: 194rpx;
   height: 194rpx;
   border-radius: 14rpx;
 }
-.container .shop-section .lately-cont .item-l .browse.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-l .browse.data-v-6bc246d2 {
   position: absolute;
   left: 0;
   bottom: 24rpx;
@@ -60,7 +60,7 @@
   color: #FFFFFF;
   padding: 0 8rpx;
 }
-.container .shop-section .lately-cont .item-r.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r.data-v-6bc246d2 {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
@@ -77,7 +77,7 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
 }
-.container .shop-section .lately-cont .item-r .item-cont-t.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-t.data-v-6bc246d2 {
   height: 48%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -90,7 +90,7 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
 }
-.container .shop-section .lately-cont .item-r .item-cont-t .title.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-t .title.data-v-6bc246d2 {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -98,18 +98,18 @@
   color: #282828;
   font-weight: bold;
 }
-.container .shop-section .lately-cont .item-r .item-cont-t .address.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-t .address.data-v-6bc246d2 {
   font-size: 24rpx;
   color: #333333;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.container .shop-section .lately-cont .item-r .item-cont-t .address text.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-t .address text.data-v-6bc246d2 {
   font-weight: bold;
   color: #282828;
 }
-.container .shop-section .lately-cont .item-r .item-cont-b.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-b.data-v-6bc246d2 {
   height: 48%;
   display: -webkit-box;
   display: -webkit-flex;
@@ -122,18 +122,18 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
 }
-.container .shop-section .lately-cont .item-r .item-cont-b .mainCont.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-b .mainCont.data-v-6bc246d2 {
   font-size: 24rpx;
   color: #333333;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.container .shop-section .lately-cont .item-r .item-cont-b .mainCont text.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-b .mainCont text.data-v-6bc246d2 {
   font-weight: bold;
   color: #282828;
 }
-.container .shop-section .lately-cont .item-r .item-cont-b .rate-wrap.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-b .rate-wrap.data-v-6bc246d2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -144,7 +144,7 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
 }
-.container .shop-section .lately-cont .item-r .item-cont-b .rate-wrap .rate.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-b .rate-wrap .rate.data-v-6bc246d2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -155,13 +155,13 @@
   -webkit-align-items: baseline;
           align-items: baseline;
 }
-.container .shop-section .lately-cont .item-r .item-cont-b .rate-wrap .rate text.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-b .rate-wrap .rate text.data-v-6bc246d2 {
   font-weight: bold;
   font-size: 24rpx;
   color: #282828;
   margin-right: 20rpx;
 }
-.container .shop-section .lately-cont .item-r .item-cont-b .rate-wrap .date.data-v-ae7f2b20 {
+.container .shop-section .lately-cont .item-r .item-cont-b .rate-wrap .date.data-v-6bc246d2 {
   font-size: 24rpx;
   color: #B1B1B1;
   font-weight: 400;

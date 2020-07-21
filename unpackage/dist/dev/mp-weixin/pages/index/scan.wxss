@@ -24,7 +24,7 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.container.data-v-0c092df1 {
+.container.data-v-06e5045a {
   height: 100vh;
   display: -webkit-box;
   display: -webkit-flex;
@@ -37,7 +37,7 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.container .img-section.data-v-0c092df1 {
+.container .img-section.data-v-06e5045a {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -45,23 +45,23 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.container .img-section .scan-logo.data-v-0c092df1 {
+.container .img-section .scan-logo.data-v-06e5045a {
   width: 272rpx;
   height: 124rpx;
   margin-top: 130rpx;
 }
-.container .scan-section.data-v-0c092df1 {
+.container .scan-section.data-v-06e5045a {
   width: 100%;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
   position: relative;
 }
-.container .scan-section .scan-bg.data-v-0c092df1 {
+.container .scan-section .scan-bg.data-v-06e5045a {
   width: 100%;
   height: 100%;
 }
-.container .scan-section .scan-inner.data-v-0c092df1 {
+.container .scan-section .scan-inner.data-v-06e5045a {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -79,7 +79,7 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.container .scan-section .scan-inner .scan-code.data-v-0c092df1 {
+.container .scan-section .scan-inner .scan-code.data-v-06e5045a {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -92,33 +92,33 @@
           align-items: center;
   padding-top: 110rpx;
 }
-.container .scan-section .scan-inner .scan-code text.data-v-0c092df1 {
+.container .scan-section .scan-inner .scan-code text.data-v-06e5045a {
   font-size: 30rpx;
   font-weight: 500;
   color: #666666;
   line-height: 46rpx;
   margin-bottom: 30rpx;
 }
-.container .scan-section .scan-inner .scan-code .scan-btn.data-v-0c092df1 {
+.container .scan-section .scan-inner .scan-code .scan-btn.data-v-06e5045a {
   width: 268rpx;
   height: 308rpx;
 }
-.container .scan-section .scan-inner .scan-tip.data-v-0c092df1 {
+.container .scan-section .scan-inner .scan-tip.data-v-06e5045a {
   width: 398rpx;
   height: 75rpx;
   margin-top: 130rpx;
 }
-.container .scan-section .scan-inner .scan-btm-section.data-v-0c092df1 {
+.container .scan-section .scan-inner .scan-btm-section.data-v-06e5045a {
   position: absolute;
   width: 100%;
   left: 0;
   bottom: 68rpx;
 }
-.container .scan-section .scan-inner .scan-btm-section .scan-btm.data-v-0c092df1 {
+.container .scan-section .scan-inner .scan-btm-section .scan-btm.data-v-06e5045a {
   width: 680rpx;
   height: 36rpx;
 }
-.container .scan-section .scan-inner .scan-btm-section .text-section.data-v-0c092df1 {
+.container .scan-section .scan-inner .scan-btm-section .text-section.data-v-06e5045a {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

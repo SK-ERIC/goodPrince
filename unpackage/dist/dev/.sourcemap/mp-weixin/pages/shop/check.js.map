@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack:///D:/UNI/goodPrince/main.js"],"names":["createPage","Page"],"mappings":";;;;;;;;;;kDAAA;AACA;AACA,4F;AACAA,UAAU,CAACC,cAAD,CAAV,C","file":"pages/shop/check.js","sourcesContent":["import 'uni-pages';\nimport Vue from 'vue'\nimport Page from './pages/shop/check.vue'\ncreatePage(Page)"],"sourceRoot":""}

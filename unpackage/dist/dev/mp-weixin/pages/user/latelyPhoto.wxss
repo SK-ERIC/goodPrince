@@ -24,13 +24,13 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.container.data-v-4a658f92 {
+.container.data-v-f11a2418 {
   padding-bottom: 144rpx;
   min-height: 100vh;
   position: relative;
   padding-bottom: 220rpx;
 }
-.container .navBack.data-v-4a658f92 {
+.container .navBack.data-v-f11a2418 {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: inline-flex;
@@ -44,7 +44,7 @@
   color: #282828;
   margin-left: 27rpx;
 }
-.container .navBack .cuIcon-back.data-v-4a658f92 {
+.container .navBack .cuIcon-back.data-v-f11a2418 {
   margin-right: 30rpx;
 }
 
